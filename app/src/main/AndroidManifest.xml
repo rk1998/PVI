@@ -21,8 +21,9 @@
         </activity>
         <activity
             android:name=".MealSelection"
-            android:label="Select your Meals!"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="Select Your Meals!"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
