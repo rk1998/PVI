@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.GridView;
 
 public class MealSelection extends AppCompatActivity {
-    private String[] names = {"Pasta", "Pizza", "Tacos"};
-    private int[] imgIds = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos};
+    private String[] names = {"Spagetthi", "Pizza", "Tacos", "Chicken Salad"};
+    private String[] ingredients = {"Spagetthi, Tomato Sauce, Bell Peppers",
+            "Wheat, Cheeze, Pizza Sauce", "Taco Shells, Beef, Cheese", "Chicken Breast, Lettuce, Tomatoes"};
+    private int[] imgIds = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,7 @@ public class MealSelection extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
-        mealSelectionGrid.setAdapter(new MealCell(this, names, imgIds));
+        mealSelectionGrid.setAdapter(new MealCell(this, names, ingredients,  imgIds));
         Button doneButton = (Button) findViewById(R.id.confirm_meal_selection);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
