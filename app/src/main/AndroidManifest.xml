@@ -22,8 +22,8 @@
         <activity
             android:name=".MealSelection"
             android:label="Select Your Meals!"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".RecipeScreen"></activity>
     </application>
 
 </manifest>

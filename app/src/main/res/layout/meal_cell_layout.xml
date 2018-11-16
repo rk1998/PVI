@@ -11,8 +11,8 @@
 
         <ImageButton
             android:id="@+id/recipe_img_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="114dp"
+            android:layout_height="109dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="108dp"
             android:layout_marginEnd="8dp"
@@ -24,8 +24,8 @@
 
         <Button
             android:id="@+id/details_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="102dp"
+            android:layout_height="56dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -35,6 +35,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recipe_img_button"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.009" />
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>
