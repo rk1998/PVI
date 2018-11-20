@@ -13,11 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ListView;
 
 public class MainScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private String[] names = {"Spaghetti", "Pizza", "Tacos", "Chicken Salad"};
+    private String[] ingredients = {"Spaghetti, Tomato Sauce, Bell Peppers",
+            "Wheat, Cheese, Pizza Sauce", "Taco Shells, Beef, Cheese", "Chicken Breast, Lettuce, Tomatoes"};
+    private int[] imgIds = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +49,26 @@ public class MainScreen extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
-        createPlan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent nextIntent = new Intent(MainScreen.this,
-                        com.pvi.jd.gt.personalvirtualinventories.MealSelection.class);
-                startActivity(nextIntent);
-            }
-        });
+        if(getIntent().hasExtra("MEAL_PLAN_CREATED")) {
+            Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
+            ((ViewManager) createPlan.getParent()).removeView(createPlan);
+            ListView mealPlanList = new ListView(this);
+            ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
+            mealPlanList.setAdapter(new MealPlanCell(this, names, ingredients, imgIds));
+            layout.addView(mealPlanList);
+
+        } else {
+            Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
+            createPlan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent nextIntent = new Intent(MainScreen.this,
+                            com.pvi.jd.gt.personalvirtualinventories.MealSelection.class);
+                    startActivity(nextIntent);
+                }
+            });
+        }
+
     }
 
     @Override

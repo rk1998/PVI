@@ -1,6 +1,8 @@
 package com.pvi.jd.gt.personalvirtualinventories;
 
 import com.pvi.jd.gt.personalvirtualinventories.MealCell;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,9 +13,9 @@ import android.widget.Button;
 import android.widget.GridView;
 
 public class MealSelection extends AppCompatActivity {
-    private String[] names = {"Spagetthi", "Pizza", "Tacos", "Chicken Salad"};
-    private String[] ingredients = {"Spagetthi, Tomato Sauce, Bell Peppers",
-            "Wheat, Cheeze, Pizza Sauce", "Taco Shells, Beef, Cheese", "Chicken Breast, Lettuce, Tomatoes"};
+    private String[] names = {"Spaghetti", "Pizza", "Tacos", "Chicken Salad"};
+    private String[] ingredients = {"Spaghetti, Tomato Sauce, Bell Peppers",
+            "Wheat, Cheese, Pizza Sauce", "Taco Shells, Beef, Cheese", "Chicken Breast, Lettuce, Tomatoes"};
     private int[] imgIds = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
 
     @Override
@@ -30,6 +32,10 @@ public class MealSelection extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO: this
+                Intent newIntent = new Intent(MealSelection.this,
+                        com.pvi.jd.gt.personalvirtualinventories.MainScreen.class);
+                newIntent.putExtra("MEAL_PLAN_CREATED", true);
+                startActivity(newIntent);
             }
         });
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
