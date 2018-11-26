@@ -33,6 +33,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         String animal = mData.get(position);
         holder.myTextView.setText(animal);
+        holder.myTextView.setTextSize(30f);
     }
 
     // total number of rows
