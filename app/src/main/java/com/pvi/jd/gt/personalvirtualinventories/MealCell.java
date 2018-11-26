@@ -60,7 +60,7 @@ public class MealCell extends BaseAdapter {
                 public void onClick(View view) {
                     img.setSelected(!img.isSelected());
                     if(img.isSelected()) {
-                        img.setColorFilter(Color.argb(130, 139, 202, 239));
+                        img.setColorFilter(Color.argb(150, 139, 202, 239));
                     } else {
                         img.setColorFilter(null);
                     }
