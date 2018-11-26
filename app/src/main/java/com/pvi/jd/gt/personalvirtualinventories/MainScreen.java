@@ -114,7 +114,9 @@ public class MainScreen extends AppCompatActivity
         } else if (id == R.id.inventory) {
 
         } else if (id == R.id.grocery_list) {
-
+            Intent intent = new Intent(this,
+                    com.pvi.jd.gt.personalvirtualinventories.GroceryList.class);
+            startActivity(intent);
         } else if (id == R.id.settings) {
 
         }
@@ -123,6 +125,7 @@ public class MainScreen extends AppCompatActivity
 //        } else if (id == R.id.nav_send) {
 //
 //        }
+        item.setChecked(true);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
