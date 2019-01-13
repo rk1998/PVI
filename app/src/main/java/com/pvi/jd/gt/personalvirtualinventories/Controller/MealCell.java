@@ -1,21 +1,17 @@
-package com.pvi.jd.gt.personalvirtualinventories;
+package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.widget.BaseAdapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.pvi.jd.gt.personalvirtualinventories.R;
 
 public class MealCell extends BaseAdapter {
     private Context mContext;
@@ -72,7 +68,7 @@ public class MealCell extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     Intent newIntent = new Intent(mContext,
-                            com.pvi.jd.gt.personalvirtualinventories.RecipeScreen.class);
+                            RecipeScreen.class);
                     newIntent.putExtra("RECIPE_NAME", mealNames[position]);
                     newIntent.putExtra("RECIPE_INGREDIENTS", mealIngredients[position]);
                     newIntent.putExtra("IMG_SOURCE", mealPicId[position]);

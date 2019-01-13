@@ -1,11 +1,11 @@
-package com.pvi.jd.gt.personalvirtualinventories;
+package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Toast;
+
+import com.pvi.jd.gt.personalvirtualinventories.R;
 
 import java.util.ArrayList;
 

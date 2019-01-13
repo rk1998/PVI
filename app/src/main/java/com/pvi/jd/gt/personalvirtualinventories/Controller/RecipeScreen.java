@@ -1,9 +1,11 @@
-package com.pvi.jd.gt.personalvirtualinventories;
+package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.pvi.jd.gt.personalvirtualinventories.R;
 
 import org.w3c.dom.Text;
 

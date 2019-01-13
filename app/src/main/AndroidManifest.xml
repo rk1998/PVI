@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainScreen"
+            android:name=".Controller.MainScreen"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -20,11 +20,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MealSelection"
+            android:name=".Controller.MealSelection"
             android:label="Select Your Meals!"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RecipeScreen"></activity>
-        <activity android:name=".GroceryList"></activity>
+        <activity android:name=".Controller.RecipeScreen"></activity>
+        <activity android:name=".Controller.GroceryList"></activity>
     </application>
 
 </manifest>

@@ -1,11 +1,9 @@
-package com.pvi.jd.gt.personalvirtualinventories;
+package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
-import com.pvi.jd.gt.personalvirtualinventories.MealCell;
+import com.pvi.jd.gt.personalvirtualinventories.R;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -33,7 +31,7 @@ public class MealSelection extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO: this
                 Intent newIntent = new Intent(MealSelection.this,
-                        com.pvi.jd.gt.personalvirtualinventories.MainScreen.class);
+                        MainScreen.class);
                 newIntent.putExtra("MEAL_PLAN_CREATED", true);
                 startActivity(newIntent);
             }

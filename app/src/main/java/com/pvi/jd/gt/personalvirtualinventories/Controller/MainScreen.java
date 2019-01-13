@@ -1,9 +1,7 @@
-package com.pvi.jd.gt.personalvirtualinventories;
+package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,8 +14,9 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ListView;
+
+import com.pvi.jd.gt.personalvirtualinventories.R;
 
 public class MainScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -63,7 +62,7 @@ public class MainScreen extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     Intent nextIntent = new Intent(MainScreen.this,
-                            com.pvi.jd.gt.personalvirtualinventories.MealSelection.class);
+                            MealSelection.class);
                     startActivity(nextIntent);
                 }
             });
@@ -115,7 +114,7 @@ public class MainScreen extends AppCompatActivity
 
         } else if (id == R.id.grocery_list) {
             Intent intent = new Intent(this,
-                    com.pvi.jd.gt.personalvirtualinventories.GroceryList.class);
+                    GroceryList.class);
             startActivity(intent);
         } else if (id == R.id.settings) {
 
