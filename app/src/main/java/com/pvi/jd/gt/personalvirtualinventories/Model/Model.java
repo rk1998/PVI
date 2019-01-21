@@ -10,7 +10,6 @@ public class Model {
     public static Model get_instance() {
         return _instance;
     }
-
     private List<User> userList;
     private User currentUser;
     private Model() {

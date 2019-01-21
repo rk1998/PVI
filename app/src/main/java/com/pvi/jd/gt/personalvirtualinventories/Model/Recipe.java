@@ -1,5 +1,7 @@
 package com.pvi.jd.gt.personalvirtualinventories.Model;
 
+import android.arch.lifecycle.LiveData;
+
 import java.util.List;
 
 public class Recipe {
