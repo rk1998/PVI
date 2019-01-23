@@ -10,6 +10,7 @@ public class User {
     private List<Recipe> recipeList;
     private int cookTime;
     private List<String> kitchenTools;
+    private int numFamilyMembers;
 
     public User() {
         this.email = "email";
@@ -23,6 +24,7 @@ public class User {
         recipeList = new LinkedList<>();
         kitchenTools = new LinkedList<>();
         cookTime = 0;
+        numFamilyMembers = 1;
     }
 
     public String getEmail() {
@@ -40,12 +42,18 @@ public class User {
         return cookTime;
     }
 
+    public int getNumFamilyMembers() {
+        return numFamilyMembers;
+    }
+
     public List<String> getKitchenTools() {
         return kitchenTools;
     }
-
     public List<Recipe> getRecipes() {
         return recipeList;
+    }
+    public void setNumFamilyMembers(int members) {
+        numFamilyMembers = members;
     }
     public void setPassword(String newPassword) {
         password = newPassword;
