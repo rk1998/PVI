@@ -2,6 +2,7 @@ package com.pvi.jd.gt.personalvirtualinventories.Model;
 
 import android.arch.lifecycle.LiveData;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Recipe {
@@ -47,6 +48,15 @@ public class Recipe {
 
     }
 
+    public Recipe() {
+        recipeTitle = "";
+        cookTime = 0;
+        prepTime = 0;
+        instructions = "";
+        ingredients = new LinkedList<>();
+        recipeSource = "";
+        imgURL = "";
+    }
     public int getApiID() {
         return apiID;
     }
@@ -70,5 +80,27 @@ public class Recipe {
     }
     public String getImgURL() {
         return imgURL;
+    }
+
+
+    public void setRecipeTitle(String title) {
+        recipeTitle = title;
+    }
+
+    public void setCookTime(int cookTime) {
+        this.cookTime = cookTime;
+    }
+
+    public void setPrepTime(int prepTime) {
+        this.prepTime = prepTime;
+    }
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+    public void setIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
+    }
+    public void setRecipeSource(String recipeSource) {
+        this.recipeSource = recipeSource;
     }
 }
