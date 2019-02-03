@@ -21,7 +21,11 @@ import java.util.List;
 
 public class RecipeRepository {
 
-    private String getrecipeAPIURl = "http://api.yummly.com/v1/api/recipe/recipe-id?_app_id=YOUR_ID&_app_key=YOUR_APP_KEY";
+    private String apiID = "111c254f";
+    private String apiKey = "a1591ab602b6fc6d2bbffae96db922ac";
+
+    private String getrecipeAPIURl = "http://api.yummly.com/v1/api/recipe/recipe-id?_app_id="
+            + apiID + "&_app_key=" + apiKey;
 
     public LiveData<Recipe> getRecipe(String recipeID, final Context currentContext) {
         //final Recipe requestedRecipe = new Recipe();
@@ -61,5 +65,11 @@ public class RecipeRepository {
         });
         ApiRequestQueue.getInstance(currentContext).addToRequestQueue(getRecipeRequest);
         return data;
+    }
+
+
+    public LiveData<List<Recipe>> getRecipes(List<String> recipeIDs, final Context currentContext) {
+        final MutableLiveData<List<Recipe>> dataList = new MutableLiveData<>();
+        return dataList;
     }
 }
