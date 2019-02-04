@@ -10,6 +10,7 @@ public class Recipe {
     private String recipeTitle;
     private int cookTime;
     private int prepTime;
+    private int numServings;
     private String instructions;
     private List<String> ingredients;
     private String recipeSource;
@@ -35,12 +36,13 @@ public class Recipe {
         imgURL = "none";
     }
 
-    public Recipe(int id, String title, int cook, int prep, String instructions,
+    public Recipe(int id, String title, int cook, int prep, int servings, String instructions,
                   List<String> ingredients, String source, String imgSource) {
         apiID = id;
         recipeTitle = title;
         cookTime = cook;
         prepTime = prep;
+        numServings = servings;
         this.instructions = instructions;
         this.ingredients = ingredients;
         recipeSource = source;
@@ -52,6 +54,7 @@ public class Recipe {
         recipeTitle = "";
         cookTime = 0;
         prepTime = 0;
+        numServings = 0;
         instructions = "";
         ingredients = new LinkedList<>();
         recipeSource = "";
@@ -69,6 +72,11 @@ public class Recipe {
     public int getPrepTime() {
         return prepTime;
     }
+
+    public int getNumServings() {
+        return numServings;
+    }
+
     public String getInstructions() {
         return instructions;
     }
@@ -93,6 +101,9 @@ public class Recipe {
 
     public void setPrepTime(int prepTime) {
         this.prepTime = prepTime;
+    }
+    public void setNumServings(int servings) {
+        this.numServings = servings;
     }
     public void setInstructions(String instructions) {
         this.instructions = instructions;

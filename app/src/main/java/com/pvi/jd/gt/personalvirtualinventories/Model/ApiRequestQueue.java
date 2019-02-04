@@ -11,9 +11,9 @@ import com.android.volley.toolbox.Volley;
  * to make requests to the Recipe API.
  */
 public class ApiRequestQueue {
-    private  static ApiRequestQueue instance;
+    private static ApiRequestQueue instance;
     private RequestQueue requestQueue;
-    private static Context context;
+    private Context context;
 
     private ApiRequestQueue(Context cxt) {
         this.context = cxt;
@@ -37,7 +37,8 @@ public class ApiRequestQueue {
      */
     public RequestQueue getRequestQueue() {
         if(requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(context.getApplicationContext());
+            requestQueue = Volley.newRequestQueue(context);
+            requestQueue.start();
         }
         return requestQueue;
     }
