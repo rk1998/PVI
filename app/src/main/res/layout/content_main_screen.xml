@@ -18,6 +18,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background = "#F86060"
+        android:textColor = "@android:color/white"
         android:text="Create Meal Plan!"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
