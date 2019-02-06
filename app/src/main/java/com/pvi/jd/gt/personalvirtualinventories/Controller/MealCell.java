@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.support.design.widget.FloatingActionButton;
 
 import com.pvi.jd.gt.personalvirtualinventories.R;
 
@@ -49,22 +50,22 @@ public class MealCell extends BaseAdapter {
             final ImageButton img = (ImageButton) gridCell.findViewById(R.id.recipe_img_button);
             TextView recipeTitle = (TextView) gridCell.findViewById(R.id.recipe_select_title);
             recipeTitle.setText(mealNames[position]);
-            Button detailsButton = (Button) gridCell.findViewById(R.id.details_button);
+            final FloatingActionButton addButton = (FloatingActionButton) gridCell.findViewById(R.id.fab);
             img.setImageResource(this.mealPicId[position]);
-            img.setOnClickListener(new View.OnClickListener() {
+            addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    img.setSelected(!img.isSelected());
-                    if(img.isSelected()) {
-                        img.setColorFilter(Color.argb(150, 139, 202, 239));
+                    addButton.setSelected(!addButton.isSelected());
+                    if(addButton.isSelected()) {
+                        addButton.setImageResource(R.drawable.checkbtn);
                     } else {
-                        img.setColorFilter(null);
+                        addButton.setImageResource(R.drawable.addbtn);;
                     }
                     //Toast.makeText(mContext, "Pizza Pizza", Toast.LENGTH_SHORT).show();
                 }
             });
 
-            detailsButton.setOnClickListener(new View.OnClickListener() {
+            img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent newIntent = new Intent(mContext,
@@ -75,6 +76,7 @@ public class MealCell extends BaseAdapter {
                     mContext.startActivity(newIntent);
                 }
             });
+
             return gridCell;
         } else {
             return convertView;
