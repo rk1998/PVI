@@ -114,4 +114,7 @@ public class Recipe {
     public void setRecipeSource(String recipeSource) {
         this.recipeSource = recipeSource;
     }
+    public void setImgURL(String url) {
+        this.imgURL = url;
+    }
 }

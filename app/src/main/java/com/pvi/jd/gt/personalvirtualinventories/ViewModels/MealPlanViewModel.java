@@ -5,6 +5,7 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.Model.RecipeRepository;
@@ -19,7 +20,7 @@ public class MealPlanViewModel extends ViewModel {
     private MutableLiveData<List<Recipe>> mealplanRecipes;
     private RecipeRepository recipeRepo;
     private boolean isMealPlanCreated;
-
+    private Context currContext;
     public MealPlanViewModel() {
         this.mealplanRecipes = new MutableLiveData<>();
         this.mealplanRecipes.setValue(new LinkedList<Recipe>());
@@ -36,6 +37,7 @@ public class MealPlanViewModel extends ViewModel {
         if (this.mealplanRecipes != null) {
             return;
         }
+        this.currContext = currentContext;
         this.mealplanRecipes = (MutableLiveData) recipeRepo.getRecipes(recipeIDs, currentContext);
     }
 
@@ -46,4 +48,15 @@ public class MealPlanViewModel extends ViewModel {
     public LiveData<List<Recipe>> getMealplanRecipes() {
         return mealplanRecipes;
     }
+
+    /**
+     * Gets the image of a recipe given an image url
+     * @param imgURL url of the recipe image
+     * @return LiveData object containing Bitmap of the recipe.
+     */
+    public LiveData<Bitmap> getRecipeImage(String imgURL) {
+        return recipeRepo.getRecipeImage(imgURL, this.currContext);
+    }
+
+
 }
