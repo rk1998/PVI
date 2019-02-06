@@ -15,12 +15,10 @@
             android:layout_height="192dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="108dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.514"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@mipmap/ic_launcher"
+            tools:layout_editor_absoluteY="116dp" />
 
         <Button
             android:id="@+id/details_button"
@@ -38,19 +36,32 @@
             app:layout_constraintTop_toBottomOf="@+id/recipe_img_button"
             app:layout_constraintVertical_bias="0.0" />
 
+        <ImageView
+            android:id="@+id/recipe_title_rectangle"
+            android:layout_width="200dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/black_rectangle"
+            app:layout_constraintBottom_toBottomOf="@+id/recipe_img_button"
+            app:layout_constraintEnd_toEndOf="@+id/recipe_img_button"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/recipe_img_button" />
+
         <TextView
             android:id="@+id/recipe_select_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="Recipe Title"
             android:textColor="@android:color/black"
             android:textSize="30sp"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/recipe_img_button"
-            app:layout_constraintEnd_toEndOf="@+id/recipe_img_button"
-            app:layout_constraintStart_toStartOf="@+id/recipe_img_button" />
+            app:layout_constraintBottom_toBottomOf="@+id/recipe_title_rectangle"
+            app:layout_constraintEnd_toEndOf="@+id/recipe_title_rectangle"
+            app:layout_constraintStart_toStartOf="@+id/recipe_title_rectangle"
+            app:layout_constraintTop_toTopOf="@+id/recipe_title_rectangle" />
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>
