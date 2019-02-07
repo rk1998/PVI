@@ -2,6 +2,7 @@ package com.pvi.jd.gt.personalvirtualinventories.Model;
 
 import android.arch.lifecycle.LiveData;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class Recipe {
     private int prepTime;
     private int numServings;
     private String instructions;
-    private List<String> ingredients;
+    private ArrayList<String> ingredients;
     private String recipeSource;
     private String imgURL;
 
@@ -25,7 +26,7 @@ public class Recipe {
      * @param instructions - recipe instructions
      * @param ingredients - recipe ingredients
      */
-    public Recipe(String title, int cook, int prep, String instructions, List<String> ingredients) {
+    public Recipe(String title, int cook, int prep, String instructions, ArrayList<String> ingredients) {
         recipeTitle = title;
         cookTime = cook;
         prepTime = prep;
@@ -37,7 +38,7 @@ public class Recipe {
     }
 
     public Recipe(int id, String title, int cook, int prep, int servings, String instructions,
-                  List<String> ingredients, String source, String imgSource) {
+                  ArrayList<String> ingredients, String source, String imgSource) {
         apiID = id;
         recipeTitle = title;
         cookTime = cook;
@@ -56,7 +57,7 @@ public class Recipe {
         prepTime = 0;
         numServings = 0;
         instructions = "";
-        ingredients = new LinkedList<>();
+        ingredients = new ArrayList<>();
         recipeSource = "";
         imgURL = "";
     }
@@ -80,7 +81,7 @@ public class Recipe {
     public String getInstructions() {
         return instructions;
     }
-    public List<String> getIngredients() {
+    public ArrayList<String> getIngredients() {
         return ingredients;
     }
     public String getRecipeSource() {
@@ -108,7 +109,7 @@ public class Recipe {
     public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
-    public void setIngredients(List<String> ingredients) {
+    public void setIngredients(ArrayList<String> ingredients) {
         this.ingredients = ingredients;
     }
     public void setRecipeSource(String recipeSource) {

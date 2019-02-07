@@ -9,20 +9,29 @@ import com.pvi.jd.gt.personalvirtualinventories.R;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class RecipeScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_screen);
-        String recipeTitle = getIntent().getStringExtra("RECIPE_NAME");
-        String recipeIngredients = getIntent().getStringExtra("RECIPE_INGREDIENTS");
-        int img_resource = getIntent().getIntExtra("IMG_SOURCE", R.drawable.pizza);
+        Bundle recipeBundle = getIntent().getBundleExtra("RECIPE_BUNDLE");
+        String recipeTitle = recipeBundle.getString("RECIPE_NAME");
+
+        ArrayList<String> recipeIngredients = recipeBundle.getStringArrayList("RECIPE_INGREDIENTS");
+
+        //String recipeIngredients = getIntent().getStringExtra("RECIPE_INGREDIENTS");
+        int img_resource = recipeBundle.getInt("IMG_SOURCE");
+        //int img_resource = getIntent().getIntExtra("IMG_SOURCE", R.drawable.pizza);
         ImageView imgView = (ImageView) findViewById(R.id.recipe_img);
         TextView recipeTitleView = (TextView) findViewById(R.id.recipe_title);
+
+        //Todo: change to list view
         TextView recipeIngriedentsView = (TextView) findViewById(R.id.recipe_description);
         imgView.setImageResource(img_resource);
         recipeTitleView.setText(recipeTitle);
-        recipeIngriedentsView.setText(recipeIngredients);
+        //recipeIngriedentsView.setText(recipeIngredients);
     }
 }

@@ -85,7 +85,7 @@ public class RecipeRepository {
                     //extract ingredient list
                     try {
                         JSONArray jsonIngredients = response.getJSONArray("ingredients");
-                        List<String> ingredientList = new LinkedList<>();
+                        ArrayList<String> ingredientList = new ArrayList<>();
                         for(int i = 0; i < jsonIngredients.length(); i++) {
                             String ingredientLine = jsonIngredients.getString(i);
                             ingredientList.add(ingredientLine);
@@ -192,7 +192,7 @@ public class RecipeRepository {
                         //extract ingredient list
                         try {
                             JSONArray jsonIngredients = response.getJSONArray("ingredients");
-                            List<String> ingredientList = new LinkedList<>();
+                            ArrayList<String> ingredientList = new ArrayList<>();
                             for(int i = 0; i < jsonIngredients.length(); i++) {
                                 String ingredientLine = jsonIngredients.getString(i);
                                 ingredientList.add(ingredientLine);
