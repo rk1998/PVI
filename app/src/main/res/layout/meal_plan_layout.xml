@@ -5,42 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-        <ImageButton
-            android:id="@+id/meal_recipe_im"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.212"
-            app:srcCompat="@drawable/pizza" />
-
-        <CheckBox
-            android:id="@+id/meal_checkbox"
-            style="@android:style/Widget.CompoundButton.CheckBox"
-            android:layout_width="186dp"
-            android:layout_height="113dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:button="@null"
-            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-            android:text="Pizza"
-            android:textSize="36sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.113"
-            app:layout_constraintStart_toEndOf="@+id/meal_recipe_im"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.206" />
-
-    </android.support.constraint.ConstraintLayout>
 </LinearLayout>
