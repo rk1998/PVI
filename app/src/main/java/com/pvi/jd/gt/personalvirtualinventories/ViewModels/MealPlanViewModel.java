@@ -38,7 +38,7 @@ public class MealPlanViewModel extends ViewModel {
             return;
         }
         this.currContext = currentContext;
-        this.mealplanRecipes = (MutableLiveData) recipeRepo.getRecipes(recipeIDs, currentContext);
+        this.mealplanRecipes = recipeRepo.getRecipes(recipeIDs, currentContext);
     }
 
     /**
@@ -49,14 +49,6 @@ public class MealPlanViewModel extends ViewModel {
         return mealplanRecipes;
     }
 
-    /**
-     * Gets the image of a recipe given an image url
-     * @param imgURL url of the recipe image
-     * @return LiveData object containing Bitmap of the recipe.
-     */
-    public LiveData<Bitmap> getRecipeImage(String imgURL) {
-        return recipeRepo.getRecipeImage(imgURL, this.currContext);
-    }
 
 
 }

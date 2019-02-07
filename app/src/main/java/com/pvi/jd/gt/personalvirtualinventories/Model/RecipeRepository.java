@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Handler;
 
 public class RecipeRepository {
 
@@ -57,7 +58,7 @@ public class RecipeRepository {
      * @param currentContext current activity context
      * @return live data object containing the Recipe
      */
-    public LiveData<Recipe> getRecipe(final String recipeID, final Context currentContext) {
+    public MutableLiveData<Recipe> getRecipe(final String recipeID, final Context currentContext) {
         //final Recipe requestedRecipe = new Recipe();
         if(storedRecipes.containsKey(recipeID)) {
             final MutableLiveData<Recipe> data = new MutableLiveData<>();
@@ -165,16 +166,16 @@ public class RecipeRepository {
      * @param currentContext current activity context
      * @return LiveData object containing a list of recipes.
      */
-    public LiveData<List<Recipe>> getRecipes(List<String> recipeIDs, final Context currentContext) {
+    public MutableLiveData<List<Recipe>> getRecipes(List<String> recipeIDs, final Context currentContext) {
         final MutableLiveData<List<Recipe>> dataList = new MutableLiveData<>();
         final List<Recipe> recipes = new LinkedList<>();
-
         for(int i = 0; i < recipeIDs.size(); i++) {
 
             if(storedRecipes.containsKey(recipeIDs.get(i))) {
                 recipes.add(storedRecipes.get(i));
             } else {
-                String requestURL = getrecipeAPIURl + recipeIDs.get(i) + "?" + "_app_id="
+                final String currentID = recipeIDs.get(i);
+                String requestURL = getrecipeAPIURl + currentID + "?" + "_app_id="
                         + apiID + "&_app_key=" + apiKey;
                 JsonObjectRequest getRecipeRequest = new JsonObjectRequest(Request.Method.GET,
                         requestURL, null, new Response.Listener<JSONObject>() {
@@ -250,7 +251,7 @@ public class RecipeRepository {
                             requestedRecipe.setRecipeSource("");
                         }
 
-
+                        storedRecipes.put(currentID, requestedRecipe);
                         recipes.add(requestedRecipe);
                         //data.setValue(requestedRecipe);
                     }
@@ -270,27 +271,32 @@ public class RecipeRepository {
         return dataList;
     }
 
-    /**
-     * Gets an image of a recipe given the image source url
-     * @param imgURL Source of the image
-     * @param currentContext current activity context
-     * @return LiveData object containing the recipe image
-     */
-    public LiveData<Bitmap> getRecipeImage(String imgURL, final Context currentContext) {
-        final MutableLiveData<Bitmap> imageData = new MutableLiveData<>();
-        ImageLoader loader = ApiRequestQueue.getInstance(currentContext.getApplicationContext()).getImageLoader();
-        loader.get(imgURL, new ImageLoader.ImageListener() {
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                Bitmap image = response.getBitmap();
-                imageData.setValue(image);
-            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(currentContext, "Can't get Recipe Image", Toast.LENGTH_SHORT).show();
-            }
-        });
-        return imageData;
-    }
+    // with volley you can only use imageLoader.get in main UI thread
+//    /**
+//     * Gets an image of a recipe given the image source url
+//     * @param imgURL Source of the image
+//     * @param currentContext current activity context
+//     * @return LiveData object containing the recipe image
+//     */
+//    public LiveData<Bitmap> getRecipeImage(String imgURL, final Context currentContext) {
+//        //Todo move image loading calls to UI controllers.
+//        final MutableLiveData<Bitmap> imageData = new MutableLiveData<>();
+//        ImageLoader loader = ApiRequestQueue.getInstance(currentContext.getApplicationContext()).getImageLoader();
+//
+//        loader.get(imgURL, new ImageLoader.ImageListener() { // this throws illegal state exception
+//            @Override
+//            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+//                Bitmap image = response.getBitmap();
+//                imageData.setValue(image);
+//            }
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(currentContext, "Can't get Recipe Image", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        return imageData;
+//    }
 }

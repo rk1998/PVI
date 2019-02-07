@@ -6,6 +6,7 @@ import android.arch.core.executor.testing.*;
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.GrantPermissionRule;
@@ -82,7 +83,7 @@ public class ExampleInstrumentedTest {
             }
         };
         liveData.observeForever(observer);
-        latch.await(30, TimeUnit.SECONDS);
+        latch.await(1, TimeUnit.SECONDS);
         return (T) data[0];
     }
 
@@ -169,5 +170,18 @@ public class ExampleInstrumentedTest {
         assertEquals(30, requestedRecipe.getCookTime());
 
 
+    }
+
+    @Test
+    public void testGetImage() {
+        String imageURL = "http://i2.yummly.com/Hot-Turkey-Salad-Sandwiches-Allrecipes.l.png";
+        final LiveData<Bitmap> imageData = repo.getRecipeImage(imageURL, appContext);
+        try {
+            Bitmap image = getValue(imageData);
+            assertEquals(320, image.getWidth());
+            assertEquals(240, image.getHeight());
+        } catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
