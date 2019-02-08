@@ -1,36 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:adjustViewBounds="true">
 
-    <ImageView
-        android:id="@+id/meal_image"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/spagett" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/meal_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:paddingBottom="5sp"
-        android:paddingStart="5sp"
-        android:text="Spaghetti"
-        android:textSize="30sp" />
+        <ImageView
+            android:id="@+id/meal_image"
+            android:layout_width="380dp"
+            android:layout_height="217dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/spagett" />
 
-    <CheckBox
-        android:id="@+id/meal_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:paddingBottom="5sp"
-        android:paddingEnd="5sp"
-        android:scaleX="1.50"
-        android:scaleY="1.50"
-        android:textSize="30sp" />
+        <TextView
+            android:id="@+id/meal_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingStart="5sp"
+            android:paddingEnd="5sp"
+            android:paddingBottom="5sp"
+            android:text="Spaghetti"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/meal_image"
+            app:layout_constraintEnd_toStartOf="@+id/meal_checkbox"
+            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
-</FrameLayout>
+        <CheckBox
+            android:id="@+id/meal_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:buttonTint="@color/cardview_light_background"
+            android:paddingStart="5sp"
+            android:paddingEnd="5sp"
+            android:paddingBottom="5sp"
+            android:scaleX="1.50"
+            android:scaleY="1.50"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
