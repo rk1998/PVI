@@ -12,7 +12,7 @@
 
         <ImageView
             android:id="@+id/meal_image"
-            android:layout_width="380dp"
+            android:layout_width="420dp"
             android:layout_height="217dp"
             android:layout_marginStart="1dp"
             android:layout_marginTop="1dp"
