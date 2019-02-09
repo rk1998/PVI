@@ -45,7 +45,7 @@ public class MealPlanViewModel extends ViewModel {
      * Gets the LiveData object of the user's recipes in their current meal plan
      * @return mealplanRecipes
      */
-    public LiveData<List<Recipe>> getMealplanRecipes() {
+    public LiveData<List<Recipe>> getMealPlanRecipes() {
         return mealplanRecipes;
     }
 

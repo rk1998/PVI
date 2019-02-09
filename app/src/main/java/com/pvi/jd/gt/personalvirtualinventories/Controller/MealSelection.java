@@ -43,16 +43,24 @@ public class MealSelection extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         createDummyRecipes();
-        GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
-        mealSelectionGrid.setAdapter(new MealCell(this, dummyRecipes));
+        final GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
+
+        //Todo: get list of recipes from MealSelectionViewModel
+        final MealCell selectionAdapter = new MealCell(this, dummyRecipes);
+        mealSelectionGrid.setAdapter(selectionAdapter);
         Button doneButton = (Button) findViewById(R.id.confirm_meal_selection);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: this
+                ArrayList<String> selectedRecipes = selectionAdapter.getSelectedMeals();
                 Intent newIntent = new Intent(MealSelection.this,
                         MainScreen.class);
                 newIntent.putExtra("MEAL_PLAN_CREATED", true);
+
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("SELECTED_IDS", selectedRecipes);
+
+                newIntent.putExtra("ID_BUNDLE", bundle);
                 startActivity(newIntent);
             }
         });
