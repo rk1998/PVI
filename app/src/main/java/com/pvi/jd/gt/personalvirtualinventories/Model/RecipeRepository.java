@@ -282,6 +282,13 @@ public class RecipeRepository {
         mealPlanRecipesIDs.addAll(planRecipes);
     }
 
+    /**
+     * Clears the current meal plan
+     */
+    public void clearMealPlanRecipes() {
+        mealPlanRecipesIDs.clear();
+    }
+
     // with volley you can only use imageLoader.get in main UI thread
 //    /**
 //     * Gets an image of a recipe given the image source url

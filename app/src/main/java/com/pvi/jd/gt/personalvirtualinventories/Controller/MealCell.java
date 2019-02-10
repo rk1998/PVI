@@ -48,10 +48,7 @@ public class MealCell extends BaseAdapter {
         //this.mealPicId = imgIDs;
         this.mealIngredients = ingredients;
         this.recipeList = recipes;
-        this.selectionMap = new HashMap<>();
-        for(int i = 0; i < recipeList.size(); i++) {
-            this.selectionMap.put(recipeList.get(i), false);
-        }
+
     }
 
     /**
@@ -64,6 +61,10 @@ public class MealCell extends BaseAdapter {
         this.recipeList = recipes;
         mealNames = new String[0];
         mealIngredients = new String[0];
+        this.selectionMap = new HashMap<>();
+        for(int i = 0; i < recipeList.size(); i++) {
+            this.selectionMap.put(recipeList.get(i), false);
+        }
 
     }
 

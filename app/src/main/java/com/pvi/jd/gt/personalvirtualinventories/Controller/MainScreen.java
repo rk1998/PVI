@@ -82,22 +82,22 @@ public class MainScreen extends AppCompatActivity
             viewModel = ViewModelProviders.of(this).get(MealPlanViewModel.class);
             Bundle selectionBundle = getIntent().getBundleExtra("ID_BUNDLE");
             List<String> selectedIDs = selectionBundle.getStringArrayList("SELECTED_IDS");
-            viewModel.init(selectedIDs, this);
+            //viewModel.init(selectedIDs, this);
 
             final ListView mealPlanList = new ListView(this);
             final ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
             createDummyRecipes();
 
-//            mealPlanList.setAdapter(new MealPlanCell(this, dummyRecipes));
-//            layout.addView(mealPlanList);
+            mealPlanList.setAdapter(new MealPlanCell(this, dummyRecipes));
+            layout.addView(mealPlanList);
 
-            viewModel.getMealPlanRecipes().observe(this, new Observer<List<Recipe>>() {
-                @Override
-                public void onChanged(@Nullable List<Recipe> recipes) {
-                    mealPlanList.setAdapter(new MealPlanCell(MainScreen.this, recipes));
-                    layout.addView(mealPlanList);
-                }
-            });
+//            viewModel.getMealPlanRecipes().observe(this, new Observer<List<Recipe>>() {
+//                @Override
+//                public void onChanged(@Nullable List<Recipe> recipes) {
+//                    mealPlanList.setAdapter(new MealPlanCell(MainScreen.this, recipes));
+//                    layout.addView(mealPlanList);
+//                }
+//            });
 
         } else {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
