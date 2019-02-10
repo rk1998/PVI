@@ -22,7 +22,7 @@ public class Recipe {
      * Constructor for Custom Recipes
      * @param title - recipe title
      * @param cook - recipe cook time
-     * @param prep - recipe preperation time
+     * @param prep - recipe preparation time
      * @param instructions - recipe instructions
      * @param ingredients - recipe ingredients
      */
@@ -78,6 +78,9 @@ public class Recipe {
         return numServings;
     }
 
+    public String getDetails() {
+        return "Cook time: " + cookTime + "\nPrep time: " + prepTime;
+    }
     public String getInstructions() {
         return instructions;
     }

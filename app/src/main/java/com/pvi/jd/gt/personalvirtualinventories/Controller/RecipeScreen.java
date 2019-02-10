@@ -4,7 +4,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pvi.jd.gt.personalvirtualinventories.R;
@@ -24,19 +26,20 @@ public class RecipeScreen extends AppCompatActivity {
 
         final ArrayList<String> recipeIngredients = recipeBundle.getStringArrayList("RECIPE_INGREDIENTS");
 
-        //String recipeIngredients = getIntent().getStringExtra("RECIPE_INGREDIENTS");
         int img_resource = recipeBundle.getInt("IMG_SOURCE");
-        //int img_resource = getIntent().getIntExtra("IMG_SOURCE", R.drawable.pizza);
+        final String recipeDetails = recipeBundle.getString("RECIPE_DETAILS");
+        final String recipeInstructions = recipeBundle.getString("RECIPE_INSTRUCTIONS");
+
         ImageView imgView = (ImageView) findViewById(R.id.recipe_img);
         TextView recipeTitleView = (TextView) findViewById(R.id.recipe_title);
         final TextView recipeDetailView = (TextView) findViewById(R.id.recipe_details);
-        //Todo: change to list view
         final TextView recipeIngredientsView = (TextView) findViewById(R.id.recipe_ingredients);
         final TextView recipeInstructionsView = (TextView) findViewById(R.id.recipe_instructions);
 
         imgView.setImageResource(img_resource);
         recipeTitleView.setText(recipeTitle);
-        //recipeIngredientsView.setText(recipeIngredients);
+        recipeDetailView.setText(recipeDetails);
+        recipeInstructionsView.setText(recipeInstructions);
 
         TabLayout tabs = (TabLayout) findViewById(R.id.tab_layout);
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

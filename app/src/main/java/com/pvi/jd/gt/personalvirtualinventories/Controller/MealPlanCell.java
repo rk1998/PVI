@@ -84,13 +84,12 @@ public class MealPlanCell extends BaseAdapter {
                     Intent newIntent = new Intent(mContext,
                             RecipeScreen.class);
                     Bundle recipeBundle = new Bundle();
-                    recipeBundle.putString("RECIPE_NAME", planRecipes.get(position).getRecipeTitle());
-                    recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", planRecipes.get(position).getIngredients());
                     recipeBundle.putInt("IMG_SOURCE", mealPicId[position]);
+                    recipeBundle.putString("RECIPE_NAME", planRecipes.get(position).getRecipeTitle());
+                    recipeBundle.putString("RECIPE_DETAILS", planRecipes.get(position).getDetails());
+                    recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", planRecipes.get(position).getIngredients());
+                    recipeBundle.putString("RECIPE_INSTRUCTIONS", planRecipes.get(position).getInstructions());
                     newIntent.putExtra("RECIPE_BUNDLE", recipeBundle);
-//                    newIntent.putExtra("RECIPE_NAME", mealNames[position]);
-//                    newIntent.putExtra("RECIPE_INGREDIENTS", mealIngredients[position]);
-//                    newIntent.putExtra("IMG_SOURCE", mealPicId[position]);
                     mContext.startActivity(newIntent);
                 }
             });
