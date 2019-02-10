@@ -1,7 +1,10 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +21,7 @@ import android.widget.ListView;
 
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -31,6 +35,7 @@ public class MainScreen extends AppCompatActivity
     private int[] imgIds = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
 
     private List<Recipe> dummyRecipes = new LinkedList<>();
+    private MealPlanViewModel viewModel;
 
     private void createDummyRecipes() {
         Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<String>());
@@ -70,11 +75,26 @@ public class MainScreen extends AppCompatActivity
         if(getIntent().hasExtra("MEAL_PLAN_CREATED")) {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
             ((ViewManager) createPlan.getParent()).removeView(createPlan);
-            ListView mealPlanList = new ListView(this);
-            ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
+
+            viewModel = ViewModelProviders.of(this).get(MealPlanViewModel.class);
+            Bundle selectionBundle = getIntent().getBundleExtra("ID_BUNDLE");
+            List<String> selectedIDs = selectionBundle.getStringArrayList("SELECTED_IDS");
+            viewModel.init(selectedIDs, this);
+
+            final ListView mealPlanList = new ListView(this);
+            final ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
             createDummyRecipes();
-            mealPlanList.setAdapter(new MealPlanCell(this, dummyRecipes));
-            layout.addView(mealPlanList);
+
+//            mealPlanList.setAdapter(new MealPlanCell(this, dummyRecipes));
+//            layout.addView(mealPlanList);
+
+            viewModel.getMealPlanRecipes().observe(this, new Observer<List<Recipe>>() {
+                @Override
+                public void onChanged(@Nullable List<Recipe> recipes) {
+                    mealPlanList.setAdapter(new MealPlanCell(MainScreen.this, recipes));
+                    layout.addView(mealPlanList);
+                }
+            });
 
         } else {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);

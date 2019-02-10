@@ -16,7 +16,12 @@ import android.support.design.widget.FloatingActionButton;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class MealCell extends BaseAdapter {
     private Context mContext;
@@ -26,6 +31,7 @@ public class MealCell extends BaseAdapter {
     private final int[] mealPicId = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
 
     private final List<Recipe> recipeList;
+    private HashMap<Recipe, Boolean> selectionMap;
 
 
     /**
@@ -42,6 +48,10 @@ public class MealCell extends BaseAdapter {
         //this.mealPicId = imgIDs;
         this.mealIngredients = ingredients;
         this.recipeList = recipes;
+        this.selectionMap = new HashMap<>();
+        for(int i = 0; i < recipeList.size(); i++) {
+            this.selectionMap.put(recipeList.get(i), false);
+        }
     }
 
     /**
@@ -98,7 +108,9 @@ public class MealCell extends BaseAdapter {
                     //Toast.makeText(mContext, "Pizza Pizza", Toast.LENGTH_SHORT).show();
                 }
             });
-
+            if(addButton.isSelected()) {
+                selectionMap.put(recipeList.get(position), true);
+            }
             img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -113,9 +125,6 @@ public class MealCell extends BaseAdapter {
                     recipeBundle.putString("RECIPE_INSTRUCTIONS", recipeList.get(position).getInstructions());
                     newIntent.putExtra("RECIPE_BUNDLE", recipeBundle);
 
-//                    newIntent.putExtra("RECIPE_NAME", mealNames[position]);
-//                    newIntent.putExtra("RECIPE_INGREDIENTS", mealIngredients[position]);
-//                    newIntent.putExtra("IMG_SOURCE", mealPicId[position]);
                     mContext.startActivity(newIntent);
                 }
             });
@@ -124,6 +133,19 @@ public class MealCell extends BaseAdapter {
         } else {
             return convertView;
         }
+    }
+
+    /**
+     * @return list of meals selected for the meal plan
+     */
+    public ArrayList<String> getSelectedMeals() {
+        ArrayList<String> selectedMeals = new ArrayList<>();
+        for(int i = 0; i < recipeList.size(); i++) {
+            if(selectionMap.get(recipeList.get(i))) {
+                selectedMeals.add(recipeList.get(i).getApiID());
+            }
+        }
+        return selectedMeals;
     }
 }
 

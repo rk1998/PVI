@@ -38,12 +38,14 @@ public class RecipeRepository {
     private String getrecipeAPIURl;
     private Map<String, Recipe> storedRecipes;
     private LinkedList<String> tempRecipeId;
+    private LinkedList<String> mealPlanRecipesIDs;
     private RecipeRepository() {
         apiID = "111c254f";
         apiKey = "a1591ab602b6fc6d2bbffae96db922ac";
         getrecipeAPIURl = "http://api.yummly.com/v1/api/recipe/";
         storedRecipes = new HashMap<>();
         tempRecipeId = new LinkedList<>();
+        mealPlanRecipesIDs = new LinkedList<>();
         tempRecipeId.add("Oriental-Inspired-Vegetable-Soup-Recipezaar");
         tempRecipeId.add("Chunky-Rice-And-Bean-Soup-Recipezaar");
         tempRecipeId.add("7-Samurai-Vegan-Soup-Recipezaar");
@@ -74,6 +76,7 @@ public class RecipeRepository {
                 @Override
                 public void onResponse(JSONObject response) {
                     Recipe requestedRecipe = new Recipe();
+                    requestedRecipe.setApiID(recipeID);
                     //extract recipe title
                     try {
                         String recipeTitle = response.getString("name");
@@ -271,6 +274,13 @@ public class RecipeRepository {
         return dataList;
     }
 
+    /**
+     * Adds the selected recipes in planRecipes to mealPlanRecipeIds
+     * @param planRecipes List of recipe IDs that will be in the User's meal plan
+     */
+    public void setMealPlanRecipes(List<String> planRecipes) {
+        mealPlanRecipesIDs.addAll(planRecipes);
+    }
 
     // with volley you can only use imageLoader.get in main UI thread
 //    /**
