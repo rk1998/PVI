@@ -24,7 +24,7 @@ public class RecipeScreen extends AppCompatActivity {
         Bundle recipeBundle = getIntent().getBundleExtra("RECIPE_BUNDLE");
         String recipeTitle = recipeBundle.getString("RECIPE_NAME");
 
-        final ArrayList<String> recipeIngredients = recipeBundle.getStringArrayList("RECIPE_INGREDIENTS");
+        ArrayList<String> recipeIngredients = recipeBundle.getStringArrayList("RECIPE_INGREDIENTS");
 
         int img_resource = recipeBundle.getInt("IMG_SOURCE");
         final String recipeDetails = recipeBundle.getString("RECIPE_DETAILS");
