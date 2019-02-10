@@ -106,9 +106,11 @@ public class MealCell extends BaseAdapter {
                             RecipeScreen.class);
                     Bundle recipeBundle = new Bundle();
 
-                    recipeBundle.putString("RECIPE_NAME", recipeList.get(position).getRecipeTitle());
-                    recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", recipeList.get(position).getIngredients());
                     recipeBundle.putInt("IMG_SOURCE", mealPicId[position]);
+                    recipeBundle.putString("RECIPE_NAME", recipeList.get(position).getRecipeTitle());
+                    recipeBundle.putString("RECIPE_DETAILS", recipeList.get(position).getDetails());
+                    recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", recipeList.get(position).getIngredients());
+                    recipeBundle.putString("RECIPE_INSTRUCTIONS", recipeList.get(position).getInstructions());
                     newIntent.putExtra("RECIPE_BUNDLE", recipeBundle);
 
 //                    newIntent.putExtra("RECIPE_NAME", mealNames[position]);
