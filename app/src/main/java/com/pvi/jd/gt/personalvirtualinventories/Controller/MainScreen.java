@@ -48,9 +48,6 @@ public class MainScreen extends AppCompatActivity
         dummyRecipes.add(chickenSalad);
     }
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
