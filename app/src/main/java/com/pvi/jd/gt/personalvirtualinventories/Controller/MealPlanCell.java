@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.graphics.Color;
 
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
@@ -75,6 +76,19 @@ public class MealPlanCell extends BaseAdapter {
             gridCell = inflater.inflate(R.layout.meal_plan_row, null);
             final ImageView img = (ImageView) gridCell.findViewById(R.id.meal_image);
             TextView recipeTitle = (TextView) gridCell.findViewById(R.id.meal_name);
+            final CheckBox checkbox = (CheckBox) gridCell.findViewById(R.id.meal_checkbox);
+            checkbox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    checkbox.setSelected(!checkbox.isSelected());
+                    if(checkbox.isSelected()) {
+                        img.setColorFilter(Color.argb(175,50,50,50));
+                    } else {
+                        img.setColorFilter(null);
+                    }
+                    //Toast.makeText(mContext, "Pizza Pizza", Toast.LENGTH_SHORT).show();
+                }
+            });
             //recipeTitle.setText(mealNames[position]);
             recipeTitle.setText(planRecipes.get(position).getRecipeTitle());
             img.setImageResource(this.mealPicId[position]);
