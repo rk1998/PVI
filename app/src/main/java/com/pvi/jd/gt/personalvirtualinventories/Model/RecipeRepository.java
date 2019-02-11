@@ -4,6 +4,7 @@ package com.pvi.jd.gt.personalvirtualinventories.Model;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -11,15 +12,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class RecipeRepository {
 
@@ -163,5 +166,37 @@ public class RecipeRepository {
         }
         dataList.setValue(recipes);
         return dataList;
+    }
+
+    public MutableLiveData<List<Recipe>> getUserRecipes(int userID, final Context currentContext) {
+        String url = "https://personalvirtualinventories.000webhostapp.com/getUserRecipes.php";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("user_id", userID + "");
+        final MutableLiveData<List<Recipe>> jsonresponse = new MutableLiveData<>();
+        JSONArrayRequest jsObjRequest = new JSONArrayRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                List<Recipe> recipes = new ArrayList<>();
+                try {
+                    //response = response.getJSONArray(0);
+                    for (int i = 0; i < response.length(); i++) {
+                        Recipe curr = new Recipe();
+                        String api_id = response.getJSONObject(i).get("api_id").toString();
+                        curr.setApiID(api_id);
+                        recipes.add(curr);
+                    }
+                    jsonresponse.setValue(recipes);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                response.printStackTrace();
+            }
+        });
+        ApiRequestQueue.getInstance(currentContext.getApplicationContext()).addToRequestQueue(jsObjRequest);
+        return jsonresponse;
     }
 }

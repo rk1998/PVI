@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Recipe {
-    private int apiID;
+    private String apiID;
     private String recipeTitle;
     private int cookTime;
     private int prepTime;
@@ -31,12 +31,12 @@ public class Recipe {
         prepTime = prep;
         this.instructions = instructions;
         this.ingredients = ingredients;
-        apiID = -1;
+        apiID = "";
         recipeSource = "custom";
         imgURL = "none";
     }
 
-    public Recipe(int id, String title, int cook, int prep, int servings, String instructions,
+    public Recipe(String id, String title, int cook, int prep, int servings, String instructions,
                   List<String> ingredients, String source, String imgSource) {
         apiID = id;
         recipeTitle = title;
@@ -60,7 +60,7 @@ public class Recipe {
         recipeSource = "";
         imgURL = "";
     }
-    public int getApiID() {
+    public String getApiID() {
         return apiID;
     }
     public String getRecipeTitle() {
@@ -90,7 +90,9 @@ public class Recipe {
         return imgURL;
     }
 
-
+    public void setApiID(String apiID) {
+        this.apiID = apiID;
+    }
     public void setRecipeTitle(String title) {
         recipeTitle = title;
     }

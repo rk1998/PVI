@@ -1,9 +1,12 @@
 package com.pvi.jd.gt.personalvirtualinventories.Model;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class User {
+    private int id;
     private String email;
     private String password;
     private List<String> hatedFoods;
@@ -11,6 +14,7 @@ public class User {
     private int cookTime;
     private List<String> kitchenTools;
     private int numFamilyMembers;
+    private Map<Recipe, Boolean> currMealPlan;
 
     public User() {
         this.email = "email";
@@ -25,6 +29,7 @@ public class User {
         kitchenTools = new LinkedList<>();
         cookTime = 0;
         numFamilyMembers = 1;
+        currMealPlan = new HashMap<>();
     }
 
     public String getEmail() {
@@ -100,5 +105,21 @@ public class User {
     public boolean equals(Object obj) {
         User other  = (User) obj;
         return this.email.equals(other.getEmail()) && this.password.equals(other.getPassword());
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Map<Recipe, Boolean> getCurrMealPlan() {
+        return currMealPlan;
+    }
+
+    public void setCurrMealPlan(Map<Recipe, Boolean> currMealPlan) {
+        this.currMealPlan = currMealPlan;
     }
 }
