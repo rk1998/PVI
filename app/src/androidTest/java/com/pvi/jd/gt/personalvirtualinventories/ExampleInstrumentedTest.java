@@ -14,6 +14,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.mock.MockContext;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,6 +25,8 @@ import com.google.gson.Gson;
 import com.pvi.jd.gt.personalvirtualinventories.Model.ApiRequestQueue;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.Model.RecipeRepository;
+import com.pvi.jd.gt.personalvirtualinventories.Model.User;
+import com.pvi.jd.gt.personalvirtualinventories.Model.UserRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +38,10 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -56,6 +62,7 @@ public class ExampleInstrumentedTest {
 
     private Context appContext;
     private RecipeRepository repo;
+    private UserRepository uRepo;
     private String getrecipeAPIURl;
     private String apiKey;
     private String apiID;
@@ -65,6 +72,7 @@ public class ExampleInstrumentedTest {
     public void setUp() {
         appContext = InstrumentationRegistry.getTargetContext();
         repo = RecipeRepository.getRecipeRepository();
+        uRepo = UserRepository.getUserRepository();
         apiID = "111c254f";
         apiKey = "a1591ab602b6fc6d2bbffae96db922ac";
         getrecipeAPIURl = "http://api.yummly.com/v1/api/recipe/";
@@ -133,7 +141,7 @@ public class ExampleInstrumentedTest {
                     String[] ingredients = new Gson().fromJson(
                             response.getString("ingredients"), String[].class);
                     List<String> ingredientList = Arrays.asList(ingredients);
-                    requestedRecipe.setIngredients(ingredientList);
+                    requestedRecipe.setIngredients(new ArrayList<>(ingredientList));
 
                 } catch(JSONException e) {
                     requestedRecipe.setIngredients(new ArrayList<String>());
@@ -173,15 +181,56 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void testGetImage() {
-        String imageURL = "http://i2.yummly.com/Hot-Turkey-Salad-Sandwiches-Allrecipes.l.png";
-        final LiveData<Bitmap> imageData = repo.getRecipeImage(imageURL, appContext);
+    public void testGetUserRecipes() {
         try {
-            Bitmap image = getValue(imageData);
-            assertEquals(320, image.getWidth());
-            assertEquals(240, image.getHeight());
-        } catch(InterruptedException e) {
-            System.out.println(e.getMessage());
+            List<Recipe> x = getValue(repo.getUserRecipes(1, appContext));
+            if (x.size() > 0) {
+                assertEquals("Vegetarian-Cabbage-Soup-Recipezaar", x.get(0).getApiID());
+                assertEquals("Oriental-Inspired-Vegetable-Soup-Recipezaar", x.get(1).getApiID());
+                assertEquals("Chunky-Rice-And-Bean-Soup-Recipezaar", x.get(2).getApiID());
+                assertEquals("7-Samurai-Vegan-Soup-Recipezaar", x.get(3).getApiID());
+                assertEquals("Tomato-Lentil-Soup-Recipezaar_3", x.get(4).getApiID());
+                assertEquals("Very-Veggie-Vegetable-Soup-Recipezaar", x.get(5).getApiID());
+            } else {
+                fail();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
+
+    @Test
+    public void testAuthGetUserInfo() {
+        MutableLiveData<User> ld = uRepo.authGetUserInfo("fake@fake.com", "password", appContext);
+        try {
+            User actual = getValue(ld);
+            User expected = new User("fake@fake.com", "password");
+            expected.setNumFamilyMembers(4);
+            expected.setCookTime(45);
+            expected.setId(1);
+            List<String> apiids = new ArrayList<>();
+            apiids.add("Vegetarian-Cabbage-Soup-Recipezaar");
+            apiids.add("Oriental-Inspired-Vegetable-Soup-Recipezaar");
+            apiids.add("Chunky-Rice-And-Bean-Soup-Recipezaar");
+            apiids.add("7-Samurai-Vegan-Soup-Recipezaar");
+            Set<Recipe> recipes = actual.getCurrMealPlan().keySet();
+
+            recipes.forEach(recipe -> assertTrue(apiids.contains(recipe.getApiID())));
+            //assertEquals(expected, actual);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    public void testGetImage() {
+//        String imageURL = "http://i2.yummly.com/Hot-Turkey-Salad-Sandwiches-Allrecipes.l.png";
+//        final LiveData<Bitmap> imageData = repo.getRecipeImage(imageURL, appContext);
+//        try {
+//            Bitmap image = getValue(imageData);
+//            assertEquals(320, image.getWidth());
+//            assertEquals(240, image.getHeight());
+//        } catch(InterruptedException e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
 }

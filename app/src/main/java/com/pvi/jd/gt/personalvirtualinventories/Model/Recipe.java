@@ -95,7 +95,9 @@ public class Recipe {
         return imgURL;
     }
 
-
+    public void setApiID(String apiID) {
+        this.apiID = apiID;
+    }
     public void setRecipeTitle(String title) {
         recipeTitle = title;
     }
@@ -106,10 +108,6 @@ public class Recipe {
 
     public void setPrepTime(int prepTime) {
         this.prepTime = prepTime;
-    }
-
-    public void setApiID(String apiID) {
-        this.apiID = apiID;
     }
 
     public void setNumServings(int servings) {
