@@ -45,6 +45,7 @@
             android:text="Recipe Title"
             android:textColor="@android:color/black"
             android:textSize="30sp"
+            android:fontFamily="sans-serif-light"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/recipe_title_rectangle"
             app:layout_constraintEnd_toEndOf="@+id/recipe_title_rectangle"
