@@ -1,7 +1,10 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +19,13 @@ import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,6 +33,21 @@ public class MainScreen extends AppCompatActivity
     private String[] ingredients = {"Spaghetti, Tomato Sauce, Bell Peppers",
             "Wheat, Cheese, Pizza Sauce", "Taco Shells, Beef, Cheese", "Chicken Breast, Lettuce, Tomatoes"};
     private int[] imgIds = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
+
+    private List<Recipe> dummyRecipes = new LinkedList<>();
+    private MealPlanViewModel viewModel;
+
+    private void createDummyRecipes() {
+        Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<String>());
+        Recipe pizza = new Recipe("Pizza", 20, 40, "Make pizza", new ArrayList<String>());
+        Recipe tacos = new Recipe("Tacos", 10, 20, "TACO NIGHT", new ArrayList<String>());
+        Recipe chickenSalad = new Recipe("Chicken Salad", 5, 20, "Put the salad together", new ArrayList<String>());
+        dummyRecipes.add(spaghetti);
+        dummyRecipes.add(pizza);
+        dummyRecipes.add(tacos);
+        dummyRecipes.add(chickenSalad);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +75,26 @@ public class MainScreen extends AppCompatActivity
         if(getIntent().hasExtra("MEAL_PLAN_CREATED")) {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
             ((ViewManager) createPlan.getParent()).removeView(createPlan);
-            ListView mealPlanList = new ListView(this);
-            ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
-            mealPlanList.setAdapter(new MealPlanCell(this, names, ingredients, imgIds));
+
+            viewModel = ViewModelProviders.of(this).get(MealPlanViewModel.class);
+            Bundle selectionBundle = getIntent().getBundleExtra("ID_BUNDLE");
+            List<String> selectedIDs = selectionBundle.getStringArrayList("SELECTED_IDS");
+            //viewModel.init(selectedIDs, this);
+
+            final ListView mealPlanList = new ListView(this);
+            final ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
+            createDummyRecipes();
+
+            mealPlanList.setAdapter(new MealPlanCell(this, dummyRecipes));
             layout.addView(mealPlanList);
+
+//            viewModel.getMealPlanRecipes().observe(this, new Observer<List<Recipe>>() {
+//                @Override
+//                public void onChanged(@Nullable List<Recipe> recipes) {
+//                    mealPlanList.setAdapter(new MealPlanCell(MainScreen.this, recipes));
+//                    layout.addView(mealPlanList);
+//                }
+//            });
 
         } else {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
