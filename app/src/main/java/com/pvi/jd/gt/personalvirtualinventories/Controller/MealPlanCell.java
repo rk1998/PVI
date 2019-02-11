@@ -12,6 +12,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.pvi.jd.gt.personalvirtualinventories.Model.ApiRequestQueue;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 
@@ -73,18 +76,32 @@ public class MealPlanCell extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(convertView == null) {
             gridCell = inflater.inflate(R.layout.meal_plan_row, null);
-            final ImageView img = (ImageView) gridCell.findViewById(R.id.meal_image);
+            final NetworkImageView img = (NetworkImageView) gridCell.findViewById(R.id.meal_image);
             TextView recipeTitle = (TextView) gridCell.findViewById(R.id.meal_name);
             //recipeTitle.setText(mealNames[position]);
             recipeTitle.setText(planRecipes.get(position).getRecipeTitle());
-            img.setImageResource(this.mealPicId[position]);
+
+            String img_resource = planRecipes.get(position).getImgURL();
+            if(img_resource.isEmpty()) {
+                img.setDefaultImageResId(mealPicId[position]);
+            } else {
+                ImageLoader imageLoader = ApiRequestQueue.getInstance(
+                        this.mContext.getApplicationContext()).getImageLoader();
+                imageLoader.get(img_resource, ImageLoader.getImageListener(img,
+                        R.drawable.spagett, R.drawable.spagett));
+                //imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                img.setImageUrl(img_resource, imageLoader);
+            }
+
+
+
             img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent newIntent = new Intent(mContext,
                             RecipeScreen.class);
                     Bundle recipeBundle = new Bundle();
-                    recipeBundle.putInt("IMG_SOURCE", mealPicId[position]);
+                    recipeBundle.putString("IMG_SOURCE", planRecipes.get(position).getImgURL());
                     recipeBundle.putString("RECIPE_NAME", planRecipes.get(position).getRecipeTitle());
                     recipeBundle.putString("RECIPE_DETAILS", planRecipes.get(position).getDetails());
                     recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", planRecipes.get(position).getIngredients());

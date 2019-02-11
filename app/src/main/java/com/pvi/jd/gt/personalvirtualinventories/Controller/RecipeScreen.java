@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.pvi.jd.gt.personalvirtualinventories.Model.ApiRequestQueue;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 
 import org.w3c.dom.Text;
@@ -26,17 +29,25 @@ public class RecipeScreen extends AppCompatActivity {
 
         ArrayList<String> recipeIngredients = recipeBundle.getStringArrayList("RECIPE_INGREDIENTS");
 
-        int img_resource = recipeBundle.getInt("IMG_SOURCE");
+        String img_resource = recipeBundle.getString("IMG_SOURCE");
         final String recipeDetails = recipeBundle.getString("RECIPE_DETAILS");
         final String recipeInstructions = recipeBundle.getString("RECIPE_INSTRUCTIONS");
 
-        ImageView imgView = (ImageView) findViewById(R.id.recipe_img);
+        NetworkImageView imgView = (NetworkImageView) findViewById(R.id.recipe_img);
         TextView recipeTitleView = (TextView) findViewById(R.id.recipe_title);
         final TextView recipeDetailView = (TextView) findViewById(R.id.recipe_details);
         final TextView recipeIngredientsView = (TextView) findViewById(R.id.recipe_ingredients);
         final TextView recipeInstructionsView = (TextView) findViewById(R.id.recipe_instructions);
 
-        imgView.setImageResource(img_resource);
+
+        ImageLoader imageLoader = ApiRequestQueue.getInstance(
+                this.getApplicationContext()).getImageLoader();
+        imageLoader.get(img_resource, ImageLoader.getImageListener(imgView,
+                R.drawable.spagett, R.drawable.spagett));
+        //imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imgView.setImageUrl(img_resource, imageLoader);
+
+        //imgView.setImageResource(img_resource);
         recipeTitleView.setText(recipeTitle);
         recipeDetailView.setText(recipeDetails);
         recipeInstructionsView.setText(recipeInstructions);

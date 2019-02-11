@@ -34,7 +34,7 @@ public class Recipe {
         this.ingredients = ingredients;
         apiID = "";
         recipeSource = "custom";
-        imgURL = "none";
+        imgURL = "";
     }
 
     public Recipe(String id, String title, int cook, int prep, int servings, String instructions,
