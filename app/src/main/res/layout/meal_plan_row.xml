@@ -33,7 +33,7 @@
             android:src="@drawable/black_rectangle"
             app:layout_constraintBottom_toBottomOf="@+id/meal_image"
             tools:layout_editor_absoluteX="0dp" />
-
+        
         <TextView
             android:id="@+id/meal_name"
             android:layout_width="wrap_content"
@@ -67,6 +67,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
+
 
     </android.support.constraint.ConstraintLayout>
 
