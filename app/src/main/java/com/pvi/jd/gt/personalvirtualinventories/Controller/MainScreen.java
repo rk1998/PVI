@@ -24,6 +24,7 @@ import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,10 +39,10 @@ public class MainScreen extends AppCompatActivity
     private MealPlanViewModel viewModel;
 
     private void createDummyRecipes() {
-        Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<String>());
-        Recipe pizza = new Recipe("Pizza", 20, 40, "Make pizza", new ArrayList<String>());
-        Recipe tacos = new Recipe("Tacos", 10, 20, "TACO NIGHT", new ArrayList<String>());
-        Recipe chickenSalad = new Recipe("Chicken Salad", 5, 20, "Put the salad together", new ArrayList<String>());
+        Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<>(Arrays.asList(ingredients[0].split(", "))));
+        Recipe pizza = new Recipe("Pizza", 20, 40, "Make pizza", new ArrayList<>(Arrays.asList(ingredients[1].split(", "))));
+        Recipe tacos = new Recipe("Tacos", 10, 20, "TACO NIGHT", new ArrayList<>(Arrays.asList(ingredients[2].split(", "))));
+        Recipe chickenSalad = new Recipe("Chicken Salad", 5, 20, "Put the salad together", new ArrayList<>(Arrays.asList(ingredients[3].split(", "))));
         dummyRecipes.add(spaghetti);
         dummyRecipes.add(pizza);
         dummyRecipes.add(tacos);

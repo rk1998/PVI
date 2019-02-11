@@ -21,26 +21,34 @@ public class RecipeScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_screen);
+
+        // retrieve information from recipe bundle
         Bundle recipeBundle = getIntent().getBundleExtra("RECIPE_BUNDLE");
         String recipeTitle = recipeBundle.getString("RECIPE_NAME");
-
-        ArrayList<String> recipeIngredients = recipeBundle.getStringArrayList("RECIPE_INGREDIENTS");
-
         int img_resource = recipeBundle.getInt("IMG_SOURCE");
         final String recipeDetails = recipeBundle.getString("RECIPE_DETAILS");
+        ArrayList<String> recipeIngredients = recipeBundle.getStringArrayList("RECIPE_INGREDIENTS");
         final String recipeInstructions = recipeBundle.getString("RECIPE_INSTRUCTIONS");
 
+        // get views
         ImageView imgView = (ImageView) findViewById(R.id.recipe_img);
         TextView recipeTitleView = (TextView) findViewById(R.id.recipe_title);
         final TextView recipeDetailView = (TextView) findViewById(R.id.recipe_details);
         final TextView recipeIngredientsView = (TextView) findViewById(R.id.recipe_ingredients);
         final TextView recipeInstructionsView = (TextView) findViewById(R.id.recipe_instructions);
 
+        // populate views
         imgView.setImageResource(img_resource);
         recipeTitleView.setText(recipeTitle);
         recipeDetailView.setText(recipeDetails);
         recipeInstructionsView.setText(recipeInstructions);
+        recipeIngredientsView.setText("");
+        for (String s : recipeIngredients) {
+            recipeIngredientsView.append("\u2022 " + s);
+            recipeIngredientsView.append(System.getProperty("line.separator"));
+        }
 
+        // tab functionality
         TabLayout tabs = (TabLayout) findViewById(R.id.tab_layout);
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
