@@ -19,13 +19,11 @@ import java.util.List;
 public class MealPlanViewModel extends ViewModel {
     private MutableLiveData<List<Recipe>> mealplanRecipes;
     private RecipeRepository recipeRepo;
-    private boolean isMealPlanCreated;
     private Context currContext;
     public MealPlanViewModel() {
         this.mealplanRecipes = new MutableLiveData<>();
         this.mealplanRecipes.setValue(new LinkedList<Recipe>());
         this.recipeRepo = RecipeRepository.getRecipeRepository();
-        this.isMealPlanCreated = false;
     }
 
     /**
@@ -38,7 +36,7 @@ public class MealPlanViewModel extends ViewModel {
             return;
         }
         this.currContext = currentContext;
-        this.mealplanRecipes = recipeRepo.getRecipes(recipeIDs, currentContext);
+        this.mealplanRecipes = recipeRepo.getRecipes(recipeIDs, this.currContext);
     }
 
     /**
