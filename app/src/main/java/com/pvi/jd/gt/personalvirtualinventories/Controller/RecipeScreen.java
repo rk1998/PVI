@@ -4,6 +4,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -26,7 +27,6 @@ public class RecipeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_screen);
 
-        // retrieve information from recipe bundle
         Bundle recipeBundle = getIntent().getBundleExtra("RECIPE_BUNDLE");
         String recipeTitle = recipeBundle.getString("RECIPE_NAME");
 
@@ -65,6 +65,7 @@ public class RecipeScreen extends AppCompatActivity {
         //imgView.setImageResource(img_resource);
         recipeTitleView.setText(recipeTitle);
         recipeDetailView.setText(recipeDetails);
+        recipeDetailView.setMovementMethod(new ScrollingMovementMethod());
         recipeInstructionsView.setText(recipeInstructions);
         recipeIngredientsView.setText("");
         for (String s : recipeIngredients) {
