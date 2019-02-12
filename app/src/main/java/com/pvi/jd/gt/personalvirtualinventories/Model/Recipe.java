@@ -80,7 +80,7 @@ public class Recipe {
     }
 
     public String getDetails() {
-        return "Cook time: " + cookTime + "min\nPrep time: " + prepTime + "min";
+        return "Cook time: " + cookTime + " Minutes\nPrep time: " + prepTime + " Minutes";
     }
     public String getInstructions() {
         return instructions;

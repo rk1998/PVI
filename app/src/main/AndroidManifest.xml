@@ -23,9 +23,10 @@
         </activity>
         <activity
             android:name=".Controller.MealSelection"
-            android:label="Select Your Meals!"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Controller.RecipeScreen"></activity>
+        <activity
+            android:name=".Controller.RecipeScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Controller.GroceryList"></activity>
     </application>
 

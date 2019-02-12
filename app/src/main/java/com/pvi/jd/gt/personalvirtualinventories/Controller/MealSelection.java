@@ -47,6 +47,14 @@ public class MealSelection extends AppCompatActivity {
         setContentView(R.layout.activity_meal_selection);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Select your meals!");
+        toolbar.setNavigationIcon(getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         createDummyRecipes();
         final GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
 

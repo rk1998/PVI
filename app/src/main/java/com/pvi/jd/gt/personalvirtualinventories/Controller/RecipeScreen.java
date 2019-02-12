@@ -3,6 +3,7 @@ package com.pvi.jd.gt.personalvirtualinventories.Controller;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -28,6 +29,17 @@ public class RecipeScreen extends AppCompatActivity {
         // retrieve information from recipe bundle
         Bundle recipeBundle = getIntent().getBundleExtra("RECIPE_BUNDLE");
         String recipeTitle = recipeBundle.getString("RECIPE_NAME");
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(recipeTitle);
+        toolbar.setNavigationIcon(getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         ArrayList<String> recipeIngredients = recipeBundle.getStringArrayList("RECIPE_INGREDIENTS");
 
