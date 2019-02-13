@@ -39,6 +39,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -119,6 +120,22 @@ public class ExampleInstrumentedTest {
 
     }
 
+    @Test
+    public void testgetRecipeList() {
+        LinkedList<String> tempRecipeId = new LinkedList<>();
+        tempRecipeId.add("Hot-Turkey-Salad-Sandwiches-Allrecipes");
+        tempRecipeId.add("Chunky-Rice-And-Bean-Soup-Recipezaar");
+        tempRecipeId.add("7-Samurai-Vegan-Soup-Recipezaar");
+        tempRecipeId.add("Cabbage-And-Tofu-Soup-Recipezaar");
+        //tempRecipeId.add("Falafel-Sandwich-Recipezaar");
+//        MutableLiveData<List<Recipe>> recipesLiveData = repo.getRecipes(tempRecipeId, appContext.getApplicationContext());
+//        try {
+//            List<Recipe> recipes = getValue(recipesLiveData);
+//            assertEquals(4, recipes.size());
+//        } catch(InterruptedException e) {
+//            System.out.println(e.getMessage());
+//        }
+    }
 
     @Test
     public void testAPICall() {
@@ -195,6 +212,20 @@ public class ExampleInstrumentedTest {
                 fail();
             }
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSearchRecipes() {
+        try {
+            List<String> ids = getValue(repo.searchRecipes(appContext));
+            for(int i = 0; i < ids.size(); i++) {
+                Log.d("RECIPE ID", ids.get(i));
+            }
+            assertNotNull(ids);
+
+        } catch(InterruptedException e) {
             e.printStackTrace();
         }
     }

@@ -25,6 +25,7 @@ public class MealSelection extends AppCompatActivity {
     private int[] imgIds = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
 
     private List<Recipe> dummyRecipes = new LinkedList<>();
+    private ArrayList<String> tempRecipeId;
 
     private void createDummyRecipes() {
         Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<>(Arrays.asList(ingredients[0].split(", "))));
@@ -39,6 +40,17 @@ public class MealSelection extends AppCompatActivity {
         dummyRecipes.add(pizza);
         dummyRecipes.add(tacos);
         dummyRecipes.add(chickenSalad);
+        tempRecipeId = new ArrayList<>();
+        tempRecipeId.add("Simple-Skillet-Green-Beans-2352743");
+        tempRecipeId.add("Chocolate-Pots-De-Creme-_Vegan-_-Paleo_-2615006");
+        tempRecipeId.add("Arrabbiata-Pasta-1686610");
+        tempRecipeId.add("Creamy-Pesto-Pasta-2137433");
+        tempRecipeId.add("Greek-Pasta-Salad-2559770");
+        tempRecipeId.add("Pasta-caprese-299294");
+        tempRecipeId.add("Vegan-Spinach-Pesto-Pasta-2596986");
+        tempRecipeId.add("Italian-Grilled-Cheese-1600270");
+        tempRecipeId.add("Easy-4-Ingredient-Instant-Pot-Mac-and-Cheese-2623416");
+        tempRecipeId.add("Marinated-Cucumbers-and-Red-Onions-2555614");
     }
 
     @Override
@@ -71,7 +83,7 @@ public class MealSelection extends AppCompatActivity {
                 newIntent.putExtra("MEAL_PLAN_CREATED", true);
 
                 Bundle bundle = new Bundle();
-                bundle.putStringArrayList("SELECTED_IDS", selectedRecipes);
+                bundle.putStringArrayList("SELECTED_IDS", tempRecipeId);
 
                 newIntent.putExtra("ID_BUNDLE", bundle);
                 startActivity(newIntent);

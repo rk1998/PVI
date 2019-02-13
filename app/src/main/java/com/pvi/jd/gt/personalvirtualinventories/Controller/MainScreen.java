@@ -1,5 +1,6 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -84,22 +85,23 @@ public class MainScreen extends AppCompatActivity
             viewModel = ViewModelProviders.of(this).get(MealPlanViewModel.class);
             Bundle selectionBundle = getIntent().getBundleExtra("ID_BUNDLE");
             List<String> selectedIDs = selectionBundle.getStringArrayList("SELECTED_IDS");
-            //viewModel.init(selectedIDs, this);
+            viewModel.init(selectedIDs, this);
 
-            final ListView mealPlanList = new ListView(this);
-            final ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
-            createDummyRecipes();
-
-            mealPlanList.setAdapter(new MealPlanCell(this, dummyRecipes));
+            ListView mealPlanList = new ListView(this);
+            ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
+            final MealPlanCell adapter = new MealPlanCell(this, new LinkedList<Recipe>());
+            mealPlanList.setAdapter(adapter);
             layout.addView(mealPlanList);
 
-//            viewModel.getMealPlanRecipes().observe(this, new Observer<List<Recipe>>() {
-//                @Override
-//                public void onChanged(@Nullable List<Recipe> recipes) {
-//                    mealPlanList.setAdapter(new MealPlanCell(MainScreen.this, recipes));
-//                    layout.addView(mealPlanList);
-//                }
-//            });
+            List<MutableLiveData<Recipe>> recipeLiveDataList = viewModel.getMealPlanRecipes();
+            for(MutableLiveData<Recipe> rep : recipeLiveDataList) {
+                rep.observe(this, new Observer<Recipe>() {
+                    @Override
+                    public void onChanged(@Nullable Recipe recipe) {
+                        adapter.addNewRecipe(recipe);
+                    }
+                });
+            }
 
         } else {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);

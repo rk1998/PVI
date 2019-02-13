@@ -62,6 +62,12 @@ public class Recipe {
         imgURL = "";
         apiID = "";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Recipe other = (Recipe) o;
+        return (this == o) || (this.getApiID().equals(other.getApiID()));
+    }
     public String getApiID() {
         return apiID;
     }

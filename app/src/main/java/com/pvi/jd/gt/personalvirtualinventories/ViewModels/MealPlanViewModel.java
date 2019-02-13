@@ -17,12 +17,11 @@ import java.util.List;
  * ViewModel for the Meal Plan View screen
  */
 public class MealPlanViewModel extends ViewModel {
-    private MutableLiveData<List<Recipe>> mealplanRecipes;
+    //private MutableLiveData<List<Recipe>> mealplanRecipes;
+    private List<MutableLiveData<Recipe>> mealplanRecipes;
     private RecipeRepository recipeRepo;
     private Context currContext;
     public MealPlanViewModel() {
-        this.mealplanRecipes = new MutableLiveData<>();
-        this.mealplanRecipes.setValue(new LinkedList<Recipe>());
         this.recipeRepo = RecipeRepository.getRecipeRepository();
     }
 
@@ -32,7 +31,7 @@ public class MealPlanViewModel extends ViewModel {
      * @param currentContext Activity context
      */
     public void init(List<String> recipeIDs, Context currentContext) {
-        if (this.mealplanRecipes != null) {
+        if(this.mealplanRecipes != null) {
             return;
         }
         this.currContext = currentContext;
@@ -43,7 +42,7 @@ public class MealPlanViewModel extends ViewModel {
      * Gets the LiveData object of the user's recipes in their current meal plan
      * @return mealplanRecipes
      */
-    public LiveData<List<Recipe>> getMealPlanRecipes() {
+    public List<MutableLiveData<Recipe>> getMealPlanRecipes() {
         return mealplanRecipes;
     }
 
