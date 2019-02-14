@@ -2,7 +2,12 @@ package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealSelectionViewModel;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MealSelection extends AppCompatActivity {
+    private MealSelectionViewModel viewModel;
 
     //Dummy recipe data
     private String[] names = {"Spaghetti", "Pizza", "Tacos", "Chicken Salad"};
@@ -46,6 +52,10 @@ public class MealSelection extends AppCompatActivity {
         final GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
 
         //Todo: get list of recipes from MealSelectionViewModel
+        //viewModel = ViewModelProviders.of(this).get(MealSelectionViewModel.class);
+        //viewModel.init(this.getApplicationContext());
+        //LiveData<List<Recipe>> userRecipes = viewModel.getUserRecipes();
+
         final MealCell selectionAdapter = new MealCell(this, dummyRecipes);
         mealSelectionGrid.setAdapter(selectionAdapter);
         Button doneButton = (Button) findViewById(R.id.confirm_meal_selection);

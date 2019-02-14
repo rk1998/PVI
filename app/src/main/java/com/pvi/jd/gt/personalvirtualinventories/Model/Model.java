@@ -1,7 +1,10 @@
 package com.pvi.jd.gt.personalvirtualinventories.Model;
 
+import android.arch.lifecycle.MutableLiveData;
+
 import com.pvi.jd.gt.personalvirtualinventories.Model.User;
 
+import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,51 +13,29 @@ public class Model {
     public static Model get_instance() {
         return _instance;
     }
-    private List<User> userList;
-    private User currentUser;
+
+    private MutableLiveData<User> currentUser;
+    private MutableLiveData<MealPlan> currentMealPlan;
+
     private Model() {
-        userList = new LinkedList<>();
-        currentUser = new User();
-    }
-
-    /**
-     * Adds new user to user list and to User database
-     * @param newUser the new user to add
-     * @return if the addition was successful
-     */
-    public boolean addUser(User newUser) {
-        if(userList.contains(newUser)) {
-            return false;
-        } else {
-            userList.add(newUser);
-            currentUser = newUser;
-            return true;
-        }
-    }
-
-    /**
-     * Attempts to login user with given email and password
-     * @param userEmail
-     * @param password
-     * @return if the user was successfully logged in
-     */
-    public boolean loginUser(String userEmail, String password) {
-        User temp = new User(userEmail, password);
-        for(User u: userList) {
-            if(u.equals(temp)) {
-                currentUser = u;
-                return true;
-            }
-        }
-        return false;
+        currentUser = new MutableLiveData<>();
+        currentMealPlan = new MutableLiveData<>();
     }
 
 
-    public User getCurrentUser() {
+    public MutableLiveData<User> getCurrentUser() {
         return currentUser;
     }
 
-    public void setCurrentUser(User currentUser) {
+    public void setCurrentUser(MutableLiveData<User> currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public MutableLiveData<MealPlan> getCurrentMealPlan() {
+        return currentMealPlan;
+    }
+
+    public void setCurrentMealPlan(MutableLiveData<MealPlan> currentMealPlan) {
+        this.currentMealPlan = currentMealPlan;
     }
 }

@@ -1,17 +1,11 @@
 package com.pvi.jd.gt.personalvirtualinventories;
 
-import android.Manifest;
 import 	android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.core.executor.testing.*;
-import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.mock.MockContext;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
@@ -23,25 +17,25 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.pvi.jd.gt.personalvirtualinventories.Model.ApiRequestQueue;
+import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlan;
+import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlanRepository;
+import com.pvi.jd.gt.personalvirtualinventories.Model.Model;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.Model.RecipeRepository;
 import com.pvi.jd.gt.personalvirtualinventories.Model.User;
 import com.pvi.jd.gt.personalvirtualinventories.Model.UserRepository;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -63,6 +57,7 @@ public class ExampleInstrumentedTest {
     private Context appContext;
     private RecipeRepository repo;
     private UserRepository uRepo;
+    private MealPlanRepository mpRepo;
     private String getrecipeAPIURl;
     private String apiKey;
     private String apiID;
@@ -73,6 +68,7 @@ public class ExampleInstrumentedTest {
         appContext = InstrumentationRegistry.getTargetContext();
         repo = RecipeRepository.getRecipeRepository();
         uRepo = UserRepository.getUserRepository();
+        mpRepo = MealPlanRepository.getMealPlanRepository();
         apiID = "111c254f";
         apiKey = "a1591ab602b6fc6d2bbffae96db922ac";
         getrecipeAPIURl = "http://api.yummly.com/v1/api/recipe/";
@@ -183,14 +179,14 @@ public class ExampleInstrumentedTest {
     @Test
     public void testGetUserRecipes() {
         try {
-            List<Recipe> x = getValue(repo.getUserRecipes(1, appContext));
+            List<String> x = getValue(repo.getUserRecipeIDs(1, appContext));
             if (x.size() > 0) {
-                assertEquals("Vegetarian-Cabbage-Soup-Recipezaar", x.get(0).getApiID());
-                assertEquals("Oriental-Inspired-Vegetable-Soup-Recipezaar", x.get(1).getApiID());
-                assertEquals("Chunky-Rice-And-Bean-Soup-Recipezaar", x.get(2).getApiID());
-                assertEquals("7-Samurai-Vegan-Soup-Recipezaar", x.get(3).getApiID());
-                assertEquals("Tomato-Lentil-Soup-Recipezaar_3", x.get(4).getApiID());
-                assertEquals("Very-Veggie-Vegetable-Soup-Recipezaar", x.get(5).getApiID());
+                assertEquals("Vegetarian-Cabbage-Soup-Recipezaar", x.get(0));
+                assertEquals("Oriental-Inspired-Vegetable-Soup-Recipezaar", x.get(1));
+                assertEquals("Chunky-Rice-And-Bean-Soup-Recipezaar", x.get(2));
+                assertEquals("7-Samurai-Vegan-Soup-Recipezaar", x.get(3));
+                assertEquals("Tomato-Lentil-Soup-Recipezaar_3", x.get(4));
+                assertEquals("Very-Veggie-Vegetable-Soup-Recipezaar", x.get(5));
             } else {
                 fail();
             }
@@ -208,15 +204,65 @@ public class ExampleInstrumentedTest {
             expected.setNumFamilyMembers(4);
             expected.setCookTime(45);
             expected.setId(1);
-            List<String> apiids = new ArrayList<>();
-            apiids.add("Vegetarian-Cabbage-Soup-Recipezaar");
-            apiids.add("Oriental-Inspired-Vegetable-Soup-Recipezaar");
-            apiids.add("Chunky-Rice-And-Bean-Soup-Recipezaar");
-            apiids.add("7-Samurai-Vegan-Soup-Recipezaar");
-            Set<Recipe> recipes = actual.getCurrMealPlan().keySet();
+            assertEquals(expected, actual);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-            recipes.forEach(recipe -> assertTrue(apiids.contains(recipe.getApiID())));
-            //assertEquals(expected, actual);
+    @Test
+    public void testGetCurrMealPlan() {
+        User user = new User("fake@fake.com", "password");
+        user.setId(1);
+        MutableLiveData<User> mpu = new MutableLiveData<>();
+        mpu.setValue(user);
+        MutableLiveData<MealPlan> ld = mpRepo.getCurrMealPlan(mpu, appContext);
+        try {
+            MealPlan actual = getValue(ld);
+
+        } catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testNewMealPlan() {
+        Model model = Model.get_instance();
+        MutableLiveData<User> mld = new MutableLiveData<>();
+        User user = new User();
+        user.setId(1);
+        mld.setValue(user);
+        model.setCurrentUser(mld);
+        List<Recipe> recipes = new ArrayList<>();
+        Recipe r = new Recipe();
+        r.setApiID("abc");
+        recipes.add(r);
+        r = new Recipe();
+        r.setApiID("def");
+        recipes.add(r);
+        mpRepo.createCurrMealPlan(recipes, appContext);
+        try {
+            final CountDownLatch latch = new CountDownLatch(1);
+            latch.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testChangeMealCompleteStatus() {
+        Model model = Model.get_instance();
+        MutableLiveData<User> mld = new MutableLiveData<>();
+        User user = new User();
+        user.setId(1);
+        mld.setValue(user);
+        model.setCurrentUser(mld);
+        Recipe recipe = new Recipe();
+        recipe.setApiID("abc");
+        mpRepo.setCompleteStatus(recipe, false, appContext);
+        try {
+            final CountDownLatch latch = new CountDownLatch(1);
+            latch.await(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -271,25 +271,27 @@ public class RecipeRepository {
         return dataList;
     }
 
-
-    public MutableLiveData<List<Recipe>> getUserRecipes(int userID, final Context currentContext) {
-        String url = "https://personalvirtualinventories.000webhostapp.com/getUserRecipes.php";
+    /**
+     * gets a list of the api IDs of recipes the user has saved (the user's "15-30")
+     * @param userID the user whose recipes to find
+     * @param currentContext current activity context
+     * @return livedata object containing a list of api ID strings
+     */
+    public MutableLiveData<List<String>> getUserRecipeIDs(int userID, final Context currentContext) {
+        String url = "https://personalvirtualinventories.000webhostapp.com/getUserRecipeIDs.php";
         Map<String, String> params = new HashMap<String, String>();
         params.put("user_id", userID + "");
-        final MutableLiveData<List<Recipe>> jsonresponse = new MutableLiveData<>();
+        final MutableLiveData<List<String>> jsonresponse = new MutableLiveData<>();
         JSONArrayRequest jsObjRequest = new JSONArrayRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                List<Recipe> recipes = new ArrayList<>();
+                List<String> ids = new ArrayList<>();
                 try {
                     //response = response.getJSONArray(0);
                     for (int i = 0; i < response.length(); i++) {
-                        Recipe curr = new Recipe();
-                        String api_id = response.getJSONObject(i).get("api_id").toString();
-                        curr.setApiID(api_id);
-                        recipes.add(curr);
+                        ids.add(response.getJSONObject(i).get("api_id").toString());
                     }
-                    jsonresponse.setValue(recipes);
+                    jsonresponse.setValue(ids);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
