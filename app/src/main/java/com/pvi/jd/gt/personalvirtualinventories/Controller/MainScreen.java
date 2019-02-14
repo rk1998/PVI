@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;

@@ -86,9 +86,10 @@ public class MealPlanCell extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.meal_plan_row, parent, false);
         }
-        NetworkImageView img = (NetworkImageView) convertView.findViewById(R.id.meal_image);
+        final NetworkImageView img = (NetworkImageView) convertView.findViewById(R.id.meal_image);
         TextView recipeTitle = (TextView) convertView.findViewById(R.id.meal_name);
-        CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.meal_checkbox);
+        recipeTitle.setSelected(true);
+        final CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.meal_checkbox);
         checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,7 +137,7 @@ public class MealPlanCell extends BaseAdapter {
 //                    }
 //                }
 //            });
-        Recipe currRecipe = (Recipe) getItem(position);
+        final Recipe currRecipe = (Recipe) getItem(position);
         recipeTitle.setText(currRecipe.getRecipeTitle());
 
         String img_resource = currRecipe.getImgURL();

@@ -35,15 +35,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/meal_image"
             tools:layout_editor_absoluteX="0dp" />
-        
+
         <TextView
             android:id="@+id/meal_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="5dp"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
             android:fontFamily="sans-serif-light"
+            android:marqueeRepeatLimit="marquee_forever"
             android:padding="5sp"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:text="Spaghetti"
             android:textColor="#000"
             android:textSize="32sp"

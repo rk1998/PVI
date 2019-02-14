@@ -64,6 +64,7 @@ public class RecipeScreen extends AppCompatActivity {
 
         //imgView.setImageResource(img_resource);
         recipeTitleView.setText(recipeTitle);
+        recipeTitleView.setSelected(true);
         recipeDetailView.setText(recipeDetails);
         recipeDetailView.setMovementMethod(new ScrollingMovementMethod());
         recipeInstructionsView.setText(recipeInstructions);
