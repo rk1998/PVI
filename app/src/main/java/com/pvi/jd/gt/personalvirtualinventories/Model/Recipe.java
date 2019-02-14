@@ -34,7 +34,7 @@ public class Recipe {
         this.ingredients = ingredients;
         apiID = "";
         recipeSource = "custom";
-        imgURL = "none";
+        imgURL = "";
     }
 
     public Recipe(String id, String title, int cook, int prep, int servings, String instructions,
@@ -62,6 +62,12 @@ public class Recipe {
         imgURL = "";
         apiID = "";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Recipe other = (Recipe) o;
+        return (this == o) || (this.getApiID().equals(other.getApiID()));
+    }
     public String getApiID() {
         return apiID;
     }
@@ -80,7 +86,7 @@ public class Recipe {
     }
 
     public String getDetails() {
-        return "Cook time: " + cookTime + "min\nPrep time: " + prepTime + "min";
+        return "Cook time: " + cookTime + " Minutes\nPrep time: " + prepTime + " Minutes";
     }
     public String getInstructions() {
         return instructions;

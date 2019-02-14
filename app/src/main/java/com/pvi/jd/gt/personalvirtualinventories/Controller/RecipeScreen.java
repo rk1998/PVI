@@ -3,12 +3,17 @@ package com.pvi.jd.gt.personalvirtualinventories.Controller;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.pvi.jd.gt.personalvirtualinventories.Model.ApiRequestQueue;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 
 import org.w3c.dom.Text;
@@ -21,26 +26,55 @@ public class RecipeScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_screen);
+
         Bundle recipeBundle = getIntent().getBundleExtra("RECIPE_BUNDLE");
         String recipeTitle = recipeBundle.getString("RECIPE_NAME");
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(recipeTitle);
+        toolbar.setNavigationIcon(getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         ArrayList<String> recipeIngredients = recipeBundle.getStringArrayList("RECIPE_INGREDIENTS");
 
-        int img_resource = recipeBundle.getInt("IMG_SOURCE");
+        String img_resource = recipeBundle.getString("IMG_SOURCE");
+
         final String recipeDetails = recipeBundle.getString("RECIPE_DETAILS");
         final String recipeInstructions = recipeBundle.getString("RECIPE_INSTRUCTIONS");
 
-        ImageView imgView = (ImageView) findViewById(R.id.recipe_img);
+        NetworkImageView imgView = (NetworkImageView) findViewById(R.id.recipe_img);
         TextView recipeTitleView = (TextView) findViewById(R.id.recipe_title);
         final TextView recipeDetailView = (TextView) findViewById(R.id.recipe_details);
         final TextView recipeIngredientsView = (TextView) findViewById(R.id.recipe_ingredients);
         final TextView recipeInstructionsView = (TextView) findViewById(R.id.recipe_instructions);
 
-        imgView.setImageResource(img_resource);
-        recipeTitleView.setText(recipeTitle);
-        recipeDetailView.setText(recipeDetails);
-        recipeInstructionsView.setText(recipeInstructions);
 
+        ImageLoader imageLoader = ApiRequestQueue.getInstance(
+                this.getApplicationContext()).getImageLoader();
+        imageLoader.get(img_resource, ImageLoader.getImageListener(imgView,
+                R.drawable.spagett, R.drawable.spagett));
+        //imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imgView.setImageUrl(img_resource, imageLoader);
+
+        //imgView.setImageResource(img_resource);
+        recipeTitleView.setText(recipeTitle);
+        recipeTitleView.setSelected(true);
+        recipeDetailView.setText(recipeDetails);
+        recipeDetailView.setMovementMethod(new ScrollingMovementMethod());
+        recipeInstructionsView.setText(recipeInstructions);
+        recipeIngredientsView.setText("");
+        for (String s : recipeIngredients) {
+            recipeIngredientsView.append("\u2022 " + s);
+            recipeIngredientsView.append(System.getProperty("line.separator"));
+        }
+
+        // tab functionality
         TabLayout tabs = (TabLayout) findViewById(R.id.tab_layout);
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

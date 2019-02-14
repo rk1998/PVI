@@ -1,8 +1,14 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.widget.BaseAdapter;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,9 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.pvi.jd.gt.personalvirtualinventories.Model.ApiRequestQueue;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 
@@ -89,14 +101,35 @@ public class MealCell extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(convertView == null) {
             gridCell = inflater.inflate(R.layout.meal_cell_layout, null);
-            final ImageButton img = (ImageButton) gridCell.findViewById(R.id.recipe_img_button);
+            final NetworkImageView img = (NetworkImageView) gridCell.findViewById(R.id.recipe_img_button);
             final TextView recipeTitle = (TextView) gridCell.findViewById(R.id.recipe_select_title);
             //recipeTitle.setText(mealNames[position]);
             recipeTitle.setText(recipeList.get(position).getRecipeTitle());
             final FloatingActionButton addButton = (FloatingActionButton) gridCell.findViewById(R.id.fab);
 
             //Todo: get image from url contained in Recipe object and set it
-            img.setImageResource(this.mealPicId[position]);
+
+            String imgUrl = recipeList.get(position).getImgURL();
+            if(imgUrl.isEmpty()) {
+                img.setImageResource(this.mealPicId[position]);
+            } else {
+                ImageLoader imageLoader = ApiRequestQueue.getInstance(
+                        this.mContext.getApplicationContext()).getImageLoader();
+                imageLoader.get(imgUrl, ImageLoader.getImageListener(img,
+                        R.drawable.spagett, R.drawable.spagett));
+                img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                img.setImageUrl(imgUrl, imageLoader);
+//                MutableLiveData<Bitmap> imageLiveData = getRecipeImage(recipeList.get(position).getImgURL());
+//                imageLiveData.observeForever(new Observer<Bitmap>() {
+//                    @Override
+//                    public void onChanged(@Nullable Bitmap bitmap) {
+//                        img.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//
+//                        img.setAdjustViewBounds(true);
+//                        img.setImageBitmap(bitmap);
+//                    }
+//                });
+            }
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -119,7 +152,7 @@ public class MealCell extends BaseAdapter {
                             RecipeScreen.class);
                     Bundle recipeBundle = new Bundle();
 
-                    recipeBundle.putInt("IMG_SOURCE", mealPicId[position]);
+                    recipeBundle.putString("IMG_SOURCE", recipeList.get(position).getImgURL());
                     recipeBundle.putString("RECIPE_NAME", recipeList.get(position).getRecipeTitle());
                     recipeBundle.putString("RECIPE_DETAILS", recipeList.get(position).getDetails());
                     recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", recipeList.get(position).getIngredients());
@@ -147,6 +180,37 @@ public class MealCell extends BaseAdapter {
             }
         }
         return selectedMeals;
+    }
+
+    public MutableLiveData<Bitmap> getRecipeImage(String imgURL) {
+        //Todo move image loading calls to UI controllers.
+        final MutableLiveData<Bitmap> imageData = new MutableLiveData<>();
+        ImageLoader loader = ApiRequestQueue.getInstance(this.mContext.getApplicationContext()).getImageLoader();
+        loader.get(imgURL, new ImageLoader.ImageListener() { // this throws illegal state exception
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                Bitmap image = response.getBitmap();
+                imageData.setValue(image);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.spagett);
+                imageData.setValue(image);
+
+            }
+        });
+
+        return imageData;
+    }
+
+    public static int calculateBitMapScale(int reqWidth, int reqHeight, int width, int height) {
+        int scale = 1;
+        int heightRatio = Math.round((float) height / (float) reqHeight);
+        int widthRatio = Math.round((float) width / (float) reqWidth);
+        scale = heightRatio < widthRatio ? heightRatio : widthRatio;
+        return scale;
+
     }
 }
 

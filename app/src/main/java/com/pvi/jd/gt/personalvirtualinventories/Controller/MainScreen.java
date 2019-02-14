@@ -1,5 +1,6 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -18,12 +19,14 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,10 +41,14 @@ public class MainScreen extends AppCompatActivity
     private MealPlanViewModel viewModel;
 
     private void createDummyRecipes() {
-        Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<String>());
-        Recipe pizza = new Recipe("Pizza", 20, 40, "Make pizza", new ArrayList<String>());
-        Recipe tacos = new Recipe("Tacos", 10, 20, "TACO NIGHT", new ArrayList<String>());
-        Recipe chickenSalad = new Recipe("Chicken Salad", 5, 20, "Put the salad together", new ArrayList<String>());
+        Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<>(Arrays.asList(ingredients[0].split(", "))));
+        spaghetti.setImgURL("http://i2.yummly.com/Hot-Turkey-Salad-Sandwiches-Allrecipes.l.png");
+        Recipe pizza = new Recipe("Pizza", 20, 40, "Make pizza", new ArrayList<>(Arrays.asList(ingredients[1].split(", "))));
+        pizza.setImgURL("https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg");
+        Recipe tacos = new Recipe("Tacos", 10, 20, "TACO NIGHT", new ArrayList<>(Arrays.asList(ingredients[2].split(", "))));
+        tacos.setImgURL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwwwDZTip_gvqPmL75Wt1yasSnozKSRNBDyJAm5OgZvNl8tN7W");
+        Recipe chickenSalad = new Recipe("Chicken Salad", 5, 20, "Put the salad together", new ArrayList<>(Arrays.asList(ingredients[3].split(", "))));
+        chickenSalad.setImgURL("https://www.tasteofhome.com/wp-content/uploads/2017/10/Berry-Chicken-Salad_exps47579_CW143042B02_27_1b_RMS-696x696.jpg");
         dummyRecipes.add(spaghetti);
         dummyRecipes.add(pizza);
         dummyRecipes.add(tacos);
@@ -79,22 +86,23 @@ public class MainScreen extends AppCompatActivity
             viewModel = ViewModelProviders.of(this).get(MealPlanViewModel.class);
             Bundle selectionBundle = getIntent().getBundleExtra("ID_BUNDLE");
             List<String> selectedIDs = selectionBundle.getStringArrayList("SELECTED_IDS");
-            //viewModel.init(selectedIDs, this);
+            viewModel.init(selectedIDs, this);
 
-            final ListView mealPlanList = new ListView(this);
-            final ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
-            createDummyRecipes();
-
-            mealPlanList.setAdapter(new MealPlanCell(this, dummyRecipes));
+            ListView mealPlanList = new ListView(this);
+            ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
+            final MealPlanCell adapter = new MealPlanCell(this, new LinkedList<Recipe>());
+            mealPlanList.setAdapter(adapter);
             layout.addView(mealPlanList);
 
-//            viewModel.getMealPlanRecipes().observe(this, new Observer<List<Recipe>>() {
-//                @Override
-//                public void onChanged(@Nullable List<Recipe> recipes) {
-//                    mealPlanList.setAdapter(new MealPlanCell(MainScreen.this, recipes));
-//                    layout.addView(mealPlanList);
-//                }
-//            });
+            List<MutableLiveData<Recipe>> recipeLiveDataList = viewModel.getMealPlanRecipes();
+            for(MutableLiveData<Recipe> rep : recipeLiveDataList) {
+                rep.observe(this, new Observer<Recipe>() {
+                    @Override
+                    public void onChanged(@Nullable Recipe recipe) {
+                        adapter.addNewRecipe(recipe);
+                    }
+                });
+            }
 
         } else {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);

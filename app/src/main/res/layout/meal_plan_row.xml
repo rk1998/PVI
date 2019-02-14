@@ -10,17 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/meal_image"
             android:layout_width="420dp"
             android:layout_height="217dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="1dp"
             android:layout_marginEnd="1dp"
-            android:layout_marginBottom="1dp"
+            android:layout_marginStart="1dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:alpha="0.9"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.333"
@@ -29,17 +26,32 @@
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/spagett" />
 
+        <ImageView
+            android:id="@+id/recipe_title_rectangle"
+            android:layout_width="420dp"
+            android:layout_height="62dp"
+            android:src="@drawable/black_rectangle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/meal_image"
+            tools:layout_editor_absoluteX="0dp" />
+
         <TextView
             android:id="@+id/meal_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="5dp"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
             android:fontFamily="sans-serif-light"
+            android:marqueeRepeatLimit="marquee_forever"
             android:padding="5sp"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:text="Spaghetti"
             android:textColor="#000"
-            android:textSize="40sp"
+            android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="@+id/meal_image"
             app:layout_constraintEnd_toStartOf="@+id/meal_checkbox"
             app:layout_constraintHorizontal_bias="0.042"
@@ -57,11 +69,12 @@
             android:padding="5sp"
             android:scaleX="2"
             android:scaleY="2"
-            android:textSize="40sp"
+            android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
+
 
     </android.support.constraint.ConstraintLayout>
 

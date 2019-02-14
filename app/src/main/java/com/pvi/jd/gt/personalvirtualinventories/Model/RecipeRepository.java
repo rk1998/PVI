@@ -33,6 +33,7 @@ public class RecipeRepository {
     private String apiID;
     private String apiKey;
     private String getrecipeAPIURl;
+    private String searchrecipeAPIURL;
     private Map<String, Recipe> storedRecipes;
     private LinkedList<String> tempRecipeId;
     private LinkedList<String> mealPlanRecipesIDs;
@@ -40,6 +41,7 @@ public class RecipeRepository {
         apiID = "111c254f";
         apiKey = "a1591ab602b6fc6d2bbffae96db922ac";
         getrecipeAPIURl = "http://api.yummly.com/v1/api/recipe/";
+        searchrecipeAPIURL = "http://api.yummly.com/v1/api/recipes?";
         storedRecipes = new HashMap<>();
         tempRecipeId = new LinkedList<>();
         mealPlanRecipesIDs = new LinkedList<>();
@@ -47,7 +49,7 @@ public class RecipeRepository {
         tempRecipeId.add("Chunky-Rice-And-Bean-Soup-Recipezaar");
         tempRecipeId.add("7-Samurai-Vegan-Soup-Recipezaar");
         tempRecipeId.add("Cabbage-And-Tofu-Soup-Recipezaar");
-        tempRecipeId.add("Falafel-Sandwich-Recipezaar");
+
     }
 
 
@@ -84,7 +86,7 @@ public class RecipeRepository {
 
                     //extract ingredient list
                     try {
-                        JSONArray jsonIngredients = response.getJSONArray("ingredients");
+                        JSONArray jsonIngredients = response.getJSONArray("ingredientLines");
                         ArrayList<String> ingredientList = new ArrayList<>();
                         for(int i = 0; i < jsonIngredients.length(); i++) {
                             String ingredientLine = jsonIngredients.getString(i);
@@ -103,11 +105,11 @@ public class RecipeRepository {
                             JSONArray imgArr = response.getJSONArray("images");
                             JSONObject images = imgArr.getJSONObject(0);
 
-                            if(images.has("hostedSmallUrl")) {
-                                String smallImgURL = images.getString("hostedSmallUrl");
+                            if(images.has("hostedLargeUrl")) {
+                                String smallImgURL = images.getString("hostedLargeUrl");
                                 requestedRecipe.setImgURL(smallImgURL);
-                            } else if(images.has("hostedLargeUrl")) {
-                                String largeImgURL = images.getString("hostedLargeUrl");
+                            } else if(images.has("hostedSmallUrl")) {
+                                String largeImgURL = images.getString("hostedSmallUrl");
                                 requestedRecipe.setImgURL(largeImgURL);
                             }
 
@@ -164,16 +166,19 @@ public class RecipeRepository {
      * Gets a list of full recipes from a list of ids. (Used for the MealPlanView screen)
      * @param recipeIDs List of recipe Ids to search
      * @param currentContext current activity context
-     * @return LiveData object containing a list of recipes.
+     * @return List of live data objects
      */
-    public MutableLiveData<List<Recipe>> getRecipes(List<String> recipeIDs, final Context currentContext) {
-        final MutableLiveData<List<Recipe>> dataList = new MutableLiveData<>();
-        final List<Recipe> recipes = new LinkedList<>();
+    public List<MutableLiveData<Recipe>> getRecipes(List<String> recipeIDs, final Context currentContext) {
+        //final MutableLiveData<List<Recipe>> dataList = new MutableLiveData<>();
+        final LinkedList<MutableLiveData<Recipe>> dataList = new LinkedList<>();
         for(int i = 0; i < recipeIDs.size(); i++) {
-
             if(storedRecipes.containsKey(recipeIDs.get(i))) {
-                recipes.add(storedRecipes.get(i));
+                final MutableLiveData<Recipe> data = new MutableLiveData<>();
+                Recipe rep = storedRecipes.get(recipeIDs.get(i));
+                data.setValue(rep);
+                dataList.add(data);
             } else {
+                final MutableLiveData<Recipe> data = new MutableLiveData<>();
                 final String currentID = recipeIDs.get(i);
                 String requestURL = getrecipeAPIURl + currentID + "?" + "_app_id="
                         + apiID + "&_app_key=" + apiKey;
@@ -182,6 +187,7 @@ public class RecipeRepository {
                     @Override
                     public void onResponse(JSONObject response) {
                         Recipe requestedRecipe = new Recipe();
+                        requestedRecipe.setApiID(currentID);
                         try {
                             String recipeTitle = response.getString("name");
                             requestedRecipe.setRecipeTitle(recipeTitle);
@@ -191,7 +197,7 @@ public class RecipeRepository {
 
                         //extract ingredient list
                         try {
-                            JSONArray jsonIngredients = response.getJSONArray("ingredients");
+                            JSONArray jsonIngredients = response.getJSONArray("ingredientLines");
                             ArrayList<String> ingredientList = new ArrayList<>();
                             for(int i = 0; i < jsonIngredients.length(); i++) {
                                 String ingredientLine = jsonIngredients.getString(i);
@@ -210,12 +216,15 @@ public class RecipeRepository {
                                 JSONArray imgArr = response.getJSONArray("images");
                                 JSONObject images = imgArr.getJSONObject(0);
 
-                                if(images.has("hostedSmallUrl")) {
-                                    String smallImgURL = images.getString("hostedSmallUrl");
+                                if(images.has("hostedLargeUrl")) {
+                                    String smallImgURL = images.getString("hostedLargeUrl");
                                     requestedRecipe.setImgURL(smallImgURL);
-                                } else if(images.has("hostedLargeUrl")) {
-                                    String largeImgURL = images.getString("hostedLargeUrl");
+                                } else if(images.has("hostedSmallUrl")) {
+                                    String largeImgURL = images.getString("hostedSmallUrl");
                                     requestedRecipe.setImgURL(largeImgURL);
+                                } else {
+                                    String mediumImgURl = images.getString("hostedMediumUrl");
+                                    requestedRecipe.setImgURL(mediumImgURl);
                                 }
 
                             } catch(JSONException e) {
@@ -252,8 +261,10 @@ public class RecipeRepository {
                         }
 
                         storedRecipes.put(currentID, requestedRecipe);
-                        recipes.add(requestedRecipe);
-                        //data.setValue(requestedRecipe);
+                        data.setValue(requestedRecipe);
+                        //recipes.add(requestedRecipe);
+                        //LinkedList<Recipe> recipesCopy = new LinkedList<>(recipes);
+                        //dataList.setValue(recipesCopy);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -264,10 +275,59 @@ public class RecipeRepository {
                 });
                 ApiRequestQueue.getInstance(currentContext.getApplicationContext())
                         .addToRequestQueue(getRecipeRequest);
+                dataList.add(data);
             }
 
         }
-        dataList.setValue(recipes);
+        //dataList.setValue(recipes);
+        return dataList;
+    }
+
+    /**
+     * Method that makes a search recipe request to Yummly
+     * @param currentContext activity context
+     * @return LiveData object containing list of recipe Ids.
+     */
+    public MutableLiveData<List<String>> searchRecipes(final Context currentContext) {
+        final MutableLiveData<List<String>> dataList = new MutableLiveData<>();
+        String requestURL = searchrecipeAPIURL + "_app_id="
+            + apiID + "&_app_key=" + apiKey +"&requirePictures=true"
+                + "&excludedIngredient[]=peanuts&excludedIngredient[]=alcohol"
+                + "&allowedDiet[]=388^Lacto+vegetarian"
+                + "&maxTotalTimeInSeconds=1900" + "&maxResult=10&start=10";
+        JsonObjectRequest searchRecipeRequest = new JsonObjectRequest(Request.Method.GET,
+                requestURL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                List<String> recipeIds = new LinkedList<>();
+                try {
+                    JSONArray matches = response.getJSONArray("matches");
+                    for(int i = 0; i < matches.length(); i++) {
+                        JSONObject obj = matches.getJSONObject(i);
+                        try {
+                            String recipeId = obj.getString("id");
+                            recipeIds.add(recipeId);
+                        } catch(JSONException e) {
+                            recipeIds.add("none");
+                        }
+                    }
+                } catch(JSONException e) {
+                    recipeIds.add("Cabbage-And-Tofu-Soup-Recipezaar");
+                }
+                dataList.setValue(recipeIds);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                List<String> recipeErrorList = new LinkedList<>();
+                recipeErrorList.addAll(tempRecipeId);
+                dataList.setValue(recipeErrorList);
+
+            }
+        });
+        ApiRequestQueue.getInstance(currentContext.getApplicationContext())
+                .addToRequestQueue(searchRecipeRequest);
         return dataList;
     }
 
