@@ -30,7 +30,7 @@ public class MealSelectionViewModel extends ViewModel {
         int uid = 1;
         List<String> apiIDS = recipeRepo.getUserRecipeIDs(uid, currContext).getValue();
         //todo: getrecipes is throwing nullpointerexception bc apiids is null
-        this.userRecipes = recipeRepo.getRecipes(apiIDS, currContext);
+       // this.userRecipes = recipeRepo.getRecipes(apiIDS, currContext);
     }
 
     public LiveData<List<Recipe>> getUserRecipes() {
