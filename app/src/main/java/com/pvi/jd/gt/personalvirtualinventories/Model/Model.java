@@ -5,8 +5,10 @@ import android.arch.lifecycle.MutableLiveData;
 import com.pvi.jd.gt.personalvirtualinventories.Model.User;
 
 import java.net.MalformedURLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Model {
     private static final Model _instance = new Model();
@@ -16,10 +18,12 @@ public class Model {
 
     private MutableLiveData<User> currentUser;
     private MutableLiveData<MealPlan> currentMealPlan;
+    private Map<String, Recipe> storedRecipes;
 
     private Model() {
         currentUser = new MutableLiveData<>();
         currentMealPlan = new MutableLiveData<>();
+        storedRecipes = new HashMap<>();
     }
 
 
@@ -37,5 +41,9 @@ public class Model {
 
     public void setCurrentMealPlan(MutableLiveData<MealPlan> currentMealPlan) {
         this.currentMealPlan = currentMealPlan;
+    }
+
+    public Map<String, Recipe> getStoredRecipes() {
+        return storedRecipes;
     }
 }

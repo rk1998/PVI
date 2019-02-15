@@ -34,6 +34,7 @@ public class RecipeRepository {
     private String apiKey;
     private String getrecipeAPIURl;
     private String searchrecipeAPIURL;
+    private final Model model = Model.get_instance();
     private Map<String, Recipe> storedRecipes;
     private LinkedList<String> tempRecipeId;
     private LinkedList<String> mealPlanRecipesIDs;
@@ -61,9 +62,9 @@ public class RecipeRepository {
      */
     public MutableLiveData<Recipe> getRecipe(final String recipeID, final Context currentContext) {
         //final Recipe requestedRecipe = new Recipe();
-        if(storedRecipes.containsKey(recipeID)) {
+        if(model.getStoredRecipes().containsKey(recipeID)) {
             final MutableLiveData<Recipe> data = new MutableLiveData<>();
-            data.setValue(storedRecipes.get(recipeID));
+            data.setValue(model.getStoredRecipes().get(recipeID));
             return data;
         } else {
             final MutableLiveData<Recipe> data = new MutableLiveData<>();
@@ -146,7 +147,7 @@ public class RecipeRepository {
                         requestedRecipe.setRecipeSource("");
                     }
 
-                    storedRecipes.put(recipeID, requestedRecipe);
+                    model.getStoredRecipes().put(recipeID, requestedRecipe);
                     data.setValue(requestedRecipe);
                 }
             }, new Response.ErrorListener() {
@@ -172,9 +173,9 @@ public class RecipeRepository {
         //final MutableLiveData<List<Recipe>> dataList = new MutableLiveData<>();
         final LinkedList<MutableLiveData<Recipe>> dataList = new LinkedList<>();
         for(int i = 0; i < recipeIDs.size(); i++) {
-            if(storedRecipes.containsKey(recipeIDs.get(i))) {
+            if(model.getStoredRecipes().containsKey(recipeIDs.get(i))) {
                 final MutableLiveData<Recipe> data = new MutableLiveData<>();
-                Recipe rep = storedRecipes.get(recipeIDs.get(i));
+                Recipe rep = model.getStoredRecipes().get(recipeIDs.get(i));
                 data.setValue(rep);
                 dataList.add(data);
             } else {
@@ -260,7 +261,7 @@ public class RecipeRepository {
                             requestedRecipe.setRecipeSource("");
                         }
 
-                        storedRecipes.put(currentID, requestedRecipe);
+                        model.getStoredRecipes().put(currentID, requestedRecipe);
                         data.setValue(requestedRecipe);
                         //recipes.add(requestedRecipe);
                         //LinkedList<Recipe> recipesCopy = new LinkedList<>(recipes);
@@ -381,32 +382,5 @@ public class RecipeRepository {
         mealPlanRecipesIDs.clear();
     }
 
-    // with volley you can only use imageLoader.get in main UI thread
-//    /**
-//     * Gets an image of a recipe given the image source url
-//     * @param imgURL Source of the image
-//     * @param currentContext current activity context
-//     * @return LiveData object containing the recipe image
-//     */
-//    public LiveData<Bitmap> getRecipeImage(String imgURL, final Context currentContext) {
-//        //Todo move image loading calls to UI controllers.
-//        final MutableLiveData<Bitmap> imageData = new MutableLiveData<>();
-//        ImageLoader loader = ApiRequestQueue.getInstance(currentContext.getApplicationContext()).getImageLoader();
-//
-//        loader.get(imgURL, new ImageLoader.ImageListener() { // this throws illegal state exception
-//            @Override
-//            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-//                Bitmap image = response.getBitmap();
-//                imageData.setValue(image);
-//            }
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(currentContext, "Can't get Recipe Image", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        return imageData;
-//    }
 
 }

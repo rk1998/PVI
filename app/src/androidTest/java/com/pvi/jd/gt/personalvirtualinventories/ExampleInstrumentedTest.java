@@ -88,7 +88,7 @@ public class ExampleInstrumentedTest {
             }
         };
         liveData.observeForever(observer);
-        latch.await(20, TimeUnit.SECONDS);
+        latch.await(30, TimeUnit.SECONDS);
         return (T) data[0];
     }
 

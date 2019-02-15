@@ -74,20 +74,24 @@ public class MealCell extends BaseAdapter {
         mealNames = new String[0];
         mealIngredients = new String[0];
         this.selectionMap = new HashMap<>();
-        for(int i = 0; i < recipeList.size(); i++) {
-            this.selectionMap.put(recipeList.get(i), false);
-        }
+//        for(int i = 0; i < recipeList.size(); i++) {
+//            this.selectionMap.put(recipeList.get(i), false);
+//        }
 
     }
 
     @Override
     public int getCount() {
-        return this.mealPicId.length;
+        return this.recipeList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        if(recipeList != null && !recipeList.isEmpty() && position < recipeList.size()) {
+            return recipeList.get(position);
+        } else {
+            return  null;
+        }
     }
 
     @Override
@@ -97,28 +101,31 @@ public class MealCell extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View gridCell;
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //View gridCell;
         if(convertView == null) {
-            gridCell = inflater.inflate(R.layout.meal_cell_layout, null);
-            final NetworkImageView img = (NetworkImageView) gridCell.findViewById(R.id.recipe_img_button);
-            final TextView recipeTitle = (TextView) gridCell.findViewById(R.id.recipe_select_title);
-            //recipeTitle.setText(mealNames[position]);
-            recipeTitle.setText(recipeList.get(position).getRecipeTitle());
-            final FloatingActionButton addButton = (FloatingActionButton) gridCell.findViewById(R.id.fab);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.meal_cell_layout, parent, false);
+        }
+        final NetworkImageView img = (NetworkImageView) convertView.findViewById(R.id.recipe_img_button);
+        final TextView recipeTitle = (TextView) convertView.findViewById(R.id.recipe_select_title);
+        recipeTitle.setSelected(true);
+        //recipeTitle.setText(mealNames[position]);
+        final Recipe recipe = (Recipe) getItem(position);
+        recipeTitle.setText(recipe.getRecipeTitle());
+        final FloatingActionButton addButton = (FloatingActionButton) convertView.findViewById(R.id.fab);
 
-            //Todo: get image from url contained in Recipe object and set it
+        //Todo: get image from url contained in Recipe object and set it
 
-            String imgUrl = recipeList.get(position).getImgURL();
-            if(imgUrl.isEmpty()) {
-                img.setImageResource(this.mealPicId[position]);
-            } else {
-                ImageLoader imageLoader = ApiRequestQueue.getInstance(
-                        this.mContext.getApplicationContext()).getImageLoader();
-                imageLoader.get(imgUrl, ImageLoader.getImageListener(img,
-                        R.drawable.spagett, R.drawable.spagett));
-                img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                img.setImageUrl(imgUrl, imageLoader);
+        String imgUrl = recipe.getImgURL();
+        if(imgUrl.isEmpty()) {
+            img.setImageResource(R.drawable.spagett);
+        } else {
+            ImageLoader imageLoader = ApiRequestQueue.getInstance(
+                    this.mContext.getApplicationContext()).getImageLoader();
+            imageLoader.get(imgUrl, ImageLoader.getImageListener(img,
+                    R.drawable.spagett, R.drawable.spagett));
+            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            img.setImageUrl(imgUrl, imageLoader);
 //                MutableLiveData<Bitmap> imageLiveData = getRecipeImage(recipeList.get(position).getImgURL());
 //                imageLiveData.observeForever(new Observer<Bitmap>() {
 //                    @Override
@@ -129,44 +136,43 @@ public class MealCell extends BaseAdapter {
 //                        img.setImageBitmap(bitmap);
 //                    }
 //                });
-            }
-            addButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    addButton.setSelected(!addButton.isSelected());
-                    if(addButton.isSelected()) {
-                        addButton.setImageResource(R.drawable.checkbtn);
-                    } else {
-                        addButton.setImageResource(R.drawable.addbtn);;
-                    }
-                    //Toast.makeText(mContext, "Pizza Pizza", Toast.LENGTH_SHORT).show();
-                }
-            });
-            if(addButton.isSelected()) {
-                selectionMap.put(recipeList.get(position), true);
-            }
-            img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent newIntent = new Intent(mContext,
-                            RecipeScreen.class);
-                    Bundle recipeBundle = new Bundle();
-
-                    recipeBundle.putString("IMG_SOURCE", recipeList.get(position).getImgURL());
-                    recipeBundle.putString("RECIPE_NAME", recipeList.get(position).getRecipeTitle());
-                    recipeBundle.putString("RECIPE_DETAILS", recipeList.get(position).getDetails());
-                    recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", recipeList.get(position).getIngredients());
-                    recipeBundle.putString("RECIPE_INSTRUCTIONS", recipeList.get(position).getInstructions());
-                    newIntent.putExtra("RECIPE_BUNDLE", recipeBundle);
-
-                    mContext.startActivity(newIntent);
-                }
-            });
-
-            return gridCell;
-        } else {
-            return convertView;
         }
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addButton.setSelected(!addButton.isSelected());
+                if(addButton.isSelected()) {
+                    addButton.setImageResource(R.drawable.checkbtn);
+                    selectionMap.put(recipe, new Boolean(true ));
+                } else {
+                    addButton.setImageResource(R.drawable.addbtn);
+                    selectionMap.put(recipe, new Boolean(false));
+
+                }
+                //Toast.makeText(mContext, "Pizza Pizza", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newIntent = new Intent(mContext,
+                        RecipeScreen.class);
+                Bundle recipeBundle = new Bundle();
+
+                recipeBundle.putString("IMG_SOURCE", recipe.getImgURL());
+                recipeBundle.putString("RECIPE_NAME", recipe.getRecipeTitle());
+                recipeBundle.putString("RECIPE_DETAILS", recipe.getDetails());
+                recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", recipe.getIngredients());
+                recipeBundle.putString("RECIPE_INSTRUCTIONS", recipe.getInstructions());
+                newIntent.putExtra("RECIPE_BUNDLE", recipeBundle);
+
+                mContext.startActivity(newIntent);
+            }
+        });
+
+        return convertView;
+
     }
 
     /**
@@ -175,42 +181,54 @@ public class MealCell extends BaseAdapter {
     public ArrayList<String> getSelectedMeals() {
         ArrayList<String> selectedMeals = new ArrayList<>();
         for(int i = 0; i < recipeList.size(); i++) {
-            if(selectionMap.get(recipeList.get(i))) {
+            if(selectionMap.containsKey(recipeList.get(i))
+                    && selectionMap.get(recipeList.get(i)).booleanValue()) {
                 selectedMeals.add(recipeList.get(i).getApiID());
             }
         }
         return selectedMeals;
     }
 
-    public MutableLiveData<Bitmap> getRecipeImage(String imgURL) {
-        //Todo move image loading calls to UI controllers.
-        final MutableLiveData<Bitmap> imageData = new MutableLiveData<>();
-        ImageLoader loader = ApiRequestQueue.getInstance(this.mContext.getApplicationContext()).getImageLoader();
-        loader.get(imgURL, new ImageLoader.ImageListener() { // this throws illegal state exception
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                Bitmap image = response.getBitmap();
-                imageData.setValue(image);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.spagett);
-                imageData.setValue(image);
-
-            }
-        });
-
-        return imageData;
+    /**
+     * Sets recipe list of the MealPlanCell adapter
+     * @param newRecipe list of recipes in the meal plan
+     */
+    public void addNewRecipe(Recipe newRecipe) {
+        if(!recipeList.contains(newRecipe)) {
+            recipeList.add(newRecipe);
+        }
+        notifyDataSetChanged();
     }
 
-    public static int calculateBitMapScale(int reqWidth, int reqHeight, int width, int height) {
-        int scale = 1;
-        int heightRatio = Math.round((float) height / (float) reqHeight);
-        int widthRatio = Math.round((float) width / (float) reqWidth);
-        scale = heightRatio < widthRatio ? heightRatio : widthRatio;
-        return scale;
+//    public MutableLiveData<Bitmap> getRecipeImage(String imgURL) {
+//        //Todo move image loading calls to UI controllers.
+//        final MutableLiveData<Bitmap> imageData = new MutableLiveData<>();
+//        ImageLoader loader = ApiRequestQueue.getInstance(this.mContext.getApplicationContext()).getImageLoader();
+//        loader.get(imgURL, new ImageLoader.ImageListener() { // this throws illegal state exception
+//            @Override
+//            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+//                Bitmap image = response.getBitmap();
+//                imageData.setValue(image);
+//            }
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.spagett);
+//                imageData.setValue(image);
+//
+//            }
+//        });
+//
+//        return imageData;
+//    }
 
-    }
+//    public static int calculateBitMapScale(int reqWidth, int reqHeight, int width, int height) {
+//        int scale = 1;
+//        int heightRatio = Math.round((float) height / (float) reqHeight);
+//        int widthRatio = Math.round((float) width / (float) reqWidth);
+//        scale = heightRatio < widthRatio ? heightRatio : widthRatio;
+//        return scale;
+//
+//    }
 }
 

@@ -7,9 +7,11 @@ import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealSelectionViewMode
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -74,15 +76,47 @@ public class MealSelection extends AppCompatActivity {
             }
         });
         createDummyRecipes();
-        final GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
+        GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
 
         //Todo: get list of recipes from MealSelectionViewModel
-        //viewModel = ViewModelProviders.of(this).get(MealSelectionViewModel.class);
-        //viewModel.init(this.getApplicationContext());
-        //LiveData<List<Recipe>> userRecipes = viewModel.getUserRecipes();
+        viewModel = ViewModelProviders.of(this).get(MealSelectionViewModel.class);
+        viewModel.init(this.getApplicationContext());
 
-        final MealCell selectionAdapter = new MealCell(this, dummyRecipes);
+        //MutableLiveData<List<String>> apiIDS = viewModel.getApiIDS();
+        final MealCell selectionAdapter = new MealCell(MealSelection.this, new LinkedList<Recipe>());
         mealSelectionGrid.setAdapter(selectionAdapter);
+        List<MutableLiveData<Recipe>> recipeDataList = viewModel.getUserRecipes(tempRecipeId, this);
+        for(MutableLiveData<Recipe> data : recipeDataList) {
+            data.observe(this, new Observer<Recipe>() {
+                @Override
+                public void onChanged(@Nullable Recipe recipe) {
+                    selectionAdapter.addNewRecipe(recipe);
+                }
+            });
+        }
+//        apiIDS.observe(this, new Observer<List<String>>() {
+//            @Override
+//            public void onChanged(@Nullable List<String> strings) {
+//                List<MutableLiveData<Recipe>> recipeDataList = viewModel.getUserRecipes(strings,
+//                        MealSelection.this);
+//                mealSelectionGrid.setAdapter(selectionAdapter);
+//
+//                for(MutableLiveData<Recipe> liveData : recipeDataList) {
+//                    liveData.observe(MealSelection.this, new Observer<Recipe>() {
+//                        @Override
+//                        public void onChanged(@Nullable Recipe recipe) {
+//                            selectionAdapter.addNewRecipe(recipe);
+//                        }
+//                    });
+//                }
+//            }
+//        });
+
+
+        //List<MutableLiveData<Recipe>> userRecipes = viewModel.getUserRecipes();
+
+
+
         Button doneButton = (Button) findViewById(R.id.confirm_meal_selection);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +127,7 @@ public class MealSelection extends AppCompatActivity {
                 newIntent.putExtra("MEAL_PLAN_CREATED", true);
 
                 Bundle bundle = new Bundle();
-                bundle.putStringArrayList("SELECTED_IDS", tempRecipeId);
+                bundle.putStringArrayList("SELECTED_IDS", selectedRecipes);
 
                 newIntent.putExtra("ID_BUNDLE", bundle);
                 startActivity(newIntent);
