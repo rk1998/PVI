@@ -28,22 +28,21 @@ public class MealSelectionViewModel extends ViewModel {
     private MealPlanRepository mpRepo = MealPlanRepository.getMealPlanRepository();
     private RecipeRepository recipeRepo = RecipeRepository.getRecipeRepository();
     private LiveData<List<Recipe>> userRecipes;
-    //private MutableLiveData<List<Recipe>> userRecipes;
     private MutableLiveData<List<String>> apiIDS;
     public void init(Context currContext) {
         this.currUser = userRepo.getCurrUser();
         //int uid = this.currUser.getValue().getId();
         int uid = 1;
-        //List<String> apiIDS = recipeRepo.getUserRecipeIDs(uid, currContext).getValue();
         /*todo: with livedata you have to use observe method to get the actual data. not sure how this will work in view model*/
         apiIDS = recipeRepo.getUserRecipeIDs(uid, currContext);
-        //todo: getrecipes is throwing nullpointerexception bc apiids is null
-       //this.userRecipes = recipeRepo.getRecipes(ids, currContext);
+        userRecipes = Transformations.switchMap(apiIDS, apiIDS-> {
+            LiveData<List<Recipe>> data = recipeRepo.getRecipesFromList(apiIDS, currContext);
+            return data;
+        });
+
     }
 
-    public LiveData<List<Recipe>>  getUserRecipes(List<String> recipeIDS, Context currContext) {
-        //List<MutableLiveData<Recipe>> uRecipes = recipeRepo.getRecipes(recipeIDS, currContext);
-        this.userRecipes = recipeRepo.getRecipesFromList(recipeIDS, currContext);
+    public LiveData<List<Recipe>>  getUserRecipes() {
         return this.userRecipes;
     }
 

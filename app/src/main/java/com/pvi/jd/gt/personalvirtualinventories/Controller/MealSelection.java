@@ -81,12 +81,12 @@ public class MealSelection extends AppCompatActivity {
 
         //Todo: get list of recipes from MealSelectionViewModel
         viewModel = ViewModelProviders.of(this).get(MealSelectionViewModel.class);
-        viewModel.init(this.getApplicationContext());
+        viewModel.init(this);
 
         //MutableLiveData<List<String>> apiIDS = viewModel.getApiIDS();
         //final MealCell selectionAdapter = new MealCell(MealSelection.this, new LinkedList<Recipe>());
         //mealSelectionGrid.setAdapter(selectionAdapter);
-        LiveData<List<Recipe>> recipeDataList = viewModel.getUserRecipes(tempRecipeId, this);
+        LiveData<List<Recipe>> recipeDataList = viewModel.getUserRecipes();
         recipeDataList.observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
