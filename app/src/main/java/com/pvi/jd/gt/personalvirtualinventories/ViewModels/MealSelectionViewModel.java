@@ -1,8 +1,10 @@
 package com.pvi.jd.gt.personalvirtualinventories.ViewModels;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -25,8 +27,8 @@ public class MealSelectionViewModel extends ViewModel {
     private UserRepository userRepo = UserRepository.getUserRepository();
     private MealPlanRepository mpRepo = MealPlanRepository.getMealPlanRepository();
     private RecipeRepository recipeRepo = RecipeRepository.getRecipeRepository();
-    //private LiveData<List<Recipe>> userRecipes;
-    private List<MutableLiveData<Recipe>> userRecipes;
+    private LiveData<List<Recipe>> userRecipes;
+    //private MutableLiveData<List<Recipe>> userRecipes;
     private MutableLiveData<List<String>> apiIDS;
     public void init(Context currContext) {
         this.currUser = userRepo.getCurrUser();
@@ -39,9 +41,10 @@ public class MealSelectionViewModel extends ViewModel {
        //this.userRecipes = recipeRepo.getRecipes(ids, currContext);
     }
 
-    public List<MutableLiveData<Recipe>>  getUserRecipes(List<String> recipeIDS, Context currContext) {
-        List<MutableLiveData<Recipe>> uRecipes = recipeRepo.getRecipes(recipeIDS, currContext);
-        return uRecipes;
+    public LiveData<List<Recipe>>  getUserRecipes(List<String> recipeIDS, Context currContext) {
+        //List<MutableLiveData<Recipe>> uRecipes = recipeRepo.getRecipes(recipeIDS, currContext);
+        this.userRecipes = recipeRepo.getRecipesFromList(recipeIDS, currContext);
+        return this.userRecipes;
     }
 
     public MutableLiveData<List<String>> getApiIDS() {

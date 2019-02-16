@@ -90,19 +90,29 @@ public class MainScreen extends AppCompatActivity
 
             ListView mealPlanList = new ListView(this);
             ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
-            final MealPlanCell adapter = new MealPlanCell(this, new LinkedList<Recipe>());
-            mealPlanList.setAdapter(adapter);
-            layout.addView(mealPlanList);
+            //final MealPlanCell adapter = new MealPlanCell(this, new LinkedList<Recipe>());
+//            mealPlanList.setAdapter(adapter);
+//            layout.addView(mealPlanList);
 
-            List<MutableLiveData<Recipe>> recipeLiveDataList = viewModel.getMealPlanRecipes();
-            for(MutableLiveData<Recipe> rep : recipeLiveDataList) {
-                rep.observe(this, new Observer<Recipe>() {
-                    @Override
-                    public void onChanged(@Nullable Recipe recipe) {
-                        adapter.addNewRecipe(recipe);
-                    }
-                });
-            }
+            MutableLiveData<List<Recipe>> recipeLiveDataList = viewModel.getMealPlanRecipes();
+            recipeLiveDataList.observe(this, new Observer<List<Recipe>>() {
+                @Override
+                public void onChanged(@Nullable List<Recipe> recipes) {
+                    MealPlanCell adapter = new MealPlanCell(MainScreen.this, recipes);
+                    mealPlanList.setAdapter(adapter);
+                    layout.addView(mealPlanList);
+
+                }
+            });
+//            List<MutableLiveData<Recipe>> recipeLiveDataList = viewModel.getMealPlanRecipes();
+//            for(MutableLiveData<Recipe> rep : recipeLiveDataList) {
+//                rep.observe(this, new Observer<Recipe>() {
+//                    @Override
+//                    public void onChanged(@Nullable Recipe recipe) {
+//                        adapter.addNewRecipe(recipe);
+//                    }
+//                });
+//            }
 
         } else {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);

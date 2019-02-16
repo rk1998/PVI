@@ -17,8 +17,8 @@ import java.util.List;
  * ViewModel for the Meal Plan View screen
  */
 public class MealPlanViewModel extends ViewModel {
-    //private MutableLiveData<List<Recipe>> mealplanRecipes;
-    private List<MutableLiveData<Recipe>> mealplanRecipes;
+    private MutableLiveData<List<Recipe>> mealplanRecipes;
+    //private List<MutableLiveData<Recipe>> mealplanRecipes;
     private RecipeRepository recipeRepo;
     private Context currContext;
     public MealPlanViewModel() {
@@ -35,14 +35,14 @@ public class MealPlanViewModel extends ViewModel {
             return;
         }
         this.currContext = currentContext;
-        this.mealplanRecipes = recipeRepo.getRecipes(recipeIDs, this.currContext);
+        this.mealplanRecipes = recipeRepo.getRecipesFromList(recipeIDs, this.currContext);
     }
 
     /**
      * Gets the LiveData object of the user's recipes in their current meal plan
      * @return mealplanRecipes
      */
-    public List<MutableLiveData<Recipe>> getMealPlanRecipes() {
+    public MutableLiveData<List<Recipe>> getMealPlanRecipes() {
         return mealplanRecipes;
     }
 

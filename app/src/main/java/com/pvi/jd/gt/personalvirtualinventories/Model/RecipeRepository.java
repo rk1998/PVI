@@ -163,6 +163,119 @@ public class RecipeRepository {
         }
     }
 
+    public MutableLiveData<List<Recipe>> getRecipesFromList(List<String> recipeIds, final Context currentContext) {
+        final MutableLiveData<List<Recipe>> dataList = new MutableLiveData<>();
+        dataList.setValue(new LinkedList<>());
+        for(int i = 0; i < recipeIds.size(); i++) {
+            if(model.getStoredRecipes().containsKey(recipeIds.get(i))) {
+                Recipe rep = model.getStoredRecipes().get(recipeIds.get(i));
+                dataList.getValue().add(rep);
+                dataList.setValue(dataList.getValue());
+            } else {
+                //final MutableLiveData<Recipe> data = new MutableLiveData<>();
+                final String currentID = recipeIds.get(i);
+                String requestURL = getrecipeAPIURl + currentID + "?" + "_app_id="
+                        + apiID + "&_app_key=" + apiKey;
+                JsonObjectRequest getRecipeRequest = new JsonObjectRequest(Request.Method.GET,
+                        requestURL, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Recipe requestedRecipe = new Recipe();
+                        requestedRecipe.setApiID(currentID);
+                        try {
+                            String recipeTitle = response.getString("name");
+                            requestedRecipe.setRecipeTitle(recipeTitle);
+                        } catch(JSONException e) {
+                            requestedRecipe.setRecipeTitle("None");
+                        }
+
+                        //extract ingredient list
+                        try {
+                            JSONArray jsonIngredients = response.getJSONArray("ingredientLines");
+                            ArrayList<String> ingredientList = new ArrayList<>();
+                            for(int i = 0; i < jsonIngredients.length(); i++) {
+                                String ingredientLine = jsonIngredients.getString(i);
+                                ingredientList.add(ingredientLine);
+                            }
+                            requestedRecipe.setIngredients(ingredientList);
+
+                        } catch(JSONException e) {
+                            requestedRecipe.setIngredients(new ArrayList<String>());
+
+                        }
+
+                        //Extracting Image url from JSON response
+                        if(response.has("images")) {
+                            try {
+                                JSONArray imgArr = response.getJSONArray("images");
+                                JSONObject images = imgArr.getJSONObject(0);
+
+                                if(images.has("hostedLargeUrl")) {
+                                    String smallImgURL = images.getString("hostedLargeUrl");
+                                    requestedRecipe.setImgURL(smallImgURL);
+                                } else if(images.has("hostedSmallUrl")) {
+                                    String largeImgURL = images.getString("hostedSmallUrl");
+                                    requestedRecipe.setImgURL(largeImgURL);
+                                } else {
+                                    String mediumImgURl = images.getString("hostedMediumUrl");
+                                    requestedRecipe.setImgURL(mediumImgURl);
+                                }
+
+                            } catch(JSONException e) {
+                                requestedRecipe.setImgURL("");
+                            }
+                        } else {
+                            requestedRecipe.setImgURL("");
+                        }
+
+                        //Extracting number of servings
+                        try {
+                            int servings = response.getInt("numberOfServings");
+                            requestedRecipe.setNumServings(servings);
+                        } catch (JSONException e) {
+                            requestedRecipe.setNumServings(0);
+                        }
+
+                        //extract total cook time
+                        try {
+                            int totalTime = response.getInt("totalTimeInSeconds");
+                            int timeinMinutes = totalTime / 60;
+                            requestedRecipe.setCookTime(timeinMinutes);
+                        } catch (JSONException e) {
+                            requestedRecipe.setCookTime(0);
+                        }
+
+                        //extract recipe source
+                        try {
+                            JSONObject recipeSource = response.getJSONObject("source");
+                            String sourceSiteUrl = recipeSource.getString("sourceSiteUrl");
+                            requestedRecipe.setRecipeSource(sourceSiteUrl);
+                        } catch(JSONException e) {
+                            requestedRecipe.setRecipeSource("");
+                        }
+
+                        model.getStoredRecipes().put(currentID, requestedRecipe);
+                        dataList.getValue().add(requestedRecipe);
+                        dataList.setValue(dataList.getValue());
+                        //recipes.add(requestedRecipe);
+                        //LinkedList<Recipe> recipesCopy = new LinkedList<>(recipes);
+                        //dataList.setValue(recipesCopy);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(currentContext, "Request Error", Toast.LENGTH_SHORT);
+
+                    }
+                });
+                ApiRequestQueue.getInstance(currentContext.getApplicationContext())
+                        .addToRequestQueue(getRecipeRequest);
+
+            }
+        }
+        return dataList;
+    }
+
     /**
      * Gets a list of full recipes from a list of ids. (Used for the MealPlanView screen)
      * @param recipeIDs List of recipe Ids to search

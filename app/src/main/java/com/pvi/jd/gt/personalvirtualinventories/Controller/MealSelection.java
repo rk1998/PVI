@@ -34,6 +34,7 @@ public class MealSelection extends AppCompatActivity {
 
     private List<Recipe> dummyRecipes = new LinkedList<>();
     private ArrayList<String> tempRecipeId;
+    private MealCell adapter;
 
     private void createDummyRecipes() {
         Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<>(Arrays.asList(ingredients[0].split(", "))));
@@ -83,17 +84,25 @@ public class MealSelection extends AppCompatActivity {
         viewModel.init(this.getApplicationContext());
 
         //MutableLiveData<List<String>> apiIDS = viewModel.getApiIDS();
-        final MealCell selectionAdapter = new MealCell(MealSelection.this, new LinkedList<Recipe>());
-        mealSelectionGrid.setAdapter(selectionAdapter);
-        List<MutableLiveData<Recipe>> recipeDataList = viewModel.getUserRecipes(tempRecipeId, this);
-        for(MutableLiveData<Recipe> data : recipeDataList) {
-            data.observe(this, new Observer<Recipe>() {
-                @Override
-                public void onChanged(@Nullable Recipe recipe) {
-                    selectionAdapter.addNewRecipe(recipe);
-                }
-            });
-        }
+        //final MealCell selectionAdapter = new MealCell(MealSelection.this, new LinkedList<Recipe>());
+        //mealSelectionGrid.setAdapter(selectionAdapter);
+        LiveData<List<Recipe>> recipeDataList = viewModel.getUserRecipes(tempRecipeId, this);
+        recipeDataList.observe(this, new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(@Nullable List<Recipe> recipes) {
+                adapter = new MealCell(MealSelection.this, recipes);
+                mealSelectionGrid.setAdapter(adapter);
+            }
+        });
+//        List<MutableLiveData<Recipe>> recipeDataList = viewModel.getUserRecipes(tempRecipeId, this);
+//        for(MutableLiveData<Recipe> data : recipeDataList) {
+//            data.observe(this, new Observer<Recipe>() {
+//                @Override
+//                public void onChanged(@Nullable Recipe recipe) {
+//                    selectionAdapter.addNewRecipe(recipe);
+//                }
+//            });
+//        }
 //        apiIDS.observe(this, new Observer<List<String>>() {
 //            @Override
 //            public void onChanged(@Nullable List<String> strings) {
@@ -121,7 +130,7 @@ public class MealSelection extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> selectedRecipes = selectionAdapter.getSelectedMeals();
+                ArrayList<String> selectedRecipes = adapter.getSelectedMeals();
                 Intent newIntent = new Intent(MealSelection.this,
                         MainScreen.class);
                 newIntent.putExtra("MEAL_PLAN_CREATED", true);
