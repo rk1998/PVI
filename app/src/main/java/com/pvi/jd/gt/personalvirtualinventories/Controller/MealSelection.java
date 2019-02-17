@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MealSelection extends AppCompatActivity {
     private MealSelectionViewModel viewModel;
@@ -35,8 +36,9 @@ public class MealSelection extends AppCompatActivity {
     private List<Recipe> dummyRecipes = new LinkedList<>();
     private ArrayList<String> tempRecipeId;
     private MealCell adapter;
+    private LiveData<List<Recipe>> recipeDataList;
 
-    private void createDummyRecipes() {
+    /*private void createDummyRecipes() {
         Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<>(Arrays.asList(ingredients[0].split(", "))));
         spaghetti.setImgURL("http://i2.yummly.com/Hot-Turkey-Salad-Sandwiches-Allrecipes.l.png");
         Recipe pizza = new Recipe("Pizza", 20, 40, "Make pizza", new ArrayList<>(Arrays.asList(ingredients[1].split(", "))));
@@ -60,7 +62,7 @@ public class MealSelection extends AppCompatActivity {
         tempRecipeId.add("Italian-Grilled-Cheese-1600270");
         tempRecipeId.add("Easy-4-Ingredient-Instant-Pot-Mac-and-Cheese-2623416");
         tempRecipeId.add("Marinated-Cucumbers-and-Red-Onions-2555614");
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,17 +78,14 @@ public class MealSelection extends AppCompatActivity {
                 finish();
             }
         });
-        createDummyRecipes();
+        //createDummyRecipes();
         GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
 
         //Todo: get list of recipes from MealSelectionViewModel
         viewModel = ViewModelProviders.of(this).get(MealSelectionViewModel.class);
         viewModel.init(this);
 
-        //MutableLiveData<List<String>> apiIDS = viewModel.getApiIDS();
-        //final MealCell selectionAdapter = new MealCell(MealSelection.this, new LinkedList<Recipe>());
-        //mealSelectionGrid.setAdapter(selectionAdapter);
-        LiveData<List<Recipe>> recipeDataList = viewModel.getUserRecipes();
+        recipeDataList = viewModel.getUserRecipes();
         recipeDataList.observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
@@ -130,13 +129,19 @@ public class MealSelection extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> selectedRecipes = adapter.getSelectedMeals();
+                ArrayList<String> selectedRecipeIDs = adapter.getSelectedMeals();
+
+                List<Recipe> selectedRecipes = recipeDataList.getValue().stream()                // convert list to stream
+                        .filter(recipe -> selectedRecipeIDs.contains(recipe.getApiID()))     // we dont like mkyong
+                        .collect(Collectors.toList());              // collect the output and convert streams to a List
+
+                viewModel.createMealPlan(selectedRecipes, getApplicationContext());
                 Intent newIntent = new Intent(MealSelection.this,
                         MainScreen.class);
                 newIntent.putExtra("MEAL_PLAN_CREATED", true);
 
                 Bundle bundle = new Bundle();
-                bundle.putStringArrayList("SELECTED_IDS", selectedRecipes);
+                bundle.putStringArrayList("SELECTED_IDS", selectedRecipeIDs);
 
                 newIntent.putExtra("ID_BUNDLE", bundle);
                 startActivity(newIntent);

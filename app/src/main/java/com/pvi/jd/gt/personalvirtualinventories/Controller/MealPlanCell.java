@@ -1,24 +1,21 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.Color;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.pvi.jd.gt.personalvirtualinventories.Model.ApiRequestQueue;
+import com.pvi.jd.gt.personalvirtualinventories.Model.Meal;
+import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlan;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 
@@ -30,8 +27,8 @@ public class MealPlanCell extends BaseAdapter {
     private final String[] mealNames;
     private final String[] mealIngredients;
     private final int[] mealPicId = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
-    private List<Recipe> planRecipes;
-    //private List<MutableLiveData<Recipe>> planRecipes;
+    private List<Meal> planMeals;
+    //private List<MutableLiveData<Recipe>> planMeals;
     /**
      * Old Constructor for dummy data
      * @param c
@@ -49,11 +46,11 @@ public class MealPlanCell extends BaseAdapter {
     /**
      *
      * @param c current activity context
-     * @param currentRecipes recipes in current meal plan
+     * @param mealPlan current meal plan
      */
-    public MealPlanCell(Context c, List<Recipe> currentRecipes) {
+    public MealPlanCell(Context c, MealPlan mealPlan) {
         this.mContext = c;
-        this.planRecipes = currentRecipes;
+        this.planMeals = mealPlan.getMealPlan();
         mealNames = new String[0];
         mealIngredients = new String[0];
 
@@ -61,13 +58,13 @@ public class MealPlanCell extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return this.planRecipes.size();
+        return this.planMeals.size();
     }
 
     @Override
     public Object getItem(int position) {
-        if(planRecipes != null && position < planRecipes.size()) {
-            return planRecipes.get(position);
+        if(planMeals != null && position < planMeals.size()) {
+            return planMeals.get(position);
         } else {
             return null;
         }
@@ -82,7 +79,7 @@ public class MealPlanCell extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //View gridCell;
-        if(convertView == null && planRecipes != null && !planRecipes.isEmpty()) {
+        if(convertView == null && planMeals != null && !planMeals.isEmpty()) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.meal_plan_row, parent, false);
         }
@@ -96,6 +93,7 @@ public class MealPlanCell extends BaseAdapter {
                 checkbox.setSelected(!checkbox.isSelected());
                 if(checkbox.isSelected()) {
                     img.setColorFilter(Color.argb(175,50,50,50));
+
                 } else {
                     img.setColorFilter(null);
                 }
@@ -104,7 +102,7 @@ public class MealPlanCell extends BaseAdapter {
         });
 
 
-        //MutableLiveData<Recipe> currentRecipeData = planRecipes.get(position);
+        //MutableLiveData<Recipe> currentRecipeData = planMeals.get(position);
 //            currentRecipeData.observeForever( new Observer<Recipe>() {
 //                @Override
 //                public void onChanged(@Nullable Recipe recipe) {
@@ -137,10 +135,11 @@ public class MealPlanCell extends BaseAdapter {
 //                    }
 //                }
 //            });
-        final Recipe currRecipe = (Recipe) getItem(position);
-        recipeTitle.setText(currRecipe.getRecipeTitle());
+        final Meal currMeal = (Meal) getItem(position);
+        recipeTitle.setText(currMeal.getRecipe().getRecipeTitle());
+        checkbox.setSelected(currMeal.isCompleted());
 
-        String img_resource = currRecipe.getImgURL();
+        String img_resource = currMeal.getRecipe().getImgURL();
         if(img_resource.isEmpty()) {
             img.setDefaultImageResId(R.drawable.chickensalad);
         } else {
@@ -157,11 +156,11 @@ public class MealPlanCell extends BaseAdapter {
                 Intent newIntent = new Intent(mContext,
                         RecipeScreen.class);
                 Bundle recipeBundle = new Bundle();
-                recipeBundle.putString("IMG_SOURCE", currRecipe.getImgURL());
-                recipeBundle.putString("RECIPE_NAME", currRecipe.getRecipeTitle());
-                recipeBundle.putString("RECIPE_DETAILS", currRecipe.getDetails());
-                recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", currRecipe.getIngredients());
-                recipeBundle.putString("RECIPE_INSTRUCTIONS", currRecipe.getInstructions());
+                recipeBundle.putString("IMG_SOURCE", currMeal.getRecipe().getImgURL());
+                recipeBundle.putString("RECIPE_NAME", currMeal.getRecipe().getRecipeTitle());
+                recipeBundle.putString("RECIPE_DETAILS", currMeal.getRecipe().getDetails());
+                recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", currMeal.getRecipe().getIngredients());
+                recipeBundle.putString("RECIPE_INSTRUCTIONS", currMeal.getRecipe().getInstructions());
                 newIntent.putExtra("RECIPE_BUNDLE", recipeBundle);
                 mContext.startActivity(newIntent);
             }
@@ -171,11 +170,11 @@ public class MealPlanCell extends BaseAdapter {
 
     /**
      * Sets recipe list of the MealPlanCell adapter
-     * @param newRecipe list of recipes in the meal plan
+     * @param newMeal list of recipes in the meal plan
      */
-    public void addNewRecipe(Recipe newRecipe) {
-        if(!planRecipes.contains(newRecipe)) {
-            planRecipes.add(newRecipe);
+    public void addNewRecipe(Meal newMeal) {
+        if(!planMeals.contains(newMeal)) {
+            planMeals.add(newMeal);
         }
         notifyDataSetChanged();
     }

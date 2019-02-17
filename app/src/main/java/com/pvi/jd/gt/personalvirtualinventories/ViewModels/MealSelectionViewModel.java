@@ -9,6 +9,7 @@ import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
+import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlan;
 import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlanRepository;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.Model.RecipeRepository;
@@ -29,6 +30,7 @@ public class MealSelectionViewModel extends ViewModel {
     private RecipeRepository recipeRepo = RecipeRepository.getRecipeRepository();
     private LiveData<List<Recipe>> userRecipes;
     private MutableLiveData<List<String>> apiIDS;
+
     public void init(Context currContext) {
         this.currUser = userRepo.getCurrUser();
         //int uid = this.currUser.getValue().getId();
@@ -50,7 +52,7 @@ public class MealSelectionViewModel extends ViewModel {
         return apiIDS;
     }
 
-    public void createMealPlan(List<Recipe> recipes) {
-
+    public void createMealPlan(List<Recipe> recipeApiIDs, Context currContext) {
+        mpRepo.createCurrMealPlan(recipeApiIDs, currContext);
     }
 }

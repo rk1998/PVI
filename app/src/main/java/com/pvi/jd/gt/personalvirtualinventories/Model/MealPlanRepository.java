@@ -36,9 +36,10 @@ public class MealPlanRepository {
         if (model.getCurrentMealPlan().getValue() != null) {
             return model.getCurrentMealPlan();
         } else {
-            MutableLiveData<MealPlan> mp = getCurrMealPlanFromDB(user.getValue().getId(), currContext);
-            model.setCurrentMealPlan(mp);
-            return mp;
+            //MutableLiveData<MealPlan> mp = getCurrMealPlanFromDB(user.getValue().getId(), currContext);
+            //model.setCurrentMealPlan(mp);
+            //return mp;
+            return null; //TODO
         }
     }
 
@@ -54,6 +55,7 @@ public class MealPlanRepository {
         JSONArrayRequest jsObjRequest = new JSONArrayRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                //TODO: WHAT IF NO MEAL PLAN EXISTS
                 MealPlan mp = new MealPlan();
                 try {
                     for (int i = 0; i < response.length(); i++) {
@@ -84,11 +86,12 @@ public class MealPlanRepository {
             mp.addMeal(recipe, false);
             jsonArray.put(recipe.getApiID());
         }
-        //addNewMealPlanToDB(model.getCurrentUser().getValue().getId(), jsonArray, currContext);
-        addNewMealPlanToDB(1, jsonArray, currContext);
         MutableLiveData<MealPlan> mmp = new MutableLiveData<>();
         mmp.setValue(mp);
         model.setCurrentMealPlan(mmp);
+        //addNewMealPlanToDB(model.getCurrentUser().getValue().getId(), jsonArray, currContext);
+        addNewMealPlanToDB(1, jsonArray, currContext);
+
     }
 
     private void addNewMealPlanToDB(int uid, JSONArray recipeids, Context currContext) {
