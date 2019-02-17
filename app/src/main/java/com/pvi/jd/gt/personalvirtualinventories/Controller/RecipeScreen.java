@@ -4,6 +4,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -67,7 +69,11 @@ public class RecipeScreen extends AppCompatActivity {
         recipeTitleView.setSelected(true);
         recipeDetailView.setText(recipeDetails);
         recipeDetailView.setMovementMethod(new ScrollingMovementMethod());
-        recipeInstructionsView.setText(recipeInstructions);
+
+        recipeInstructionsView.setClickable(true);
+        recipeInstructionsView.setMovementMethod(LinkMovementMethod.getInstance());
+        String link = "<a href='" + recipeInstructions + "'> Instructions </a>";
+        recipeInstructionsView.setText(Html.fromHtml(link, 0));
         recipeIngredientsView.setText("");
         for (String s : recipeIngredients) {
             recipeIngredientsView.append("\u2022 " + s);

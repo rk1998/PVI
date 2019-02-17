@@ -160,7 +160,7 @@ public class MealPlanCell extends BaseAdapter {
                 recipeBundle.putString("RECIPE_NAME", currMeal.getRecipe().getRecipeTitle());
                 recipeBundle.putString("RECIPE_DETAILS", currMeal.getRecipe().getDetails());
                 recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", currMeal.getRecipe().getIngredients());
-                recipeBundle.putString("RECIPE_INSTRUCTIONS", currMeal.getRecipe().getInstructions());
+                recipeBundle.putString("RECIPE_INSTRUCTIONS", currMeal.getRecipe().getRecipeSource());
                 newIntent.putExtra("RECIPE_BUNDLE", recipeBundle);
                 mContext.startActivity(newIntent);
             }

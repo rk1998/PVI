@@ -164,7 +164,7 @@ public class MealCell extends BaseAdapter {
                 recipeBundle.putString("RECIPE_NAME", recipe.getRecipeTitle());
                 recipeBundle.putString("RECIPE_DETAILS", recipe.getDetails());
                 recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", recipe.getIngredients());
-                recipeBundle.putString("RECIPE_INSTRUCTIONS", recipe.getInstructions());
+                recipeBundle.putString("RECIPE_INSTRUCTIONS", recipe.getRecipeSource());
                 newIntent.putExtra("RECIPE_BUNDLE", recipeBundle);
 
                 mContext.startActivity(newIntent);

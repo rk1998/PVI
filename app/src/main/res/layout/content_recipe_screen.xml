@@ -160,6 +160,8 @@
             android:visibility="invisible"
             android:lineSpacingExtra="4dp"
             android:padding="8dp"
+            android:clickable="true"
+            android:linksClickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
