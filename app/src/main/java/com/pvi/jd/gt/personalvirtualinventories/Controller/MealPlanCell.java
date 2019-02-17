@@ -10,6 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.graphics.Color;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -28,6 +31,7 @@ public class MealPlanCell extends BaseAdapter {
     private final String[] mealIngredients;
     private final int[] mealPicId = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
     private List<Meal> planMeals;
+    private int countSelected = 0;
     //private List<MutableLiveData<Recipe>> planMeals;
     /**
      * Old Constructor for dummy data
@@ -93,13 +97,39 @@ public class MealPlanCell extends BaseAdapter {
                 checkbox.setSelected(!checkbox.isSelected());
                 if(checkbox.isSelected()) {
                     img.setColorFilter(Color.argb(175,50,50,50));
+                    countSelected++;
+                    if (countSelected == planMeals.size()) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setCancelable(true);
+                        builder.setTitle("Would you like to create a new meal plan?");
+                        builder.setMessage("This will delete your current meal plan.");
+                        builder.setPositiveButton("Confirm",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent newIntent = new Intent(mContext, MealSelection.class);
+                                        mContext.startActivity(newIntent);
+                                    }
+                                });
+                        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+
 
                 } else {
                     img.setColorFilter(null);
+                    countSelected--;
                 }
                 //Toast.makeText(mContext, "Pizza Pizza", Toast.LENGTH_SHORT).show();
             }
         });
+
 
 
         //MutableLiveData<Recipe> currentRecipeData = planMeals.get(position);
