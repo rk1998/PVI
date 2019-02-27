@@ -23,7 +23,7 @@ import java.util.Map;
  * Created by paige on 2/11/2019.
  */
 
-public class MealPlanRepository {
+public class  MealPlanRepository {
 
     private static final MealPlanRepository MEALPLAN_REPOSITORY = new MealPlanRepository();
     public static MealPlanRepository getMealPlanRepository() {
