@@ -61,4 +61,5 @@ public class MealPlanViewModel extends ViewModel {
     public void changeMealCompletionStatus(Recipe recipe, boolean completed, Context currContext) {
         mpRepo.setCompleteStatus(recipe, completed, currContext);
     }
+
 }

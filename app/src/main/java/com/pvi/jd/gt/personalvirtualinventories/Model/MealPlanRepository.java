@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by paige on 2/11/2019.
@@ -151,4 +154,46 @@ public class MealPlanRepository {
         });
         ApiRequestQueue.getInstance(currContext.getApplicationContext()).addToRequestQueue(jsObjRequest);
     }
+
+    public void editMealPlan(User user, List<Recipe> add, List<Recipe> remove, Context currContext) {
+        MutableLiveData<MealPlan> mp = model.getCurrentMealPlan();
+        if (mp.getValue() != null) {
+            List<Meal> meals = mp.getValue().getMealPlan();
+            List<String> rmIDs = new ArrayList<>();
+            add.forEach(recipe -> rmIDs.add(recipe.getApiID()));
+            mp.getValue().setMealPlan(meals.stream().filter(meal -> !rmIDs.contains(meal.getApiID()))
+                    .collect(toList()));
+            add.forEach(recipe -> mp.getValue().addMeal(recipe, false));
+        }
+        JSONArray addJSON = new JSONArray();
+        for (Recipe recipe : add) {
+            addJSON.put(recipe.getApiID());
+        }
+        JSONArray rmJSON = new JSONArray();
+        for (Recipe recipe : remove) {
+            rmJSON.put(recipe.getApiID());
+        }
+        updateMealPlanInDB(user.getId(), addJSON, rmJSON, currContext);
+    }
+
+    private void updateMealPlanInDB(int uid, JSONArray add, JSONArray remove, Context currContext) {
+        String url = "https://personalvirtualinventories.000webhostapp.com/editUserMealPlan.php";
+        Map<String, String> params = new HashMap<>();
+        params.put("uid", uid + "");
+        params.put("add", add.toString());
+        params.put("remove", remove.toString());
+        JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.i("HELLO", "DATABASE RESPONSE: " +  response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                response.printStackTrace();
+            }
+        });
+        ApiRequestQueue.getInstance(currContext.getApplicationContext()).addToRequestQueue(jsObjRequest);
+    }
+
 }

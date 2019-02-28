@@ -13,6 +13,7 @@ import java.util.Map;
  */
 
 public class MealPlan {
+
     private List<Meal> mealPlan;
 
     public MealPlan() {
@@ -32,6 +33,10 @@ public class MealPlan {
 
     public List<Meal> getMealPlan() {
         return mealPlan;
+    }
+
+    public void setMealPlan(List<Meal> mealPlan) {
+        this.mealPlan = mealPlan;
     }
 
 }

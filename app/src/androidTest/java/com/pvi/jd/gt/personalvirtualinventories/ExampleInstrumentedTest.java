@@ -215,7 +215,7 @@ public class ExampleInstrumentedTest {
     @Test
     public void testSearchRecipes() {
         try {
-            List<String> ids = getValue(repo.searchRecipes(appContext));
+            List<String> ids = getValue(repo.searchRecipes(Model.get_instance().getCurrentUser().getValue(), appContext));
             for(int i = 0; i < ids.size(); i++) {
                 Log.d("RECIPE ID", ids.get(i));
             }
@@ -291,6 +291,27 @@ public class ExampleInstrumentedTest {
         Recipe recipe = new Recipe();
         recipe.setApiID("abc");
         mpRepo.setCompleteStatus(recipe, false, appContext);
+        try {
+            final CountDownLatch latch = new CountDownLatch(1);
+            latch.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testUpdateMP() {
+        User user = new User();
+        user.setId(1);
+        List<Recipe> add = new ArrayList<>();
+        Recipe r = new Recipe();
+        r.setApiID("Italian-Grilled-Cheese-1600270");
+        add.add(r);
+        List<Recipe> rm = new ArrayList<>();
+        r = new Recipe();
+        r.setApiID("Simple-Skillet-Green-Beans-2352743");
+        rm.add(r);
+        mpRepo.editMealPlan(user, add, rm, appContext);
         try {
             final CountDownLatch latch = new CountDownLatch(1);
             latch.await(5, TimeUnit.SECONDS);
