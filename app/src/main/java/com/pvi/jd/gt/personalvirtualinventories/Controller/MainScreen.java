@@ -2,6 +2,7 @@ package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -102,7 +103,7 @@ public class MainScreen extends AppCompatActivity
             mealPlanMutableLiveData.observe(this, new Observer<MealPlan>() {
                 @Override
                 public void onChanged(@Nullable MealPlan mealPlan) {
-                    MealPlanCell adapter = new MealPlanCell(MainScreen.this, mealPlan);
+                    MealPlanCell adapter = new MealPlanCell(MainScreen.this, mealPlan, viewModel);
                     mealPlanList.setAdapter(adapter);
                     layout.addView(mealPlanList);
 

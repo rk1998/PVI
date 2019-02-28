@@ -23,6 +23,8 @@ import java.util.Map;
  * Created by paige on 2/11/2019.
  */
 
+//TODO: meal plan view screen queries DB for meal plan rather than just model
+
 public class MealPlanRepository {
 
     private static final MealPlanRepository MEALPLAN_REPOSITORY = new MealPlanRepository();
@@ -99,9 +101,9 @@ public class MealPlanRepository {
         Map<String, String> params = new HashMap<>();
         params.put("uid", uid + "");
         params.put("recipes", recipeids.toString());
-        JSONArrayRequest jsObjRequest = new JSONArrayRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
+        JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(JSONObject response) {
                 Log.i("HELLO", "DATABASE RESPONSE: " +  response.toString());
             }
         }, new Response.ErrorListener() {
@@ -114,7 +116,6 @@ public class MealPlanRepository {
     }
 
     public void setCompleteStatus(Recipe recipe, boolean complete, Context currContext) {
-        //TODO: do this
         MutableLiveData<MealPlan> mp = model.getCurrentMealPlan();
         if (mp.getValue() != null) {
             List<Meal> meals = mp.getValue().getMealPlan();
@@ -124,10 +125,11 @@ public class MealPlanRepository {
                 }
             }
         }
-        if (model.getCurrentUser().getValue() != null) {
-            setCompleteStatusInDB(model.getCurrentUser().getValue().getId(), recipe.getApiID(),
-                    complete, currContext);
-        }
+        //if (model.getCurrentUser().getValue() != null) {
+            //setCompleteStatusInDB(model.getCurrentUser().getValue().getId(), recipe.getApiID(),
+            //        complete, currContext);
+        //}
+        setCompleteStatusInDB(1, recipe.getApiID(), complete, currContext);
     }
 
     private void setCompleteStatusInDB(int uid, String recipeApiID, boolean complete, Context currContext) {
@@ -136,9 +138,9 @@ public class MealPlanRepository {
         params.put("uid", uid + "");
         params.put("recipe", recipeApiID);
         params.put("completed", (complete ? 1 : 0) + "");
-        JSONArrayRequest jsObjRequest = new JSONArrayRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
+        JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(JSONObject response) {
                 Log.i("HELLO", "DATABASE RESPONSE: " +  response.toString());
             }
         }, new Response.ErrorListener() {

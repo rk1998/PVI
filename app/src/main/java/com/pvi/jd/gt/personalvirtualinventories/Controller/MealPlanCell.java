@@ -1,5 +1,7 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import com.pvi.jd.gt.personalvirtualinventories.Model.Meal;
 import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlan;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
 
 import java.util.List;
 
@@ -32,28 +35,17 @@ public class MealPlanCell extends BaseAdapter {
     private final int[] mealPicId = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
     private List<Meal> planMeals;
     private int countSelected = 0;
+    private final MealPlanViewModel mpVM;
     //private List<MutableLiveData<Recipe>> planMeals;
-    /**
-     * Old Constructor for dummy data
-     * @param c
-     * @param names
-     * @param ingredients
-     * @param imgIDs
-     */
-    public MealPlanCell(Context c, String[] names, String[] ingredients, int[] imgIDs) {
-        this.mContext = c;
-        this.mealNames = names;
-
-        this.mealIngredients = ingredients;
-    }
 
     /**
      *
      * @param c current activity context
      * @param mealPlan current meal plan
      */
-    public MealPlanCell(Context c, MealPlan mealPlan) {
+    public MealPlanCell(Context c, MealPlan mealPlan, MealPlanViewModel mpVM) {
         this.mContext = c;
+        this.mpVM = mpVM;
         this.planMeals = mealPlan.getMealPlan();
         mealNames = new String[0];
         mealIngredients = new String[0];
@@ -98,6 +90,7 @@ public class MealPlanCell extends BaseAdapter {
                 if(checkbox.isSelected()) {
                     img.setColorFilter(Color.argb(175,50,50,50));
                     countSelected++;
+                    mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(), true, mContext);
                     if (countSelected == planMeals.size()) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                         builder.setCancelable(true);
@@ -125,6 +118,7 @@ public class MealPlanCell extends BaseAdapter {
                 } else {
                     img.setColorFilter(null);
                     countSelected--;
+                    mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(), false, mContext);
                 }
                 //Toast.makeText(mContext, "Pizza Pizza", Toast.LENGTH_SHORT).show();
             }

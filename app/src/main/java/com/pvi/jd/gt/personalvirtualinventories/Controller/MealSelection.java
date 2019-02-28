@@ -81,7 +81,6 @@ public class MealSelection extends AppCompatActivity {
         //createDummyRecipes();
         GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
 
-        //Todo: get list of recipes from MealSelectionViewModel
         viewModel = ViewModelProviders.of(this).get(MealSelectionViewModel.class);
         viewModel.init(this);
 
@@ -131,9 +130,9 @@ public class MealSelection extends AppCompatActivity {
             public void onClick(View view) {
                 ArrayList<String> selectedRecipeIDs = adapter.getSelectedMeals();
 
-                List<Recipe> selectedRecipes = recipeDataList.getValue().stream()                // convert list to stream
-                        .filter(recipe -> selectedRecipeIDs.contains(recipe.getApiID()))     // we dont like mkyong
-                        .collect(Collectors.toList());              // collect the output and convert streams to a List
+                List<Recipe> selectedRecipes = recipeDataList.getValue().stream()
+                        .filter(recipe -> selectedRecipeIDs.contains(recipe.getApiID()))
+                        .collect(Collectors.toList());
 
                 viewModel.createMealPlan(selectedRecipes, getApplicationContext());
                 Intent newIntent = new Intent(MealSelection.this,

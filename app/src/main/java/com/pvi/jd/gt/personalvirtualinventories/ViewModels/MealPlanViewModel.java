@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlan;
 import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlanRepository;
@@ -57,5 +58,7 @@ public class MealPlanViewModel extends ViewModel {
     }
 
 
-
+    public void changeMealCompletionStatus(Recipe recipe, boolean completed, Context currContext) {
+        mpRepo.setCompleteStatus(recipe, completed, currContext);
+    }
 }
