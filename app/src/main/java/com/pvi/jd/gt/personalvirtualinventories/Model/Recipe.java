@@ -14,6 +14,7 @@ public class Recipe {
     private int numServings;
     private String instructions;
     private ArrayList<String> ingredients;
+    private ArrayList<String> nutritionInfo;
     private String recipeSource;
     private String imgURL;
 
@@ -35,6 +36,7 @@ public class Recipe {
         apiID = "";
         recipeSource = "custom";
         imgURL = "";
+        nutritionInfo = new ArrayList<>();
     }
 
     public Recipe(String id, String title, int cook, int prep, int servings, String instructions,
@@ -48,6 +50,7 @@ public class Recipe {
         this.ingredients = ingredients;
         recipeSource = source;
         imgURL = imgSource;
+        nutritionInfo = new ArrayList<>();
 
     }
 
@@ -61,6 +64,7 @@ public class Recipe {
         recipeSource = "";
         imgURL = "";
         apiID = "";
+        nutritionInfo = new ArrayList<>();
     }
 
     @Override
@@ -86,7 +90,12 @@ public class Recipe {
     }
 
     public String getDetails() {
-        return "Cook time: " + cookTime + " Minutes\nPrep time: " + prepTime + " Minutes";
+        String details =  "Cook time: " + cookTime + " Minutes\nPrep time: " + prepTime + " Minutes" +
+                "\nNumber of Servings: " + numServings + "\n";
+        for(int i = 0; i < nutritionInfo.size(); i++) {
+            details += nutritionInfo.get(i);
+        }
+        return details;
     }
     public String getInstructions() {
         return instructions;
@@ -94,6 +103,11 @@ public class Recipe {
     public ArrayList<String> getIngredients() {
         return ingredients;
     }
+
+    public ArrayList<String> getNutritionInfo() {
+        return nutritionInfo;
+    }
+
     public String getRecipeSource() {
         return recipeSource;
     }
@@ -114,6 +128,10 @@ public class Recipe {
 
     public void setPrepTime(int prepTime) {
         this.prepTime = prepTime;
+    }
+
+    public void setNutritionInfo(ArrayList<String> nutritionInfo) {
+        this.nutritionInfo = nutritionInfo;
     }
 
     public void setNumServings(int servings) {

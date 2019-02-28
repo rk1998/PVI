@@ -9,8 +9,11 @@ public class User {
     private int id;
     private String email;
     private String password;
+    private List<String> dietRestriction;
     private List<String> hatedFoods;
     private List<Recipe> recipeList;
+    private List<String> foodAllergies;
+    private List<String> favoriteMealNames;
     private int cookTime;
     private List<String> kitchenTools;
     private int numFamilyMembers;
@@ -30,6 +33,8 @@ public class User {
         cookTime = 0;
         numFamilyMembers = 1;
         currMealPlan = new HashMap<>();
+        dietRestriction = new LinkedList<>();
+        foodAllergies = new LinkedList<>();
     }
 
     public String getEmail() {
@@ -57,6 +62,31 @@ public class User {
     public List<Recipe> getRecipes() {
         return recipeList;
     }
+
+    public List<String> getFavoriteMealNames() {
+        return favoriteMealNames;
+    }
+
+    public List<String> getFoodAllergies() {
+        return foodAllergies;
+    }
+
+    public List<String> getDietRestriction() {
+        return dietRestriction;
+    }
+
+    public void setDietRestriction(List<String> dietRestriction) {
+        this.dietRestriction = dietRestriction;
+    }
+
+    public void setFoodAllergies(List<String> foodAllergies) {
+        this.foodAllergies = foodAllergies;
+    }
+
+    public void setFavoriteMealNames(List<String> favoriteMealNames) {
+        this.favoriteMealNames = favoriteMealNames;
+    }
+
     public void setNumFamilyMembers(int members) {
         numFamilyMembers = members;
     }
