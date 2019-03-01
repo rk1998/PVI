@@ -25,7 +25,7 @@ public class QuestionnaireViewModel extends ViewModel {
      */
     public void createNewUser(String email, String password) {
         User newUser = new User(email, password);
-        userRepo.getCurrUser().setValue(newUser);
+        userRepo.setTempUser(newUser);
     }
 
     /**
@@ -34,12 +34,8 @@ public class QuestionnaireViewModel extends ViewModel {
      * @param timePerMeal amount of time in minutes they want to spend cooking a meal
      */
     public void setGeneralInfo(int numFamilyMembers, int timePerMeal) {
-        User currentUser = userRepo.getCurrUser().getValue();
-        if(currentUser != null) {
-            currentUser.setCookTime(timePerMeal);
-            currentUser.setNumFamilyMembers(numFamilyMembers);
-            userRepo.getCurrUser().setValue(currentUser);
-        }
+        userRepo.getTempUser().setCookTime(timePerMeal);
+        userRepo.getTempUser().setNumFamilyMembers(numFamilyMembers);
     }
 
     /**
@@ -47,11 +43,7 @@ public class QuestionnaireViewModel extends ViewModel {
      * @param restrictionNames names of user's dietary restrictions
      */
     public void setDietaryPreferences(List<String> restrictionNames) {
-        User currentUser = userRepo.getCurrUser().getValue();
-        if(currentUser != null) {
-            currentUser.setDietRestriction(restrictionNames);
-            userRepo.getCurrUser().setValue(currentUser);
-        }
+        userRepo.getTempUser().setDietRestriction(restrictionNames);
     }
 
     /**
@@ -59,11 +51,7 @@ public class QuestionnaireViewModel extends ViewModel {
      * @param allergies the user's food allergies
      */
     public void setFoodAllergies(List<String> allergies) {
-        User currentUser = userRepo.getCurrUser().getValue();
-        if(currentUser != null) {
-            currentUser.setFoodAllergies(allergies);
-            userRepo.getCurrUser().setValue(currentUser);
-        }
+        userRepo.getTempUser().setFoodAllergies(allergies);
     }
 
     /**
@@ -71,11 +59,7 @@ public class QuestionnaireViewModel extends ViewModel {
      * @param dislikedFoods list of user's disliked foods
      */
     public void setDislikedFoods(List<String> dislikedFoods) {
-        User currentUser = userRepo.getCurrUser().getValue();
-        if(currentUser != null) {
-            currentUser.setHatedFoods(dislikedFoods);
-            userRepo.getCurrUser().setValue(currentUser);
-        }
+        userRepo.getTempUser().setHatedFoods(dislikedFoods);
     }
 
     /**
@@ -83,11 +67,15 @@ public class QuestionnaireViewModel extends ViewModel {
      * @param favoriteMeals
      */
     public void setFavoriteMeals(List<String> favoriteMeals) {
-        User currentUser = userRepo.getCurrUser().getValue();
-        if(currentUser != null) {
-            currentUser.setFavoriteMealNames(favoriteMeals);
-            userRepo.getCurrUser().setValue(currentUser);
-        }
+        userRepo.getTempUser().setFavoriteMealNames(favoriteMeals);
+    }
+
+    /**
+     * Sets user's kitchen tools
+     * @param tools
+     */
+    public void setKitchenTools(List<String> tools) {
+        userRepo.getTempUser().setKitchenTools(tools);
     }
 
 

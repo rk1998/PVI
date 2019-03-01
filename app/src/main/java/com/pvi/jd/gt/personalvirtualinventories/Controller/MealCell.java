@@ -200,35 +200,6 @@ public class MealCell extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-//    public MutableLiveData<Bitmap> getRecipeImage(String imgURL) {
-//        //Todo move image loading calls to UI controllers.
-//        final MutableLiveData<Bitmap> imageData = new MutableLiveData<>();
-//        ImageLoader loader = ApiRequestQueue.getInstance(this.mContext.getApplicationContext()).getImageLoader();
-//        loader.get(imgURL, new ImageLoader.ImageListener() { // this throws illegal state exception
-//            @Override
-//            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-//                Bitmap image = response.getBitmap();
-//                imageData.setValue(image);
-//            }
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.spagett);
-//                imageData.setValue(image);
-//
-//            }
-//        });
-//
-//        return imageData;
-//    }
 
-//    public static int calculateBitMapScale(int reqWidth, int reqHeight, int width, int height) {
-//        int scale = 1;
-//        int heightRatio = Math.round((float) height / (float) reqHeight);
-//        int widthRatio = Math.round((float) width / (float) reqWidth);
-//        scale = heightRatio < widthRatio ? heightRatio : widthRatio;
-//        return scale;
-//
-//    }
 }
 

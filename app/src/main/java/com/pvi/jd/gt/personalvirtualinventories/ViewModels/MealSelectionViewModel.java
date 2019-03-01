@@ -35,7 +35,6 @@ public class MealSelectionViewModel extends ViewModel {
         this.currUser = userRepo.getCurrUser();
         //int uid = this.currUser.getValue().getId();
         int uid = 1;
-        /*todo: with livedata you have to use observe method to get the actual data. not sure how this will work in view model*/
         apiIDS = recipeRepo.getUserRecipeIDs(uid, currContext);
         userRecipes = Transformations.switchMap(apiIDS, apiIDS-> {
             LiveData<List<Recipe>> data = recipeRepo.getRecipesFromList(apiIDS, currContext);

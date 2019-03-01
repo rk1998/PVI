@@ -344,7 +344,7 @@ public class RecipeRepository {
             String diet = dietaryPreferences.get(i);
             requestURL += "&allowedDiet[]=" + diet;
         }
-
+        int mealCount = 0;
         for(int i = 0; i < favoriteMeals.size(); i++) {
             String faveMeal = favoriteMeals.get(i);
             String requestFaveMealURL =  requestURL + "&q=" + faveMeal + "&maxResult=4";
@@ -382,12 +382,16 @@ public class RecipeRepository {
             });
             ApiRequestQueue.getInstance(currentContext.getApplicationContext())
                     .addToRequestQueue(searchRecipeRequest);
+            mealCount += 4;
 
         }
 
+        int mealsRemaining = MAX_RESULTS_PER_MEAL - mealCount;
+
+        String remainingMealRequest = requestURL + "&maxResult=" + mealsRemaining;
 
         JsonObjectRequest searchRecipeRequest = new JsonObjectRequest(Request.Method.GET,
-                requestURL, null, new Response.Listener<JSONObject>() {
+                remainingMealRequest, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 List<String> recipeIds = new LinkedList<>();
@@ -405,7 +409,8 @@ public class RecipeRepository {
                 } catch(JSONException e) {
                     recipeIds.add("Simple-Skillet-Green-Beans-2352743");
                 }
-                dataList.setValue(recipeIds);
+                dataList.getValue().addAll(recipeIds);
+                dataList.setValue(dataList.getValue());
 
             }
         }, new Response.ErrorListener() {
