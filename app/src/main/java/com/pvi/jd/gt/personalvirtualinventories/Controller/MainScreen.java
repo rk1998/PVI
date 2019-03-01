@@ -36,12 +36,7 @@ import java.util.List;
 
 public class MainScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    /*private String[] names = {"Spaghetti", "Pizza", "Tacos", "Chicken Salad"};
-    private String[] ingredients = {"Spaghetti, Tomato Sauce, Bell Peppers",
-            "Wheat, Cheese, Pizza Sauce", "Taco Shells, Beef, Cheese", "Chicken Breast, Lettuce, Tomatoes"};
-    private int[] imgIds = {R.drawable.spagett, R.drawable.pizza, R.drawable.tacos, R.drawable.chickensalad};
 
-    private List<Recipe> dummyRecipes = new LinkedList<>();*/
     private MealPlanViewModel viewModel;
 
     /*private void createDummyRecipes() {

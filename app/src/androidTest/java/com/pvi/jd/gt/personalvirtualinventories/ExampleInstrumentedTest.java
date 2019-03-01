@@ -88,7 +88,7 @@ public class ExampleInstrumentedTest {
             }
         };
         liveData.observeForever(observer);
-        latch.await(30, TimeUnit.SECONDS);
+        latch.await(120, TimeUnit.SECONDS);
         return (T) data[0];
     }
 
@@ -215,7 +215,27 @@ public class ExampleInstrumentedTest {
     @Test
     public void testSearchRecipes() {
         try {
-            List<String> ids = getValue(repo.searchRecipes(Model.get_instance().getCurrentUser().getValue(), appContext));
+            User exampleUser = new User("email", "password");
+            List<String> hatedFoods = new LinkedList<>();
+            hatedFoods.add("onions");
+            hatedFoods.add("beef");
+            hatedFoods.add("chicken");
+            List<String> favoriteMeals = new LinkedList<>();
+            favoriteMeals.add("tacos");
+            favoriteMeals.add("pizza");
+            favoriteMeals.add("tomato soup");
+            favoriteMeals.add("lasagna");
+            exampleUser.setHatedFoods(hatedFoods);
+            List<String> allergies = new LinkedList<>();
+            allergies.add("393^Gluten-Free");
+            List<String> diets = new LinkedList<>();
+            diets.add("390^Pescetarian");
+            exampleUser.setFavoriteMealNames(favoriteMeals);
+            exampleUser.setFoodAllergies(allergies);
+            exampleUser.setDietRestriction(diets);
+            exampleUser.setCookTime(4500);
+            List<String> ids = getValue(repo.searchRecipes(exampleUser, appContext));
+            Log.d("NUM RECIPES", "" + ids.size());
             for(int i = 0; i < ids.size(); i++) {
                 Log.d("RECIPE ID", ids.get(i));
             }
