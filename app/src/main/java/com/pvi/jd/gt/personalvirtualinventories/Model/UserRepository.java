@@ -36,7 +36,6 @@ public class UserRepository {
         params.put("password", password);
         final MutableLiveData<User> jsonresponse = new MutableLiveData<>();
         JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener< JSONObject >() {
-            //TODO: SPECIFIC RESPONSE FOR FAILED AUTHENTICATION
             @Override
             public void onResponse(JSONObject response) {
                 //example output{"id":"1","fname":"John","lname":"Smith","meals_week":"4",

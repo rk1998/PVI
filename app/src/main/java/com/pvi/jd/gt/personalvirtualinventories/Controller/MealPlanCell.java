@@ -83,6 +83,11 @@ public class MealPlanCell extends BaseAdapter {
         TextView recipeTitle = (TextView) convertView.findViewById(R.id.meal_name);
         recipeTitle.setSelected(true);
         final CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.meal_checkbox);
+        if (planMeals.get(position).isCompleted()) {
+            checkbox.setSelected(true);
+        } else {
+            checkbox.setSelected(false);
+        }
         checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
