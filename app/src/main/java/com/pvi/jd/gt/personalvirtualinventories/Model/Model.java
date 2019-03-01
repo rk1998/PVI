@@ -19,11 +19,13 @@ public class Model {
     private MutableLiveData<User> currentUser;
     private MutableLiveData<MealPlan> currentMealPlan;
     private Map<String, Recipe> storedRecipes;
+    private User tempUser;
 
     private Model() {
         currentUser = new MutableLiveData<>();
         currentMealPlan = new MutableLiveData<>();
         storedRecipes = new HashMap<>();
+        tempUser = new User();
     }
 
 
@@ -41,6 +43,22 @@ public class Model {
 
     public void setCurrentMealPlan(MutableLiveData<MealPlan> currentMealPlan) {
         this.currentMealPlan = currentMealPlan;
+    }
+
+    /**
+     * Sets the temporary user (used to store registration info)
+     * @param user initial user info (email, pw)
+     */
+    public void setTempUser(User user) {
+        tempUser = user;
+    }
+
+    /**
+     * Gets temp user
+     * @return tempUser
+     */
+    public User getTempUser() {
+        return tempUser;
     }
 
     public Map<String, Recipe> getStoredRecipes() {
