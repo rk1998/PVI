@@ -37,19 +37,21 @@ public class MealPlanRepository {
 
     private Model model = Model.get_instance();
 
-    public MutableLiveData<MealPlan> getCurrMealPlan(MutableLiveData<User> user, Context currContext) {
-        if (model.getCurrentMealPlan().getValue() != null) {
-            return model.getCurrentMealPlan();
-        } else {
-            //MutableLiveData<MealPlan> mp = getCurrMealPlanFromDB(user.getValue().getId(), currContext);
-            //model.setCurrentMealPlan(mp);
-            //return mp;
-            return null; //TODO
-        }
-    }
-
     public void setCurrMealPlan(MutableLiveData<MealPlan> mp) {
         model.setCurrentMealPlan(mp);
+    }
+
+    public MutableLiveData<MealPlan> getCurrMealPlan(MutableLiveData<User> user, Context currContext) {
+        Log.d("MPR", "get curr meal plan starting");
+        if (model.getCurrentMealPlan().getValue() != null) {
+            Log.d("MPR", "getting from model");
+            return model.getCurrentMealPlan();
+        } else {
+            Log.d("MPR", "getting from DB");
+            MutableLiveData<MealPlan> mp = getCurrMealPlanFromDB(user.getValue().getId(), currContext);
+            model.setCurrentMealPlan(mp);
+            return mp;
+        }
     }
 
     private MutableLiveData<MealPlan> getCurrMealPlanFromDB(int userID, Context currContext) {
@@ -57,20 +59,28 @@ public class MealPlanRepository {
         Map<String, String> params = new HashMap<>();
         params.put("user_id", userID + "");
         final MutableLiveData<MealPlan> jsonresponse = new MutableLiveData<>();
-        JSONArrayRequest jsObjRequest = new JSONArrayRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
+        JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(JSONObject response) {
+                Log.d("DATABASE RESPONSE", response.toString());
                 //TODO: WHAT IF NO MEAL PLAN EXISTS
                 MealPlan mp = new MealPlan();
                 try {
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject curr = response.getJSONObject(i);
-                        String api_id = curr.get("api_id").toString();
-                        boolean completed = curr.getInt("completed")!=0;
-                        mp.addMeal(api_id, completed);
+                    if (response.getBoolean("exists")) {
+                        for (int i = 0; i < response.getJSONArray("recipes").length(); i++) {
+                            JSONObject curr = response.getJSONArray("recipes").getJSONObject(i);
+                            String api_id = curr.get("api_id").toString();
+                            boolean completed = curr.getInt("completed")!=0;
+                            mp.addMeal(api_id, completed);
+                            Log.d("DATABASE RESPONSE", api_id);
+                        }
+                    } else {
+                        mp.setExists(false);
                     }
                     jsonresponse.setValue(mp);
+
                 } catch (JSONException e) {
+                    Log.d("YIKES", "SAD");
                     e.printStackTrace();
                 }
             }

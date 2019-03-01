@@ -33,4 +33,8 @@ public class Meal {
     public String getApiID() {
         return apiID;
     }
+
+    public String toString() {
+        return apiID + "; " + completed;
+    }
 }

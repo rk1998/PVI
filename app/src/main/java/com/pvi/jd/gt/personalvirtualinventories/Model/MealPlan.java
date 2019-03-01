@@ -15,9 +15,11 @@ import java.util.Map;
 public class MealPlan {
 
     private List<Meal> mealPlan;
+    private boolean exists;
 
     public MealPlan() {
         mealPlan = new ArrayList<>();
+        exists = true;
     }
 
     public void addMeal(String apiID, boolean completed) {
@@ -39,4 +41,11 @@ public class MealPlan {
         this.mealPlan = mealPlan;
     }
 
+    public boolean isExists() {
+        return exists;
+    }
+
+    public void setExists(boolean exists) {
+        this.exists = exists;
+    }
 }

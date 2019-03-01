@@ -18,6 +18,7 @@ public class User {
     private List<String> kitchenTools;
     private int numFamilyMembers;
     private Map<Recipe, Boolean> currMealPlan;
+    private boolean auth = false;
 
     public User() {
         this.email = "email";
@@ -151,5 +152,13 @@ public class User {
 
     public void setCurrMealPlan(Map<Recipe, Boolean> currMealPlan) {
         this.currMealPlan = currMealPlan;
+    }
+
+    public boolean isAuth() {
+        return auth;
+    }
+
+    public void setAuth(boolean auth) {
+        this.auth = auth;
     }
 }

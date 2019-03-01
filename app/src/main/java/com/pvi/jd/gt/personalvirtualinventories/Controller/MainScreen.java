@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.pvi.jd.gt.personalvirtualinventories.Model.Meal;
 import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlan;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
@@ -85,41 +87,50 @@ public class MainScreen extends AppCompatActivity
         viewModel.init(this);
         MutableLiveData<MealPlan> mealPlanMutableLiveData = viewModel.getMealPlan();
 
-        if (mealPlanMutableLiveData != null) { //(getIntent().hasExtra("MEAL_PLAN_CREATED")) {
-            Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
-            ((ViewManager) createPlan.getParent()).removeView(createPlan);
-
-           // Bundle selectionBundle = getIntent().getBundleExtra("ID_BUNDLE");
-            //List<String> selectedIDs = selectionBundle.getStringArrayList("SELECTED_IDS");
-
-
-            ListView mealPlanList = new ListView(this);
-            ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
-            //final MealPlanCell adapter = new MealPlanCell(this, new LinkedList<Recipe>());
-//            mealPlanList.setAdapter(adapter);
-//            layout.addView(mealPlanList);
-
-
-            mealPlanMutableLiveData.observe(this, new Observer<MealPlan>() {
-                @Override
-                public void onChanged(@Nullable MealPlan mealPlan) {
-                    MealPlanCell adapter = new MealPlanCell(MainScreen.this, mealPlan, viewModel);
-                    mealPlanList.setAdapter(adapter);
-                    layout.addView(mealPlanList);
-
+        // Create the observer which updates the UI.
+        final Observer<MealPlan> mealPlanObserver = new Observer<MealPlan>() {
+            @Override
+            public void onChanged(@Nullable final MealPlan newMP) {
+                Log.d("MEAL PLAN OBJECT CHANGED", Arrays.deepToString(newMP.getMealPlan().toArray()));
+                //mealPlanMutableLiveData.setValue(newMP);
+                for (int i = 0; i < newMP.getMealPlan().size(); i++) {
+                    Meal m = newMP.getMealPlan().get(i);
+                    if (m.getRecipe() == null) {
+                        getSetRecipe(m, mealPlanMutableLiveData);
+                    }
                 }
-            });
-//            List<MutableLiveData<Recipe>> recipeLiveDataList = viewModel.getMealPlanRecipes();
-//            for(MutableLiveData<Recipe> rep : recipeLiveDataList) {
-//                rep.observe(this, new Observer<Recipe>() {
-//                    @Override
-//                    public void onChanged(@Nullable Recipe recipe) {
-//                        adapter.addNewRecipe(recipe);
-//                    }
-//                });
-//            }
+                updateUI(mealPlanMutableLiveData);
+            }
+        };
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        mealPlanMutableLiveData.observe(this, mealPlanObserver);
 
-        } else {
+
+
+    }
+
+    private void getSetRecipe(Meal m, MutableLiveData<MealPlan> mp) {
+        MutableLiveData<Recipe> recipeMutableLiveData = viewModel.getRecipe(m.getApiID(), getApplicationContext());
+        final Observer<Recipe> recipeObserver = new Observer<Recipe>() {
+            @Override
+            public void onChanged(@Nullable Recipe recipe) {
+                m.setRecipe(recipe);
+                updateUI(mp);
+                Log.d("MAINSCREEN", "RECIPE UPDATED");
+            }
+        };
+        recipeMutableLiveData.observe(this, recipeObserver);
+    }
+
+    private void updateUI(MutableLiveData<MealPlan> mealPlanMutableLiveData) {
+        if (mealPlanMutableLiveData.getValue() == null) {
+            Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
+            if (createPlan != null) {
+                ((ViewManager) createPlan.getParent()).removeView(createPlan);
+            }
+            return;
+        }
+        if (!mealPlanMutableLiveData.getValue().isExists()) {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
             createPlan.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,8 +140,31 @@ public class MainScreen extends AppCompatActivity
                     startActivity(nextIntent);
                 }
             });
-        }
+        } else {
+            Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
+            if (createPlan != null) {
+                ((ViewManager) createPlan.getParent()).removeView(createPlan);
+            }
+            if (mealPlanMutableLiveData.getValue().isExists() && mealPlanMutableLiveData.getValue()
+                    .getMealPlan().stream().filter(meal -> meal.getRecipe() == null).count() == 0) {
+                ListView mealPlanList = new ListView(this);
+                ViewGroup layout = (ViewGroup) findViewById(R.id.meal_planning_layout);
+                //final MealPlanCell adapter = new MealPlanCell(this, new LinkedList<Recipe>());
+//            mealPlanList.setAdapter(adapter);
+//            layout.addView(mealPlanList);
 
+
+                mealPlanMutableLiveData.observe(this, new Observer<MealPlan>() {
+                    @Override
+                    public void onChanged(@Nullable MealPlan mealPlan) {
+                        MealPlanCell adapter = new MealPlanCell(MainScreen.this, mealPlan, viewModel);
+                        mealPlanList.setAdapter(adapter);
+                        layout.addView(mealPlanList);
+
+                    }
+                });
+            }
+        }
     }
 
     @Override

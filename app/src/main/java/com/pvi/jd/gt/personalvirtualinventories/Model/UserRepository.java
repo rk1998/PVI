@@ -23,6 +23,10 @@ public class UserRepository {
         return model.getCurrentUser();
     }
 
+    public void setCurrUser(MutableLiveData<User> user) {
+        model.setCurrentUser(user);
+    }
+
     //dummy user: email: fake@fake.com ; password: password
     public MutableLiveData<User> authGetUserInfo(final String email, final String password,
                                                  final Context currentContext) {
@@ -40,9 +44,14 @@ public class UserRepository {
                 if (!response.toString().equals("null")) {
                     try {
                         User user = new User(email, password);
-                        user.setId(response.getInt("id"));
-                        user.setCookTime(response.getInt("min_meal"));
-                        user.setNumFamilyMembers(response.getInt("num_fam_members"));
+                        if (response.getBoolean("auth")) {
+                            user.setId(response.getInt("id"));
+                            user.setCookTime(response.getInt("min_meal"));
+                            user.setNumFamilyMembers(response.getInt("num_fam_members"));
+                            user.setAuth(true);
+                        } else {
+                            user.setAuth(false);
+                        }
                         jsonresponse.setValue(user);
                         MutableLiveData<User> mUser = new MutableLiveData<>();
                         mUser.setValue(user);
