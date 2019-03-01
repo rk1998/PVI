@@ -105,7 +105,7 @@ public class MainScreen extends AppCompatActivity
     }
 
     private void getSetRecipe(Meal m, MutableLiveData<MealPlan> mp) {
-        MutableLiveData<Recipe> recipeMutableLiveData = viewModel.getRecipe(m.getApiID(), getApplicationContext());
+        MutableLiveData<Recipe> recipeMutableLiveData = viewModel.getRecipe(m.getApiID(), this);
         final Observer<Recipe> recipeObserver = new Observer<Recipe>() {
             @Override
             public void onChanged(@Nullable Recipe recipe) {

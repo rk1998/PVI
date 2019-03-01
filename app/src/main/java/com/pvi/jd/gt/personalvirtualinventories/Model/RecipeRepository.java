@@ -210,7 +210,7 @@ public class RecipeRepository {
                         ArrayList<String> nutrientInfo = new ArrayList<>();
                         try {
                             JSONArray nutrients = response.getJSONArray("nutritionEstimates");
-                            for(int i = 0; i < 5; i++) {
+                            for(int i = 0; i < nutrients.length(); i++) {
                                 JSONObject nutrientObject = nutrients.getJSONObject(i);
                                 int value = nutrientObject.getInt("value");
                                 String unitName = nutrientObject.getJSONObject("unit")
@@ -218,9 +218,33 @@ public class RecipeRepository {
                                 if(unitName.equals("calories")) {
                                     nutrientInfo.add(value + " " + unitName + "\n");
                                 } else {
-                                    String description = nutrientObject.getString("description");
-                                    String nutrientLine = description + ": " + value + " " + unitName + "\n";
-                                    nutrientInfo.add(nutrientLine);
+                                    String attribute = nutrientObject.getString("attribute");
+                                    if(attribute.equals("NA")) {
+                                        String description = nutrientObject.getString("description");
+                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                        nutrientInfo.add(nutrientLine);
+                                    } else if(attribute.equals("PROCNT")) {
+                                        String description = nutrientObject.getString("description");
+                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                        nutrientInfo.add(nutrientLine);
+                                    } else if(attribute.equals("SUGAR")) {
+                                        String description = nutrientObject.getString("description");
+                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                        nutrientInfo.add(nutrientLine);
+                                    } else if(attribute.equals("CHOCDF")) {
+                                        String description = nutrientObject.getString("description");
+                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                        nutrientInfo.add(nutrientLine);
+                                    } else if(attribute.equals("FASAT")) {
+                                        String description = nutrientObject.getString("description");
+                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                        nutrientInfo.add(nutrientLine);
+                                    } else if(attribute.equals("CHOLE")) {
+                                        String description = nutrientObject.getString("description");
+                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                        nutrientInfo.add(nutrientLine);
+                                    }
+
                                 }
                             }
                             requestedRecipe.setNutritionInfo(nutrientInfo);
