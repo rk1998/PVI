@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,8 @@ public class MealPlanCell extends BaseAdapter {
         checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //checkbox.toggle();
+                Log.d("CHECKBOX STATUS", "" + checkbox.isSelected());
                 checkbox.setSelected(!checkbox.isSelected());
                 if(checkbox.isSelected()) {
                     img.setColorFilter(Color.argb(175,50,50,50));
@@ -129,41 +132,6 @@ public class MealPlanCell extends BaseAdapter {
             }
         });
 
-
-
-        //MutableLiveData<Recipe> currentRecipeData = planMeals.get(position);
-//            currentRecipeData.observeForever( new Observer<Recipe>() {
-//                @Override
-//                public void onChanged(@Nullable Recipe recipe) {
-//                    recipeTitle.setText(recipe.getRecipeTitle());
-//                    String img_resource = recipe.getImgURL();
-//                    if(img_resource.isEmpty()) {
-//                        img.setDefaultImageResId(R.drawable.chickensalad);
-//                    } else {
-//                        ImageLoader imageLoader = ApiRequestQueue.getInstance(
-//                                mContext.getApplicationContext()).getImageLoader();
-//                        imageLoader.get(img_resource, ImageLoader.getImageListener(img,
-//                                R.drawable.spagett, R.drawable.spagett));
-//                        //imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//                        img.setImageUrl(img_resource, imageLoader);
-//                        img.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                Intent newIntent = new Intent(mContext,
-//                                        RecipeScreen.class);
-//                                Bundle recipeBundle = new Bundle();
-//                                recipeBundle.putString("IMG_SOURCE", recipe.getImgURL());
-//                                recipeBundle.putString("RECIPE_NAME", recipe.getRecipeTitle());
-//                                recipeBundle.putString("RECIPE_DETAILS", recipe.getDetails());
-//                                recipeBundle.putStringArrayList("RECIPE_INGREDIENTS", recipe.getIngredients());
-//                                recipeBundle.putString("RECIPE_INSTRUCTIONS", recipe.getInstructions());
-//                                newIntent.putExtra("RECIPE_BUNDLE", recipeBundle);
-//                                mContext.startActivity(newIntent);
-//                            }
-//                        });
-//                    }
-//                }
-//            });
         final Meal currMeal = (Meal) getItem(position);
         recipeTitle.setText(currMeal.getRecipe().getRecipeTitle());
         checkbox.setSelected(currMeal.isCompleted());

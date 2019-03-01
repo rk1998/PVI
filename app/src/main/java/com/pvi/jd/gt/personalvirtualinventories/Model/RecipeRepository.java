@@ -97,6 +97,51 @@ public class RecipeRepository {
                         requestedRecipe.setIngredients(new ArrayList<String>());
 
                     }
+                    ArrayList<String> nutrientInfo = new ArrayList<>();
+                    try {
+                        JSONArray nutrients = response.getJSONArray("nutritionEstimates");
+                        for(int i = 0; i < nutrients.length(); i++) {
+                            JSONObject nutrientObject = nutrients.getJSONObject(i);
+                            int value = nutrientObject.getInt("value");
+                            String unitName = nutrientObject.getJSONObject("unit")
+                                    .getString("plural");
+                            String attribute = nutrientObject.getString("attribute");
+                            if(attribute.equals("ENERC_KCAL")) {
+                                String nutrientLine = value + " " + unitName + "\n";
+                                nutrientInfo.add(nutrientLine);
+                            } else if(attribute.equals("NA")) {
+                                String description = "Sodium";
+                                String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                nutrientInfo.add(nutrientLine);
+                            } else if(attribute.equals("PROCNT")) {
+                                String description = nutrientObject.getString("description");
+                                String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                nutrientInfo.add(nutrientLine);
+                            } else if(attribute.equals("SUGAR")) {
+                                String description = nutrientObject.getString("description");
+                                String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                nutrientInfo.add(nutrientLine);
+                            } else if(attribute.equals("CHOCDF")) {
+                                String description = "Carbohydrates";
+                                String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                nutrientInfo.add(nutrientLine);
+                            } else if(attribute.equals("FASAT")) {
+                                String description = "Saturated Fats";
+                                String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                nutrientInfo.add(nutrientLine);
+                            } else if(attribute.equals("CHOLE")) {
+                                String description = nutrientObject.getString("description");
+                                String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                nutrientInfo.add(nutrientLine);
+                            }
+
+
+                        }
+                        requestedRecipe.setNutritionInfo(nutrientInfo);
+                    } catch (JSONException e) {
+                        requestedRecipe.setNutritionInfo(nutrientInfo);
+
+                    }
 
                     //Extracting Image url from JSON response
                     if(response.has("images")) {
@@ -215,37 +260,36 @@ public class RecipeRepository {
                                 int value = nutrientObject.getInt("value");
                                 String unitName = nutrientObject.getJSONObject("unit")
                                         .getString("plural");
-                                if(unitName.equals("calories")) {
-                                    nutrientInfo.add(value + " " + unitName + "\n");
-                                } else {
-                                    String attribute = nutrientObject.getString("attribute");
-                                    if(attribute.equals("NA")) {
-                                        String description = nutrientObject.getString("description");
-                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
-                                        nutrientInfo.add(nutrientLine);
-                                    } else if(attribute.equals("PROCNT")) {
-                                        String description = nutrientObject.getString("description");
-                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
-                                        nutrientInfo.add(nutrientLine);
-                                    } else if(attribute.equals("SUGAR")) {
-                                        String description = nutrientObject.getString("description");
-                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
-                                        nutrientInfo.add(nutrientLine);
-                                    } else if(attribute.equals("CHOCDF")) {
-                                        String description = nutrientObject.getString("description");
-                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
-                                        nutrientInfo.add(nutrientLine);
-                                    } else if(attribute.equals("FASAT")) {
-                                        String description = nutrientObject.getString("description");
-                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
-                                        nutrientInfo.add(nutrientLine);
-                                    } else if(attribute.equals("CHOLE")) {
-                                        String description = nutrientObject.getString("description");
-                                        String nutrientLine = description + ": " + value + " " + unitName + "\n";
-                                        nutrientInfo.add(nutrientLine);
-                                    }
-
+                                String attribute = nutrientObject.getString("attribute");
+                                if(attribute.equals("ENERC_KCAL")) {
+                                    String nutrientLine = value + " " + unitName + "\n";
+                                    nutrientInfo.add(nutrientLine);
+                                } else if(attribute.equals("NA")) {
+                                    String description = "Sodium";
+                                    String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                    nutrientInfo.add(nutrientLine);
+                                } else if(attribute.equals("PROCNT")) {
+                                    String description = nutrientObject.getString("description");
+                                    String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                    nutrientInfo.add(nutrientLine);
+                                } else if(attribute.equals("SUGAR")) {
+                                    String description = nutrientObject.getString("description");
+                                    String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                    nutrientInfo.add(nutrientLine);
+                                } else if(attribute.equals("CHOCDF")) {
+                                    String description = "Carbohydrates";
+                                    String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                    nutrientInfo.add(nutrientLine);
+                                } else if(attribute.equals("FASAT")) {
+                                    String description = "Saturated Fats";
+                                    String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                    nutrientInfo.add(nutrientLine);
+                                } else if(attribute.equals("CHOLE")) {
+                                    String description = nutrientObject.getString("description");
+                                    String nutrientLine = description + ": " + value + " " + unitName + "\n";
+                                    nutrientInfo.add(nutrientLine);
                                 }
+
                             }
                             requestedRecipe.setNutritionInfo(nutrientInfo);
                         } catch (JSONException e) {
