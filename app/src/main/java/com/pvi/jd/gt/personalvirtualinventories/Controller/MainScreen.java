@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -19,7 +20,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.ViewManager;
+import android.view.ViewParent;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,6 +41,7 @@ public class MainScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private MealPlanViewModel viewModel;
+    private MealPlanCell adapter;
 
     /*private void createDummyRecipes() {
         Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<>(Arrays.asList(ingredients[0].split(", "))));
@@ -152,13 +156,24 @@ public class MainScreen extends AppCompatActivity
                 mealPlanMutableLiveData.observe(this, new Observer<MealPlan>() {
                     @Override
                     public void onChanged(@Nullable MealPlan mealPlan) {
-                        MealPlanCell adapter = new MealPlanCell(MainScreen.this, mealPlan, viewModel);
+                        adapter = new MealPlanCell(MainScreen.this, mealPlan, viewModel);
                         mealPlanList.setAdapter(adapter);
                         layout.addView(mealPlanList);
 
                     }
                 });
             }
+        }
+    }
+
+    public void editMode(MenuItem item) {
+        boolean editMode = adapter.getEditMode();
+        if (!editMode) {
+            item.setTitle("Done");
+            adapter.setEditMode(true);
+        } else {
+            item.setTitle("Edit");
+            adapter.setEditMode(false);
         }
     }
 
@@ -187,7 +202,7 @@ public class MainScreen extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.edit_button) {
             return true;
         }
 
