@@ -25,6 +25,7 @@ import java.util.List;
 
 public class MealSelectionViewModel extends ViewModel {
     private MutableLiveData<User> currUser;
+    //private User currUser;
     private UserRepository userRepo = UserRepository.getUserRepository();
     private MealPlanRepository mpRepo = MealPlanRepository.getMealPlanRepository();
     private RecipeRepository recipeRepo = RecipeRepository.getRecipeRepository();
