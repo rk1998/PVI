@@ -19,13 +19,13 @@
         android:textAlignment="center"
         android:textColor="@color/cardview_light_background"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/next_button_one"
+        app:layout_constraintBottom_toTopOf="@+id/next_button_splash"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/next_button_one"
+        android:id="@+id/next_button_splash"
         style="?android:textAppearanceSmall"
         android:layout_width="272dp"
         android:layout_height="59dp"

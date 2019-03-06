@@ -38,7 +38,16 @@
             android:label="@string/title_activity_login" />
         <activity
             android:name=".Controller.RegistrationActivity"
-            android:label="@string/title_activity_registration"></activity>
+            android:label="@string/title_activity_registration" />
+        <activity android:name=".Controller.MealPlanCell" />
+        <activity android:name=".Controller.SplashScreen" />
+        <activity android:name=".Controller.OpeningScreen" />
+        <activity android:name=".Controller.QuestionOne" />
+        <activity android:name=".Controller.QuestionTwo" />
+        <activity android:name=".Controller.QuestionThree" />
+        <activity android:name=".Controller.QuestionFour" />
+        <activity android:name=".Controller.QuestionFive" />
+        <activity android:name=".Controller.QuestionSix"></activity>
     </application>
 
 </manifest>

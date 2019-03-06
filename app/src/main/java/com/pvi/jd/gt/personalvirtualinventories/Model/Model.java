@@ -17,12 +17,14 @@ public class Model {
     }
 
     private MutableLiveData<User> currentUser;
+    //private User currentUser;
     private MutableLiveData<MealPlan> currentMealPlan;
     private Map<String, Recipe> storedRecipes;
     private User tempUser;
 
     private Model() {
         currentUser = new MutableLiveData<>();
+        //currentUser = new User();
         currentMealPlan = new MutableLiveData<>();
         storedRecipes = new HashMap<>();
         tempUser = new User();
@@ -32,6 +34,14 @@ public class Model {
     public MutableLiveData<User> getCurrentUser() {
         return currentUser;
     }
+
+    /*public User getCurrentUser() {
+        return currentUser;
+    }*/
+
+    /*public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }*/
 
     public void setCurrentUser(MutableLiveData<User> currentUser) {
         this.currentUser = currentUser;

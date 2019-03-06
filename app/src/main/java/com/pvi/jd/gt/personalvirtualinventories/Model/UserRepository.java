@@ -25,6 +25,10 @@ public class UserRepository {
         return model.getCurrentUser();
     }
 
+    /*public User getCurrUser() {
+        return model.getCurrentUser();
+    }*/
+
 
     /**
      * Sets temp user with initial email and pw
@@ -45,6 +49,10 @@ public class UserRepository {
     public void setCurrUser(MutableLiveData<User> user) {
         model.setCurrentUser(user);
     }
+
+    /*public void setCurrUser(User user) {
+        model.setCurrentUser(user);
+    }*/
 
     //dummy user: email: fake@fake.com ; password: password
     public MutableLiveData<User> authGetUserInfo(final String email, final String password,

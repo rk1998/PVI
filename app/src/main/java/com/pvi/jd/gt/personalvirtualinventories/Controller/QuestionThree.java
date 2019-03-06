@@ -8,19 +8,19 @@ import android.widget.Button;
 
 import com.pvi.jd.gt.personalvirtualinventories.R;
 
-public class SplashScreen extends AppCompatActivity {
+public class QuestionThree extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
+        setContentView(R.layout.activity_question_three);
 
-        Button next = (Button) findViewById(R.id.next_button_splash);
+        Button next = (Button) findViewById(R.id.next_button_q3);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextIntent = new Intent(SplashScreen.this,
-                        QuestionOne.class);
+                Intent nextIntent = new Intent(QuestionThree.this,
+                        QuestionFour.class);
                 startActivity(nextIntent);
             }
         });

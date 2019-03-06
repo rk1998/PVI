@@ -30,7 +30,6 @@ public class MealPlan {
         Meal meal = new Meal(recipe.getApiID(), completed);
         meal.setRecipe(recipe);
         mealPlan.add(meal);
-
     }
 
     public List<Meal> getMealPlan() {
