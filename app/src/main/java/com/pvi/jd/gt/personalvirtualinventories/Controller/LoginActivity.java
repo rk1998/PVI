@@ -97,14 +97,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
 
 
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent nextIntent = new Intent(LoginActivity.this,
-                        MealPlanCell.class);
-                startActivity(nextIntent);
-            }
-        });
+//        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent nextIntent = new Intent(LoginActivity.this,
+//                        MealPlanCell.class);
+//                startActivity(nextIntent);
+//            }
+//        });
     }
 
     private void populateAutoComplete() {
