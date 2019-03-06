@@ -7,7 +7,7 @@
     tools:context="com.pvi.jd.gt.personalvirtualinventories.Controller.QuestionOne">
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/time_spent_input"
         android:layout_width="54dp"
         android:layout_height="58dp"
         android:layout_marginEnd="20dp"
@@ -18,11 +18,11 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/days_a_week_input" />
 
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/days_a_week_input"
         android:layout_width="54dp"
         android:layout_height="58dp"
         android:layout_marginEnd="30dp"
@@ -31,7 +31,7 @@
         android:inputType="numberSigned"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/family_input" />
 
     <TextView
         android:id="@+id/textView6"
@@ -88,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/family_input"
         android:layout_width="54dp"
         android:layout_height="57dp"
         android:layout_marginEnd="8dp"
@@ -151,6 +151,6 @@
         android:textColor="@android:color/black"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText5" />
+        app:layout_constraintTop_toBottomOf="@+id/time_spent_input" />
 
 </android.support.constraint.ConstraintLayout>
