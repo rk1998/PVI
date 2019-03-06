@@ -17,6 +17,7 @@ public class User {
     private int cookTime;
     private List<String> kitchenTools;
     private int numFamilyMembers;
+    private int mealsPerWeek;
     private Map<Recipe, Boolean> currMealPlan;
     private boolean auth = false;
 
@@ -60,6 +61,11 @@ public class User {
     public List<String> getKitchenTools() {
         return kitchenTools;
     }
+
+    public void setRecipes(List<Recipe> recipes) {
+        recipeList = recipes;
+    }
+
     public List<Recipe> getRecipes() {
         return recipeList;
     }
@@ -160,5 +166,13 @@ public class User {
 
     public void setAuth(boolean auth) {
         this.auth = auth;
+    }
+
+    public int getMealsPerWeek() {
+        return mealsPerWeek;
+    }
+
+    public void setMealsPerWeek(int mealsPerWeek) {
+        this.mealsPerWeek = mealsPerWeek;
     }
 }

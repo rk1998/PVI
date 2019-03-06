@@ -340,6 +340,31 @@ public class ExampleInstrumentedTest {
         }
     }
 
+    @Test
+    public void testCreateUserInDB() {
+        User user = new User("idk@idk.com", "lol");
+        user.setCookTime(35);
+        user.setNumFamilyMembers(2);
+        user.setMealsPerWeek(6);
+        user.setDietRestriction(new ArrayList<>());
+        List<String> allergies = new ArrayList<>();
+        allergies.add("Gluten");
+        user.setFoodAllergies(allergies);
+        user.setHatedFoods(new ArrayList<>());
+        List<Recipe> recipes = new ArrayList<>();
+        Recipe recipe = new Recipe();
+        recipe.setApiID("Vegan-Spinach-Pesto-Pasta-2596986");
+        recipes.add(recipe);
+        user.setRecipes(recipes);
+        uRepo.createUserInDB(user, appContext);
+        try {
+            final CountDownLatch latch = new CountDownLatch(1);
+            latch.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 //    public void testGetImage() {
 //        String imageURL = "http://i2.yummly.com/Hot-Turkey-Salad-Sandwiches-Allrecipes.l.png";
 //        final LiveData<Bitmap> imageData = repo.getRecipeImage(imageURL, appContext);

@@ -2,6 +2,8 @@ package com.pvi.jd.gt.personalvirtualinventories.Model;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -89,5 +91,33 @@ public class UserRepository {
         });
         ApiRequestQueue.getInstance(currentContext.getApplicationContext()).addToRequestQueue(jsObjRequest);
         return jsonresponse;
+    }
+
+    public void createUserInDB(final User user, Context currentContext) {
+        String url = "https://personalvirtualinventories.000webhostapp.com/createNewUser.php";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("email", user.getEmail());
+        params.put("password", user.getPassword());
+        params.put("cooktime", user.getCookTime() + "");
+        params.put("numfammembers", user.getNumFamilyMembers() + "");
+        params.put("mealsperweek", user.getMealsPerWeek() + "");
+        params.put("diets", new JSONArray(user.getDietRestriction()).toString());
+        params.put("allergies", new JSONArray(user.getFoodAllergies()).toString());
+        params.put("hatedfoods", new JSONArray(user.getHatedFoods()).toString());
+        JSONArray jsonArray = new JSONArray();
+        user.getRecipes().forEach(recipe -> jsonArray.put(recipe.getApiID()));
+        params.put("recipes", jsonArray.toString());
+        JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener< JSONObject >() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("DATABASE RESPONSE", response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                response.printStackTrace();
+            }
+        });
+        ApiRequestQueue.getInstance(currentContext.getApplicationContext()).addToRequestQueue(jsObjRequest);
     }
 }
