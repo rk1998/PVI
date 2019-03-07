@@ -39,7 +39,7 @@
         <activity
             android:name=".Controller.RegistrationActivity"
             android:label="@string/title_activity_registration" />
-        <activity android:name=".Controller.MealPlanCell" />
+       <!-- <activity android:name=".Controller.MealPlanCell" /> -->
         <activity android:name=".Controller.SplashScreen" />
         <activity android:name=".Controller.OpeningScreen" />
         <activity android:name=".Controller.QuestionOne" />
