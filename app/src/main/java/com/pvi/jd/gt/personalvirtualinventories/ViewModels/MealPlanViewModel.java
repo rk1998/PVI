@@ -17,6 +17,7 @@ import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlanRepository;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.Model.RecipeRepository;
 import com.pvi.jd.gt.personalvirtualinventories.Model.User;
+import com.pvi.jd.gt.personalvirtualinventories.Model.UserRepository;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -30,10 +31,12 @@ public class MealPlanViewModel extends ViewModel {
     //private List<MutableLiveData<Recipe>> mealplanRecipes;
     private RecipeRepository recipeRepo;
     private MealPlanRepository mpRepo;
+    private UserRepository userRepo;
 
     public MealPlanViewModel() {
         this.recipeRepo = RecipeRepository.getRecipeRepository();
         this.mpRepo = MealPlanRepository.getMealPlanRepository();
+        this.userRepo = UserRepository.getUserRepository();
     }
 
     /**
@@ -46,10 +49,10 @@ public class MealPlanViewModel extends ViewModel {
         }
         this.mealplanRecipes = recipeRepo.getRecipesFromList(recipeIDs, currentContext);*/
 
-        User user = new User();
-        user.setId(1);
-        MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
-        userMutableLiveData.setValue(user);
+//        User user = new User();
+//        user.setId(1);
+        MutableLiveData<User> userMutableLiveData = userRepo.getCurrUser();
+        //userMutableLiveData.setValue(user);
         this.mealplanRecipes = mpRepo.getCurrMealPlan(userMutableLiveData, currentContext);
 
 
