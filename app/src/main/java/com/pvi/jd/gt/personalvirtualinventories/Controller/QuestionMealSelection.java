@@ -1,6 +1,7 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -14,11 +15,12 @@ import android.widget.GridView;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealSelectionViewModel;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.RecipeSelectionViewModel;
 
 import java.util.List;
 
 public class QuestionMealSelection extends AppCompatActivity {
-    private MealSelectionViewModel viewModel;
+    private RecipeSelectionViewModel viewModel;
     private MealCell adapter;
     private LiveData<List<Recipe>> recipeDataList;
 
@@ -39,5 +41,23 @@ public class QuestionMealSelection extends AppCompatActivity {
                 mealSelectionGrid.setAdapter(adapter);
             }
         });*/
+
+
+
+        //this is for when we're ready to write the user data and move to main screen
+        /*MutableLiveData<Integer> id = viewModel.writeUserData(user, getApplicationContext());
+        id.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer userID) {
+                if (userID != null && viewModel.getCurrentUser().getValue() != null) {
+                    viewModel.getCurrentUser().getValue().setId(userID);
+                    //TODO MOVE TO MEAL PLAN MAIN SCREEN
+                }
+
+
+            }
+        });*/
     }
+
+
 }

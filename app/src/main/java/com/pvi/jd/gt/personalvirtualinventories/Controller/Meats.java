@@ -42,12 +42,6 @@ public class Meats extends AppCompatActivity {
         list.add("Turkey");
         list.add("Lamb");
 
-//        list.add("Chicken");
-//        list.add("Beef");
-//        list.add("Pork");
-//        list.add("Fish");
-//        list.add("Turkey");
-
         RecyclerView toolList = (RecyclerView) findViewById(R.id.meats_recycler);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toolList.setLayoutManager(new LinearLayoutManager(this));

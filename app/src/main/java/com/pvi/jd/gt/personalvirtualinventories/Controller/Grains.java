@@ -33,7 +33,6 @@ public class Grains extends AppCompatActivity {
         list.add("Wheat");
         list.add("Oats");
         list.add("Rice");
-        list.add("Corn");
         list.add("Barley");
         list.add("Rye");
         list.add("Millet");
