@@ -53,28 +53,21 @@ public class MealPlanViewModel extends ViewModel {
 //        user.setId(1);
         MutableLiveData<User> userMutableLiveData = userRepo.getCurrUser();
         //userMutableLiveData.setValue(user);
-        this.mealplanRecipes = mpRepo.getCurrMealPlan(userMutableLiveData, currentContext);
+        this.mealplanRecipes = mpRepo.getCurrMealPlan(userMutableLiveData.getValue(), currentContext);
 
 
-        /*final Observer<MealPlan> mealPlanObserver = new Observer<MealPlan>() {
-            @Override
-            public void onChanged(@Nullable final MealPlan newMP) {
-                //mealPlanMutableLiveData.setValue(newMP);
-
-            }
-        };
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        mealPlanMutableLiveData.observe(this, mealPlanObserver);
-
-        userRecipes = Transformations.switchMap(mealplanRecipes, mealplan -> {
+        /*MutableLiveData<MealPlan> userRecipes = Transformations.map(mealplanRecipes, mealplan -> {
             for (int i = 0; i < mealplan.getMealPlan().size(); i++) {
                 Meal m = mealplan.getMealPlan().get(i);
-                m.setRecipe(recipeRepo.getRecipe(m.getApiID(), currentContext));
+                MutableLiveData<Recipe> MLDR = recipeRepo.getRecipe(m.getApiID(), currentContext);
+                Transformations.map(MLDR, recipe-> {
+                    m.setRecipe(recipe);
+                    return recipe;
+                });
             }
-            LiveData<MealPlan> data = recipeRepo.getRecipesFromList(mealplanRecipes, currentContext);
-            return data;
-        });
-        */
+            return mealplan;
+        });*/
+
 
     }
 

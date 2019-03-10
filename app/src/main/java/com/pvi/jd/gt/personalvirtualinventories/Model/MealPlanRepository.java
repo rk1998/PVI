@@ -41,14 +41,11 @@ public class MealPlanRepository {
         model.setCurrentMealPlan(mp);
     }
 
-    public MutableLiveData<MealPlan> getCurrMealPlan(MutableLiveData<User> user, Context currContext) {
-        Log.d("MPR", "get curr meal plan starting");
+    public MutableLiveData<MealPlan> getCurrMealPlan(User user, Context currContext) {
         if (model.getCurrentMealPlan().getValue() != null) {
-            Log.d("MPR", "getting from model");
             return model.getCurrentMealPlan();
         } else {
-            Log.d("MPR", "getting from DB");
-            MutableLiveData<MealPlan> mp = getCurrMealPlanFromDB(user.getValue().getId(), currContext);
+            MutableLiveData<MealPlan> mp = getCurrMealPlanFromDB(user.getId(), currContext);
             model.setCurrentMealPlan(mp);
             return mp;
         }
