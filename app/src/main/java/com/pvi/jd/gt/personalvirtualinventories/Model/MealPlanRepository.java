@@ -63,7 +63,6 @@ public class MealPlanRepository {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("DATABASE RESPONSE", response.toString());
-                //TODO: WHAT IF NO MEAL PLAN EXISTS
                 MealPlan mp = new MealPlan();
                 try {
                     if (response.getBoolean("exists")) {
