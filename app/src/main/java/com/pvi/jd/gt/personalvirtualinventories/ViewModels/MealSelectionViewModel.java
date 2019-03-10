@@ -1,22 +1,17 @@
 package com.pvi.jd.gt.personalvirtualinventories.ViewModels;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.support.annotation.Nullable;
 
-import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlan;
 import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlanRepository;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.Model.RecipeRepository;
 import com.pvi.jd.gt.personalvirtualinventories.Model.User;
 import com.pvi.jd.gt.personalvirtualinventories.Model.UserRepository;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,7 +30,6 @@ public class MealSelectionViewModel extends ViewModel {
     public void init(Context currContext) {
         this.currUser = userRepo.getCurrUser();
         int uid = this.currUser.getValue().getId();
-        //int uid = 1;
         apiIDS = recipeRepo.getUserRecipeIDs(uid, currContext);
         userRecipes = Transformations.switchMap(apiIDS, apiIDS-> {
             LiveData<List<Recipe>> data = recipeRepo.getRecipesFromList(apiIDS, currContext);

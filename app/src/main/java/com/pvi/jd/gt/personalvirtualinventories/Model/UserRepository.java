@@ -118,6 +118,7 @@ public class UserRepository {
         String url = "https://personalvirtualinventories.000webhostapp.com/createNewUser.php";
         model.getCurrentUser().setValue(user);
         Map<String, String> params = new HashMap<String, String>();
+        params.put("name", user.getName());
         params.put("email", user.getEmail());
         try {
             byte[] bytesOfMessage = user.getPassword().getBytes("UTF-8");

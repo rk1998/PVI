@@ -88,6 +88,7 @@ public class RegistrationActivity extends AppCompatActivity{
                 startActivity(nextIntent);
             }
         });
+        EditText nameText = (EditText) findViewById(R.id.name);
         EditText emailText = (EditText) findViewById(R.id.registration_email);
         EditText passwordText = (EditText) findViewById(R.id.registration_password);
         EditText confirmPasswordText = (EditText) findViewById(R.id.confirm_password);
@@ -95,6 +96,7 @@ public class RegistrationActivity extends AppCompatActivity{
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = nameText.getText().toString();
                 String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
                 String confirmPassword = confirmPasswordText.getText().toString();
@@ -130,7 +132,7 @@ public class RegistrationActivity extends AppCompatActivity{
                         @Override
                         public void onChanged(@Nullable Boolean inUse) {
                             if (inUse != null && !inUse) {
-                                viewModel.createNewUser(email, password);
+                                viewModel.createNewUser(name, email, password);
                                 Intent nextIntent = new Intent(RegistrationActivity.this,
                                         SplashScreen.class);
                                 startActivity(nextIntent);

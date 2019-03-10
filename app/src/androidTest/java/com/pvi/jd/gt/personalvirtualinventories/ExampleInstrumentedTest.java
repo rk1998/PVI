@@ -265,12 +265,9 @@ public class ExampleInstrumentedTest {
     public void testGetCurrMealPlan() {
         User user = new User("fake@fake.com", "password");
         user.setId(1);
-        MutableLiveData<User> mpu = new MutableLiveData<>();
-        mpu.setValue(user);
-        MutableLiveData<MealPlan> ld = mpRepo.getCurrMealPlan(mpu, appContext);
+        MutableLiveData<MealPlan> ld = mpRepo.getCurrMealPlan(user, appContext);
         try {
             MealPlan actual = getValue(ld);
-
         } catch(InterruptedException e) {
             e.printStackTrace();
         }
