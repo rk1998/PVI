@@ -1,6 +1,7 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -16,11 +17,12 @@ import android.widget.GridView;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealSelectionViewModel;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.RecipeSelectionViewModel;
 
 import java.util.List;
 
 public class QuestionMealSelection extends AppCompatActivity {
-    private MealSelectionViewModel viewModel;
+    private RecipeSelectionViewModel viewModel;
     private MealCell adapter;
     private LiveData<List<Recipe>> recipeDataList;
 
@@ -52,4 +54,6 @@ public class QuestionMealSelection extends AppCompatActivity {
             }
         });
     }
+
+
 }

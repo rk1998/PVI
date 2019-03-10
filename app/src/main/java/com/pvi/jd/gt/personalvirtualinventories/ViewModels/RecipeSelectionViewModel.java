@@ -1,6 +1,7 @@
 package com.pvi.jd.gt.personalvirtualinventories.ViewModels;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
@@ -47,8 +48,13 @@ public class RecipeSelectionViewModel extends ViewModel {
      * @param selectedRecipes recipe IDs the user selected for their meal bank
      * @param currentContext current activity context
      */
-    public void writeUserData(List<Recipe> selectedRecipes, Context currentContext) {
+    public MutableLiveData<Integer> writeUserData(List<Recipe> selectedRecipes, Context currentContext) {
         this.currentUser.setRecipes(selectedRecipes);
-        userRepo.createUserInDB(this.currentUser,currentContext);
+        MutableLiveData<Integer> id = userRepo.createUserInDB(this.currentUser,currentContext);
+        return id;
+    }
+
+    public MutableLiveData<User> getCurrentUser() {
+        return userRepo.getCurrUser();
     }
 }

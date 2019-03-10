@@ -33,16 +33,6 @@ public class Meats extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meats);
 
-        Button done = (Button) findViewById(R.id.done_button);
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent nextIntent = new Intent(Meats.this,
-                        QuestionFour.class);
-                startActivity(nextIntent);
-
-            }
-        });
 
         ArrayList<String> list = new ArrayList<>();
         list.add("Chicken");
@@ -50,16 +40,24 @@ public class Meats extends AppCompatActivity {
         list.add("Pork");
         list.add("Fish");
         list.add("Turkey");
-        list.add("Chicken");
-        list.add("Beef");
-        list.add("Pork");
-        list.add("Fish");
-        list.add("Turkey");
+        list.add("Lamb");
 
         RecyclerView toolList = (RecyclerView) findViewById(R.id.meats_recycler);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toolList.setLayoutManager(new LinearLayoutManager(this));
         final RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, list);
         toolList.setAdapter(adapter);
+        Button done = (Button) findViewById(R.id.done_button);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> selectedFoods = adapter.getSelectedData();
+                viewModel.addDislikedFoods(selectedFoods);
+                Intent nextIntent = new Intent(Meats.this,
+                        QuestionFour.class);
+                startActivity(nextIntent);
+
+            }
+        });
     }
 }

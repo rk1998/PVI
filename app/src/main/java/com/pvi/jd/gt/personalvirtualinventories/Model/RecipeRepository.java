@@ -416,7 +416,7 @@ public class RecipeRepository {
         List<String> foodAllergies = newUser.getFoodAllergies();
         List<String> dietaryPreferences = newUser.getDietRestriction();
         List<String> hatedFoods = newUser.getHatedFoods();
-        int maxTotalTime = newUser.getCookTime();
+        int maxTotalTimeInSeconds = newUser.getCookTime()/60;
         String requestURL = searchrecipeAPIURL + "_app_id="
             + apiID + "&_app_key=" + apiKey +"&requirePictures=true";
         //add allergies to search url
@@ -431,6 +431,9 @@ public class RecipeRepository {
             hatedFood = hatedFood.replaceAll("\\s", "+");
             requestURL += "&excludedIngredient[]=" + hatedFood;
         }
+
+        requestURL += "&excludedIngredient[]=alcohol";
+        requestURL += "&maxTotalTimeInSeconds=" + maxTotalTimeInSeconds;
 
         //add dietary preferences
         for(int i = 0; i < dietaryPreferences.size(); i++) {

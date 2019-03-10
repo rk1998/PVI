@@ -24,8 +24,9 @@ public class QuestionnaireViewModel extends ViewModel {
      * @param email user's email
      * @param password user's password
      */
-    public void createNewUser(String email, String password) {
+    public void createNewUser(String name, String email, String password) {
         User newUser = new User(email, password);
+        newUser.setName(name);
         userRepo.setTempUser(newUser);
     }
 
@@ -59,12 +60,16 @@ public class QuestionnaireViewModel extends ViewModel {
         userRepo.getTempUser().setFoodAllergies(allergies);
     }
 
-    /**
-     * Sets user's disliked foods
-     * @param dislikedFoods list of user's disliked foods
-     */
-    public void setDislikedFoods(List<String> dislikedFoods) {
-        userRepo.getTempUser().setHatedFoods(dislikedFoods);
+//    /**
+//     * Sets user's disliked foods
+//     * @param dislikedFoods list of user's disliked foods
+//     */
+//    public void setDislikedFoods(List<String> dislikedFoods) {
+//        userRepo.getTempUser().setHatedFoods(dislikedFoods);
+//    }
+
+    public void addDislikedFoods(List<String> dislikedFoods) {
+        userRepo.getTempUser().getHatedFoods().addAll(dislikedFoods);
     }
 
     /**
