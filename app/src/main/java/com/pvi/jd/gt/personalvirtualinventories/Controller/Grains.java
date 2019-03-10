@@ -29,17 +29,6 @@ public class Grains extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meats);
 
-        Button done = (Button) findViewById(R.id.done_button);
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent nextIntent = new Intent(Grains.this,
-                        QuestionFour.class);
-                startActivity(nextIntent);
-
-            }
-        });
-
         ArrayList<String> list = new ArrayList<>();
         list.add("Wheat");
         list.add("Oats");
@@ -58,5 +47,19 @@ public class Grains extends AppCompatActivity {
         toolList.setLayoutManager(new LinearLayoutManager(this));
         final RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, list);
         toolList.setAdapter(adapter);
+
+        Button done = (Button) findViewById(R.id.done_button);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> selectedItems = adapter.getSelectedData();
+                viewModel.addDislikedFoods(selectedItems);
+                Intent nextIntent = new Intent(Grains.this,
+                        QuestionFour.class);
+                startActivity(nextIntent);
+
+            }
+        });
+
     }
 }

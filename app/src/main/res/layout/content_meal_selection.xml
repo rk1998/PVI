@@ -18,7 +18,7 @@
         android:layout_marginBottom="8dp"
         android:text="DONE"
         android:textSize="18sp"
-        android:background = "@drawable/roundedbutton"
+        android:background = "@drawable/grayroundedbutton"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

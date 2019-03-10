@@ -34,9 +34,9 @@ public class QuestionOne extends AppCompatActivity {
                 if(family == null || days == null || time == null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(QuestionOne.this);
                     builder.setCancelable(true);
-                    builder.setTitle("Invalid Entires");
+                    builder.setTitle("Invalid Entries");
                     builder.setMessage("Please enter the number of family members, number of days" +
-                            "per week you wish to cook, and the amount of time (in minutes) " +
+                            " per week you wish to cook, and the amount of time (in minutes) " +
                             "you want to spend on each meal.");
                     builder.setPositiveButton("Ok",
                             new DialogInterface.OnClickListener() {
@@ -88,7 +88,6 @@ public class QuestionOne extends AppCompatActivity {
                     }
 
                 }
-
             }
         });
     }

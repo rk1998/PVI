@@ -59,12 +59,16 @@ public class QuestionnaireViewModel extends ViewModel {
         userRepo.getTempUser().setFoodAllergies(allergies);
     }
 
-    /**
-     * Sets user's disliked foods
-     * @param dislikedFoods list of user's disliked foods
-     */
-    public void setDislikedFoods(List<String> dislikedFoods) {
-        userRepo.getTempUser().setHatedFoods(dislikedFoods);
+//    /**
+//     * Sets user's disliked foods
+//     * @param dislikedFoods list of user's disliked foods
+//     */
+//    public void setDislikedFoods(List<String> dislikedFoods) {
+//        userRepo.getTempUser().setHatedFoods(dislikedFoods);
+//    }
+
+    public void addDislikedFoods(List<String> dislikedFoods) {
+        userRepo.getTempUser().getHatedFoods().addAll(dislikedFoods);
     }
 
     /**
