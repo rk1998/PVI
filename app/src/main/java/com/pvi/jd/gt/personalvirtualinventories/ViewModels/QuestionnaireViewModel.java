@@ -1,5 +1,6 @@
 package com.pvi.jd.gt.personalvirtualinventories.ViewModels;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 
@@ -26,6 +27,10 @@ public class QuestionnaireViewModel extends ViewModel {
     public void createNewUser(String email, String password) {
         User newUser = new User(email, password);
         userRepo.setTempUser(newUser);
+    }
+
+    public MutableLiveData<Boolean> checkIfEmailAlreadyInUse(String email, Context currContext) {
+        return userRepo.checkIfEmailInUse(email, currContext);
     }
 
     /**
