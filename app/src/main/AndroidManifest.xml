@@ -49,6 +49,7 @@
         <activity android:name=".Controller.QuestionFour" />
         <activity android:name=".Controller.QuestionFive" />
         <activity android:name=".Controller.QuestionSix" />
+        <activity android:name=".Controller.QuestionMealSelection" />
         <activity
             android:name=".Controller.Fruits"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />

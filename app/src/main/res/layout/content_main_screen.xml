@@ -18,7 +18,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/roundedbutton"
+        android:background="@drawable/grayroundedbutton"
         android:text="CREATE MEAL PLAN\nFOR THE WEEK"
         android:textColor="@android:color/white"
         android:textSize="24sp"

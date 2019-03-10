@@ -151,7 +151,7 @@
         android:layout_marginBottom="40dp"
         android:layout_marginEnd="29dp"
         android:layout_marginStart="29dp"
-        android:background="@drawable/roundedbutton"
+        android:background="@drawable/redroundedbutton"
         android:text="NEXT"
         android:textColor="@android:color/white"
         android:textSize="24sp"

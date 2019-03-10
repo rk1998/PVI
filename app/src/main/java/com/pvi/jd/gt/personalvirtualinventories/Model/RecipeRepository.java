@@ -55,12 +55,14 @@ public class RecipeRepository {
 
         dietaryRestrictionMap = new HashMap<>();
         foodAllergiesMap = new HashMap<>();
+
         dietaryRestrictionMap.put("Vegan", "386^Vegan");
         dietaryRestrictionMap.put("Vegetarian", "389^Ovo+vegetarian");
         dietaryRestrictionMap.put("Pescetarian", "390^Pescetarian");
         dietaryRestrictionMap.put("Ketogenic", "406^Ketogenic");
         dietaryRestrictionMap.put("Paleo", "403^Paleo");
 
+        foodAllergiesMap = new HashMap<>();
         foodAllergiesMap.put("Gluten", "393^Gluten-Free");
         foodAllergiesMap.put("Peanut", "394^Peanut-Free");
         foodAllergiesMap.put("Seafood", "398^Seafood-Free");

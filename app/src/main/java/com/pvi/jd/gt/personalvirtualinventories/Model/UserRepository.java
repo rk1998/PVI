@@ -94,9 +94,6 @@ public class UserRepository {
                             user.setAuth(false);
                         }
                         jsonresponse.setValue(user);
-                        MutableLiveData<User> mUser = new MutableLiveData<>();
-                        mUser.setValue(user);
-                        model.setCurrentUser(mUser);
                     } catch(JSONException e) {
                         jsonresponse.setValue(new User("sad", "wrong :("));
                         e.printStackTrace();
@@ -113,6 +110,7 @@ public class UserRepository {
             }
         });
         ApiRequestQueue.getInstance(currentContext.getApplicationContext()).addToRequestQueue(jsObjRequest);
+        model.setCurrentUser(jsonresponse);
         return jsonresponse;
     }
 
@@ -172,7 +170,7 @@ public class UserRepository {
             public void onResponse(JSONObject response) {
                 Log.d("DATABASE RESPONSE", response.toString());
                 try {
-                    if (response.getBoolean("inUse")) {
+                    if (response.getBoolean("in_use")) {
                         out.setValue(true);
                     } else {
                         out.setValue(false);

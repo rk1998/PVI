@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pvi.jd.gt.personalvirtualinventories.Controller.QuestionThree">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Controller.QuestionMealSelection">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/question_three_header"
+        android:id="@+id/question_meal_selection_header"
         android:layout_width="match_parent"
         android:layout_height="122dp"
         android:background="@color/colorPrimary"
@@ -16,14 +17,13 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/question_three_of_six"
+            android:id="@+id/question_meal_selection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Question 3 of 6"
-            android:textAllCaps="true"
+            android:text="These are the recipes we came up with:"
             android:textColor="@android:color/white"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
@@ -32,53 +32,52 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/question_two"
+            android:id="@+id/select_fifteen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="What allergies do you have?"
+            android:text="Select at least 15 to populate your recipe bank!"
             android:textColor="@android:color/white"
             android:textAlignment="center"
-            android:textSize="26sp"
+            android:textSize="20sp"
             android:paddingHorizontal="40dp"
             android:paddingVertical="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/question_three_of_six"
+            app:layout_constraintTop_toBottomOf="@id/question_meal_selection"
             app:layout_constraintBottom_toBottomOf="parent"/>
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/question_three_header"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/allergy_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-    </android.support.constraint.ConstraintLayout>
-
-    <Button
-        android:id="@+id/next_button_q3"
-        style="?android:textAppearanceSmall"
-        android:layout_width="272dp"
-        android:layout_height="59dp"
-        android:layout_marginBottom="40dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginStart="29dp"
-        android:background="@drawable/redroundedbutton"
-        android:text="NEXT"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
+    <GridView
+        android:id="@+id/question_meal_grid_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:horizontalSpacing="10dp"
+        android:numColumns="2"
+        android:verticalSpacing="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question_meal_selection_header" />
 
+    <Button
+        android:id="@+id/question_confirm_meal_selection"
+        android:layout_width="272dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="0/15"
+        android:textSize="18sp"
+        android:background ="@drawable/grayroundedbutton"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.946" />
 </android.support.constraint.ConstraintLayout>
