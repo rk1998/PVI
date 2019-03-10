@@ -61,9 +61,21 @@ public class QuestionMealSelection extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 List<Recipe> selectedRecipes = adapter.getSelectedRecipeList();
-                viewModel.writeUserData(selectedRecipes, QuestionMealSelection.this);
-                Intent nextIntent = new Intent(QuestionMealSelection.this, MainScreen.class);
-                startActivity(nextIntent);
+                MutableLiveData<Integer> userID = viewModel.writeUserData(selectedRecipes, QuestionMealSelection.this);
+                showProgress(true);
+                userID.observe(QuestionMealSelection.this, new Observer<Integer>() {
+                @Override
+                    public void onChanged(@Nullable Integer userID) {
+                        showProgress(false);
+                        if (userID != null && viewModel.getCurrentUser().getValue() != null) {
+                            viewModel.getCurrentUser().getValue().setId(userID);
+                            Intent nextIntent = new Intent(QuestionMealSelection.this, MainScreen.class);
+                            startActivity(nextIntent);
+                        }
+                    }
+                });
+
+
             }
         });
 

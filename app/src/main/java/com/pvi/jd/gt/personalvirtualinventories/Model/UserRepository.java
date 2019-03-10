@@ -146,7 +146,9 @@ public class UserRepository {
             public void onResponse(JSONObject response) {
                 Log.d("DATABASE RESPONSE", response.toString());
                 try {
-                    id.setValue(response.getInt("id"));
+                    int userID = response.getInt("id");
+                    //model.getCurrentUser().getValue().setId(userID);
+                    id.setValue(userID);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

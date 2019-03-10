@@ -24,7 +24,7 @@ public class ApiRequestQueue {
         this.context = cxt;
         this.requestQueue = getRequestQueue();
         this.imageLoader = new ImageLoader(this.requestQueue, new ImageLoader.ImageCache() {
-            private final LruCache<String, Bitmap> cache = new LruCache<>(40);
+            private final LruCache<String, Bitmap> cache = new LruCache<>(60);
             @Override
             public Bitmap getBitmap(String url) {
                 return cache.get(url);
