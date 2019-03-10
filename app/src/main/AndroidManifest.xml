@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Controller.MainScreen"
+            android:name=".Controller.OpeningScreen"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -26,6 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Controller.MainScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Controller.MealSelection"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -39,15 +42,31 @@
         <activity
             android:name=".Controller.RegistrationActivity"
             android:label="@string/title_activity_registration" />
-        <activity android:name=".Controller.MealPlanCell" />
-        <activity android:name=".Controller.SplashScreen" />
-        <activity android:name=".Controller.OpeningScreen" />
+        <activity android:name=".Controller.SplashScreen"></activity>
         <activity android:name=".Controller.QuestionOne" />
         <activity android:name=".Controller.QuestionTwo" />
         <activity android:name=".Controller.QuestionThree" />
         <activity android:name=".Controller.QuestionFour" />
         <activity android:name=".Controller.QuestionFive" />
-        <activity android:name=".Controller.QuestionSix"></activity>
+        <activity android:name=".Controller.QuestionSix" />
+        <activity
+            android:name=".Controller.Fruits"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".Controller.Dairy"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".Controller.Veggies"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".Controller.Grains"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".Controller.Condiments"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".Controller.Meats"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
     </application>
 
 </manifest>

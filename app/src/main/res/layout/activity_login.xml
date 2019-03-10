@@ -62,8 +62,6 @@
             android:imeActionId="6"
             android:imeActionLabel="@string/action_sign_in_short"
             android:imeOptions="actionUnspecified"
-            android:ellipsize="start"
-            android:maxLines="1"
             android:singleLine="true" />
 
     </android.support.design.widget.TextInputLayout>

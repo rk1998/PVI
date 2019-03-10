@@ -3,6 +3,9 @@ package com.pvi.jd.gt.personalvirtualinventories.Controller;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -31,6 +34,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.QuestionnaireViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +69,13 @@ public class RegistrationActivity extends AppCompatActivity{
 //    private EditText mPasswordView;
 //    private View mProgressView;
 //    private View mLoginFormView;
+    private QuestionnaireViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
+        viewModel = ViewModelProviders.of(this).get(QuestionnaireViewModel.class);
         Button hasAccount = (Button) findViewById(R.id.already_has_account_button);
         hasAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,14 +85,49 @@ public class RegistrationActivity extends AppCompatActivity{
                 startActivity(nextIntent);
             }
         });
-
+        EditText emailText = (EditText) findViewById(R.id.registration_email);
+        EditText passwordText = (EditText) findViewById(R.id.registration_password);
+        EditText confirmPasswordText = (EditText) findViewById(R.id.confirm_password);
         Button continueBtn = (Button) findViewById(R.id.continue_button);
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextIntent = new Intent(RegistrationActivity.this,
-                        SplashScreen.class);
-                startActivity(nextIntent);
+                String email = emailText.getText().toString();
+                String password = passwordText.getText().toString();
+                String confirmPassword = confirmPasswordText.getText().toString();
+                if(email.isEmpty() || password.isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                    builder.setCancelable(true);
+                    builder.setTitle("Registration Error");
+                    builder.setMessage("Please enter your email and password");
+                    builder.setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else if(!password.equals(confirmPassword)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                    builder.setCancelable(true);
+                    builder.setTitle("Passwords do not Match");
+                    builder.setMessage("Please retype your password.");
+                    builder.setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    viewModel.createNewUser(email, password);
+                    Intent nextIntent = new Intent(RegistrationActivity.this,
+                            SplashScreen.class);
+                    startActivity(nextIntent);
+                }
+
             }
         });
     }

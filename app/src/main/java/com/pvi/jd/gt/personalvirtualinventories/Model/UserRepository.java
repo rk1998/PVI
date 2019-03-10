@@ -118,6 +118,7 @@ public class UserRepository {
 
     public MutableLiveData<Integer> createUserInDB(final User user, Context currentContext) {
         String url = "https://personalvirtualinventories.000webhostapp.com/createNewUser.php";
+        model.getCurrentUser().setValue(user);
         Map<String, String> params = new HashMap<String, String>();
         params.put("email", user.getEmail());
         try {

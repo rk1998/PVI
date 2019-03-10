@@ -44,9 +44,11 @@ public class RecipeSelectionViewModel extends ViewModel {
     /**
      * this method is used to store the user's selected meals and all of the info
      * from the questionnaire
-     * @param selectedRecipeIDS recipe IDs the user selected for their meal bank
+     * @param selectedRecipes recipe IDs the user selected for their meal bank
+     * @param currentContext current activity context
      */
-    public void writeUserData(List<String> selectedRecipeIDS) {
-        //todo: write back user data and selected meals into database
+    public void writeUserData(List<Recipe> selectedRecipes, Context currentContext) {
+        this.currentUser.setRecipes(selectedRecipes);
+        userRepo.createUserInDB(this.currentUser,currentContext);
     }
 }

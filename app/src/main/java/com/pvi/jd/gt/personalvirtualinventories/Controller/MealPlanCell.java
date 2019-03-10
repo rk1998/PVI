@@ -87,7 +87,8 @@ public class MealPlanCell extends BaseAdapter {
         final TextView recipeTitle = (TextView) convertView.findViewById(R.id.meal_name);
         recipeTitle.setSelected(true);
         final CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.meal_checkbox);
-        if (planMeals.get(position).isCompleted()) {
+        Meal meal = (Meal) getItem(position);
+        if (meal.isCompleted()) {
             checkbox.setSelected(true);
         } else {
             checkbox.setSelected(false);
@@ -97,8 +98,8 @@ public class MealPlanCell extends BaseAdapter {
             public void onClick(View view) {
                 //checkbox.toggle();
                 Log.d("CHECKBOX STATUS", "" + checkbox.isSelected());
-                checkbox.setSelected(!checkbox.isSelected());
-                if(checkbox.isSelected()) {
+                //checkbox.setSelected(!checkbox.isSelected());
+                if(checkbox.isChecked()) {
                     img.setColorFilter(Color.argb(175,50,50,50));
                     countSelected++;
                     mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(), true, mContext);

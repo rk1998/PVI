@@ -34,8 +34,8 @@ public class MealSelectionViewModel extends ViewModel {
 
     public void init(Context currContext) {
         this.currUser = userRepo.getCurrUser();
-        //int uid = this.currUser.getValue().getId();
-        int uid = 1;
+        int uid = this.currUser.getValue().getId();
+        //int uid = 1;
         apiIDS = recipeRepo.getUserRecipeIDs(uid, currContext);
         userRecipes = Transformations.switchMap(apiIDS, apiIDS-> {
             LiveData<List<Recipe>> data = recipeRepo.getRecipesFromList(apiIDS, currContext);

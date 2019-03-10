@@ -3,9 +3,13 @@ package com.pvi.jd.gt.personalvirtualinventories.Controller;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -30,7 +34,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.pvi.jd.gt.personalvirtualinventories.Model.User;
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.LoginViewModel;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private LoginViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,15 +104,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-
-//        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent nextIntent = new Intent(LoginActivity.this,
-//                        MealPlanCell.class);
-//                startActivity(nextIntent);
-//            }
-//        });
     }
 
     private void populateAutoComplete() {
@@ -197,9 +196,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+
+            viewModel =  ViewModelProviders.of(this).get(LoginViewModel.class);
+            viewModel.init(email, password, this);
+            MutableLiveData<User> attemptedUser = viewModel.getAttemptedUser();
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            attemptedUser.observe(this, new Observer<User>() {
+                @Override
+                public void onChanged(@Nullable User user) {
+                    if(user.isAuth()) {
+                        showProgress(false);
+                        Intent nextIntent = new Intent(LoginActivity.this, MainScreen.class);
+                        startActivity(nextIntent);
+                    } else {
+                        showProgress(false);
+                        mEmailView.setError(getString(R.string.error_invalid_email));
+                        mEmailView.requestFocus();
+                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+                        mPasswordView.requestFocus();
+                    }
+                }
+            });
+//            mAuthTask = new UserLoginTask(email, password);
+//            mAuthTask.execute((Void) null);
         }
     }
 
@@ -224,14 +243,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
@@ -245,7 +264,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            //mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 

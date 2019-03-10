@@ -126,16 +126,6 @@ public class MealCell extends BaseAdapter {
                     R.drawable.spagett, R.drawable.spagett));
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
             img.setImageUrl(imgUrl, imageLoader);
-//                MutableLiveData<Bitmap> imageLiveData = getRecipeImage(recipeList.get(position).getImgURL());
-//                imageLiveData.observeForever(new Observer<Bitmap>() {
-//                    @Override
-//                    public void onChanged(@Nullable Bitmap bitmap) {
-//                        img.setScaleType(ImageView.ScaleType.FIT_CENTER);
-//
-//                        img.setAdjustViewBounds(true);
-//                        img.setImageBitmap(bitmap);
-//                    }
-//                });
         }
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
