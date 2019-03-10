@@ -53,7 +53,8 @@ public class RecipeRepository {
         tempRecipeId.add("Cabbage-And-Tofu-Soup-Recipezaar");
         MAX_RESULTS_PER_MEAL = 40;
 
-
+        dietaryRestrictionMap = new HashMap<>();
+        foodAllergiesMap = new HashMap<>();
         dietaryRestrictionMap.put("Vegan", "386^Vegan");
         dietaryRestrictionMap.put("Vegetarian", "389^Ovo+vegetarian");
         dietaryRestrictionMap.put("Pescetarian", "390^Pescetarian");

@@ -1,11 +1,15 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -42,6 +46,7 @@ public class MainScreen extends AppCompatActivity
 
     private MealPlanViewModel viewModel;
     private MealPlanCell adapter;
+    private View mealPlanProgress;
 
     /*private void createDummyRecipes() {
         Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<>(Arrays.asList(ingredients[0].split(", "))));
@@ -74,6 +79,8 @@ public class MainScreen extends AppCompatActivity
 //            }
 //        });
 
+
+        mealPlanProgress = findViewById(R.id.mealplan_progressBar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -85,6 +92,10 @@ public class MainScreen extends AppCompatActivity
         viewModel = ViewModelProviders.of(this).get(MealPlanViewModel.class);
         viewModel.init(this);
         MutableLiveData<MealPlan> mealPlanMutableLiveData = viewModel.getMealPlan();
+        Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
+        if (createPlan != null) {
+            ((ViewManager) createPlan.getParent()).removeView(createPlan);
+        }
 
         // Create the observer which updates the UI.
         final Observer<MealPlan> mealPlanObserver = new Observer<MealPlan>() {
@@ -108,6 +119,31 @@ public class MainScreen extends AppCompatActivity
 
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mealPlanProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+            mealPlanProgress.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mealPlanProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mealPlanProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+            //mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+
     private void getSetRecipe(Meal m, MutableLiveData<MealPlan> mp) {
         MutableLiveData<Recipe> recipeMutableLiveData = viewModel.getRecipe(m.getApiID(), this);
         final Observer<Recipe> recipeObserver = new Observer<Recipe>() {
@@ -123,14 +159,17 @@ public class MainScreen extends AppCompatActivity
 
     private void updateUI(MutableLiveData<MealPlan> mealPlanMutableLiveData) {
         if (mealPlanMutableLiveData.getValue() == null) {
-            Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
-            if (createPlan != null) {
-                ((ViewManager) createPlan.getParent()).removeView(createPlan);
-            }
+//            Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
+//            if (createPlan != null) {
+//                ((ViewManager) createPlan.getParent()).removeView(createPlan);
+//            }
+            showProgress(true);
             return;
         }
         if (!mealPlanMutableLiveData.getValue().isExists()) {
+            showProgress(false);
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
+            ((ViewManager) createPlan.getParent()).addView(createPlan, createPlan.getLayoutParams());
             createPlan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -159,6 +198,7 @@ public class MainScreen extends AppCompatActivity
                         adapter = new MealPlanCell(MainScreen.this, mealPlan, viewModel);
                         mealPlanList.setAdapter(adapter);
                         layout.addView(mealPlanList);
+                        showProgress(false);
 
                     }
                 });
