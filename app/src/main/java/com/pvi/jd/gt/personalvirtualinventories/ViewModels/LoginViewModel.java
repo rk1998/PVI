@@ -28,4 +28,5 @@ public class LoginViewModel extends ViewModel {
     public MutableLiveData<User> getAttemptedUser() {
         return attemptedUser;
     }
+
 }

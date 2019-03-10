@@ -10,6 +10,11 @@ import com.android.volley.VolleyError;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +65,17 @@ public class UserRepository {
         String url = "https://personalvirtualinventories.000webhostapp.com/authGetUserInfo.php";
         Map<String, String> params = new HashMap<String, String>();
         params.put("email", email);
-        params.put("password", password);
+        try {
+            byte[] bytesOfMessage = password.getBytes("UTF-8");
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] thedigest = md.digest(bytesOfMessage);
+            BigInteger bigInt = new BigInteger(1,thedigest);
+            String hashtext = bigInt.toString(16);
+            params.put("password", hashtext);
+
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         final MutableLiveData<User> jsonresponse = new MutableLiveData<>();
         JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener< JSONObject >() {
             @Override
@@ -79,9 +94,6 @@ public class UserRepository {
                             user.setAuth(false);
                         }
                         jsonresponse.setValue(user);
-                        MutableLiveData<User> mUser = new MutableLiveData<>();
-                        mUser.setValue(user);
-                        model.setCurrentUser(mUser);
                     } catch(JSONException e) {
                         jsonresponse.setValue(new User("sad", "wrong :("));
                         e.printStackTrace();
@@ -98,14 +110,26 @@ public class UserRepository {
             }
         });
         ApiRequestQueue.getInstance(currentContext.getApplicationContext()).addToRequestQueue(jsObjRequest);
+        model.setCurrentUser(jsonresponse);
         return jsonresponse;
     }
 
-    public void createUserInDB(final User user, Context currentContext) {
+    public MutableLiveData<Integer> createUserInDB(final User user, Context currentContext) {
         String url = "https://personalvirtualinventories.000webhostapp.com/createNewUser.php";
+        model.getCurrentUser().setValue(user);
         Map<String, String> params = new HashMap<String, String>();
         params.put("email", user.getEmail());
-        params.put("password", user.getPassword());
+        try {
+            byte[] bytesOfMessage = user.getPassword().getBytes("UTF-8");
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] thedigest = md.digest(bytesOfMessage);
+            BigInteger bigInt = new BigInteger(1,thedigest);
+            String hashtext = bigInt.toString(16);
+            params.put("password", hashtext);
+
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         params.put("cooktime", user.getCookTime() + "");
         params.put("numfammembers", user.getNumFamilyMembers() + "");
         params.put("mealsperweek", user.getMealsPerWeek() + "");
@@ -115,10 +139,16 @@ public class UserRepository {
         JSONArray jsonArray = new JSONArray();
         user.getRecipes().forEach(recipe -> jsonArray.put(recipe.getApiID()));
         params.put("recipes", jsonArray.toString());
+        final MutableLiveData<Integer> id = new MutableLiveData<>();
         JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener< JSONObject >() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("DATABASE RESPONSE", response.toString());
+                try {
+                    id.setValue(response.getInt("id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -127,5 +157,36 @@ public class UserRepository {
             }
         });
         ApiRequestQueue.getInstance(currentContext.getApplicationContext()).addToRequestQueue(jsObjRequest);
+        return id;
     }
+
+    public MutableLiveData<Boolean> checkIfEmailInUse(String email, Context currentContext) {
+        String url = "https://personalvirtualinventories.000webhostapp.com/checkIfEmailInUse.php";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("email", email);
+        final MutableLiveData<Boolean> out = new MutableLiveData<>();
+        JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener< JSONObject >() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("DATABASE RESPONSE", response.toString());
+                try {
+                    if (response.getBoolean("in_use")) {
+                        out.setValue(true);
+                    } else {
+                        out.setValue(false);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                response.printStackTrace();
+            }
+        });
+        ApiRequestQueue.getInstance(currentContext.getApplicationContext()).addToRequestQueue(jsObjRequest);
+        return out;
+    }
+
 }

@@ -31,7 +31,7 @@ public class QuestionOne extends AppCompatActivity {
                 String family = familyMembers.getText().toString();
                 String days = daysPerWeek.getText().toString();
                 String time = timeSpent.getText().toString();
-                if(time.isEmpty() || days.isEmpty() || family.isEmpty()) {
+                if(family == null || days == null || time == null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(QuestionOne.this);
                     builder.setCancelable(true);
                     builder.setTitle("Invalid Entries");
@@ -50,12 +50,28 @@ public class QuestionOne extends AppCompatActivity {
                     int numFamily = Integer.parseInt(family);
                     int numDays = Integer.parseInt(days);
                     int timePerMeal = Integer.parseInt(time);
-                    if (timePerMeal <= 0 || numFamily <= 0) {
+                    if(time.isEmpty() || days.isEmpty() || family.isEmpty()) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(QuestionOne.this);
                         builder.setCancelable(true);
-                        builder.setTitle("Invalid Entries");
-                        builder.setMessage("Cook time and Number of Family Members cannot be zero "
-                                + "or lower. Please enter a valid number.");
+                        builder.setTitle("Invalid Entires");
+                        builder.setMessage("Please enter the number of family members, number of days" +
+                                "per week you wish to cook, and the amount of time (in minutes) " +
+                                "you want to spend on each meal.");
+                        builder.setPositiveButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+                    } else if(timePerMeal <= 0 || numFamily <= 0) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(QuestionOne.this);
+                        builder.setCancelable(true);
+                        builder.setTitle("Invalid Entires");
+                        builder.setMessage("Cook time and Number of Family Members cannot be zero. Please" +
+                                "enter a valid number.");
                         builder.setPositiveButton("Ok",
                                 new DialogInterface.OnClickListener() {
                                     @Override
@@ -70,6 +86,7 @@ public class QuestionOne extends AppCompatActivity {
                                 QuestionTwo.class);
                         startActivity(nextIntent);
                     }
+
                 }
             }
         });

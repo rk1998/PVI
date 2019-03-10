@@ -37,6 +37,10 @@ public class RecipeRepository {
     private String searchrecipeAPIURL;
     private final Model model = Model.get_instance();
     private LinkedList<String> tempRecipeId;
+
+    private Map<String, String> dietaryRestrictionMap;
+    private Map<String, String> foodAllergiesMap;
+
     private RecipeRepository() {
         apiID = "111c254f";
         apiKey = "a1591ab602b6fc6d2bbffae96db922ac";
@@ -48,6 +52,26 @@ public class RecipeRepository {
         tempRecipeId.add("7-Samurai-Vegan-Soup-Recipezaar");
         tempRecipeId.add("Cabbage-And-Tofu-Soup-Recipezaar");
         MAX_RESULTS_PER_MEAL = 40;
+
+        dietaryRestrictionMap = new HashMap<>();
+        foodAllergiesMap = new HashMap<>();
+
+        dietaryRestrictionMap.put("Vegan", "386^Vegan");
+        dietaryRestrictionMap.put("Vegetarian", "389^Ovo+vegetarian");
+        dietaryRestrictionMap.put("Pescetarian", "390^Pescetarian");
+        dietaryRestrictionMap.put("Ketogenic", "406^Ketogenic");
+        dietaryRestrictionMap.put("Paleo", "403^Paleo");
+
+        foodAllergiesMap = new HashMap<>();
+        foodAllergiesMap.put("Gluten", "393^Gluten-Free");
+        foodAllergiesMap.put("Peanut", "394^Peanut-Free");
+        foodAllergiesMap.put("Seafood", "398^Seafood-Free");
+        foodAllergiesMap.put("Sesame", "399^Sesame");
+        foodAllergiesMap.put("Soy", "400^Soy-Free");
+        foodAllergiesMap.put("Egg", "397^Egg-Free");
+        foodAllergiesMap.put("Dairy", "396^Dairy-Free");
+        foodAllergiesMap.put("Tree Nut", "395^Tree+Nut-Free");
+        foodAllergiesMap.put("Wheat", "392^Wheat-Free");
 
     }
 
@@ -397,7 +421,8 @@ public class RecipeRepository {
             + apiID + "&_app_key=" + apiKey +"&requirePictures=true";
         //add allergies to search url
         for(int i = 0; i < foodAllergies.size(); i++) {
-            String allergy = foodAllergies.get(i);
+            String allergy = foodAllergiesMap.get(foodAllergies.get(i));
+
             requestURL += "&allowedAllergy[]=" + allergy;
         }
         //add hated foods
@@ -409,7 +434,7 @@ public class RecipeRepository {
 
         //add dietary preferences
         for(int i = 0; i < dietaryPreferences.size(); i++) {
-            String diet = dietaryPreferences.get(i);
+            String diet = dietaryRestrictionMap.get(dietaryPreferences.get(i));
             requestURL += "&allowedDiet[]=" + diet;
         }
         int mealCount = 0;

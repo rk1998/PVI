@@ -203,7 +203,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             attemptedUser.observe(this, new Observer<User>() {
                 @Override
-                public void onChanged(@Nullable User user) {
+                public void onChanged(User user) {
                     if(user.isAuth()) {
                         showProgress(false);
                         Intent nextIntent = new Intent(LoginActivity.this, MainScreen.class);
