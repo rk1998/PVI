@@ -44,7 +44,7 @@ public class QuestionSix extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent nextIntent = new Intent(QuestionSix.this,
-                        MainScreen.class);
+                        QuestionMealSelection.class);
                 viewModel.setKitchenTools(adapter.getSelectedData());
                 startActivity(nextIntent);
             }
