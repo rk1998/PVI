@@ -33,16 +33,6 @@ public class Fruits extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meats);
 
-        Button done = (Button) findViewById(R.id.done_button);
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent nextIntent = new Intent(Fruits.this,
-                        QuestionFour.class);
-                startActivity(nextIntent);
-
-            }
-        });
 
         ArrayList<String> list = new ArrayList<>();
         list.add("Bananas");
@@ -61,5 +51,18 @@ public class Fruits extends AppCompatActivity {
         toolList.setLayoutManager(new LinearLayoutManager(this));
         final RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, list);
         toolList.setAdapter(adapter);
+
+        Button done = (Button) findViewById(R.id.done_button);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> selectedFoods = adapter.getSelectedData();
+                viewModel.addDislikedFoods(selectedFoods);
+                Intent nextIntent = new Intent(Fruits.this,
+                        QuestionFour.class);
+                startActivity(nextIntent);
+
+            }
+        });
     }
 }
