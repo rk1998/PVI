@@ -33,7 +33,7 @@ public class QuestionTwo extends AppCompatActivity {
         ArrayList<String> list = new ArrayList<>();
         list.add("Vegan");
         list.add("Vegetarian");
-        list.add("Pescatarian");
+        list.add("Pescetarian");
         list.add("Low Carb");
         list.add("Low Sugar");
         list.add("Paleo");
