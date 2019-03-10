@@ -37,6 +37,7 @@ public class User {
         currMealPlan = new HashMap<>();
         dietRestriction = new LinkedList<>();
         foodAllergies = new LinkedList<>();
+        favoriteMealNames = new LinkedList<>();
     }
 
     public String getEmail() {

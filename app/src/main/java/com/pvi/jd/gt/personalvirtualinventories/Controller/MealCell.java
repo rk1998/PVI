@@ -180,6 +180,21 @@ public class MealCell extends BaseAdapter {
     }
 
     /**
+     *
+     * @return list of recipe objects selected for user's recipe bank
+     */
+    public ArrayList<Recipe> getSelectedRecipeList() {
+        ArrayList<Recipe> selectedRecipes = new ArrayList<>();
+        for(int i = 0; i < recipeList.size(); i++) {
+            if(selectionMap.containsKey(recipeList.get(i))
+                    && selectionMap.get(recipeList.get(i)).booleanValue()) {
+                selectedRecipes.add(recipeList.get(i));
+            }
+        }
+        return selectedRecipes;
+    }
+
+    /**
      * Sets recipe list of the MealPlanCell adapter
      * @param newRecipe list of recipes in the meal plan
      */

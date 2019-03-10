@@ -46,7 +46,7 @@ public class Veggies extends AppCompatActivity {
         list.add("Mushrooms");
         list.add("Cauliflower");
         list.add("Brussel Sprouts");
-
+        viewModel = ViewModelProviders.of(this).get(QuestionnaireViewModel.class);
         RecyclerView toolList = (RecyclerView) findViewById(R.id.meats_recycler);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toolList.setLayoutManager(new LinearLayoutManager(this));

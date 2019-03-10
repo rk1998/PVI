@@ -41,7 +41,7 @@ public class Grains extends AppCompatActivity {
         list.add("Quinoa");
         list.add("Buckwheat");
         list.add("Sorghum");
-
+        viewModel = ViewModelProviders.of(this).get(QuestionnaireViewModel.class);
         RecyclerView toolList = (RecyclerView) findViewById(R.id.meats_recycler);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toolList.setLayoutManager(new LinearLayoutManager(this));

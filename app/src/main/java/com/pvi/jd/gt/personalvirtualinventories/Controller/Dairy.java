@@ -44,7 +44,7 @@ public class Dairy extends AppCompatActivity {
         list.add("Cream Cheese");
 
 
-
+        viewModel = ViewModelProviders.of(this).get(QuestionnaireViewModel.class);
         RecyclerView toolList = (RecyclerView) findViewById(R.id.meats_recycler);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toolList.setLayoutManager(new LinearLayoutManager(this));

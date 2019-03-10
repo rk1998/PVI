@@ -12,6 +12,7 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -92,10 +93,10 @@ public class MainScreen extends AppCompatActivity
         viewModel = ViewModelProviders.of(this).get(MealPlanViewModel.class);
         viewModel.init(this);
         MutableLiveData<MealPlan> mealPlanMutableLiveData = viewModel.getMealPlan();
-        Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
-        if (createPlan != null) {
-            ((ViewManager) createPlan.getParent()).removeView(createPlan);
-        }
+//        Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
+//        if (createPlan != null) {
+//            ((ViewManager) createPlan.getParent()).removeView(createPlan);
+//        }
 
         // Create the observer which updates the UI.
         final Observer<MealPlan> mealPlanObserver = new Observer<MealPlan>() {
@@ -159,17 +160,19 @@ public class MainScreen extends AppCompatActivity
 
     private void updateUI(MutableLiveData<MealPlan> mealPlanMutableLiveData) {
         if (mealPlanMutableLiveData.getValue() == null) {
-//            Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
-//            if (createPlan != null) {
-//                ((ViewManager) createPlan.getParent()).removeView(createPlan);
-//            }
+            Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
+            if (createPlan != null) {
+                ((ViewManager) createPlan.getParent()).removeView(createPlan);
+            }
             showProgress(true);
             return;
         }
         if (!mealPlanMutableLiveData.getValue().isExists()) {
             showProgress(false);
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
-            ((ViewManager) createPlan.getParent()).addView(createPlan, createPlan.getLayoutParams());
+//            ConstraintLayout layout = findViewById(R.id.meal_planning_layout);
+//            layout.addView(createPlan, createPlan.getLayoutParams());
+//           ((ViewManager) createPlan.getParent()).addView(createPlan, createPlan.getLayoutParams());
             createPlan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
