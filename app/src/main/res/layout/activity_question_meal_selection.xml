@@ -71,7 +71,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="0/15"
+        android:text="Finish"
         android:textSize="18sp"
         android:background ="@drawable/grayroundedbutton"
         android:textColor="@android:color/white"

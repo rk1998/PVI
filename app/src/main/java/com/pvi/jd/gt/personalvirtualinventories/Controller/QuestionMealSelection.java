@@ -3,10 +3,12 @@ package com.pvi.jd.gt.personalvirtualinventories.Controller;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,15 +46,17 @@ public class QuestionMealSelection extends AppCompatActivity {
         viewModel.init(this);
         recipeDataList = viewModel.getSearchedRecipes();
         showProgress(true);
-        adapter = new MealCell(QuestionMealSelection.this, new LinkedList<>());
-        mealSelectionGrid.setAdapter(adapter);
+        //adapter = new MealCell(QuestionMealSelection.this, new LinkedList<>());
+        //mealSelectionGrid.setAdapter(adapter);
         recipeDataList.observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
                 showProgress(false);
-                for(int i = 0; i < recipes.size(); i++) {
-                    adapter.addNewRecipe(recipes.get(i));
-                }
+                adapter = new MealCell(QuestionMealSelection.this, recipes);
+                mealSelectionGrid.setAdapter(adapter);
+//                for(int i = 0; i < recipes.size(); i++) {
+//                    adapter.addNewRecipe(recipes.get(i));
+//                }
             }
         });
 
@@ -61,21 +65,35 @@ public class QuestionMealSelection extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 List<Recipe> selectedRecipes = adapter.getSelectedRecipeList();
-                MutableLiveData<Integer> id = viewModel.writeUserData(selectedRecipes, QuestionMealSelection.this);
-                showProgress(true);
-                id.observe(QuestionMealSelection.this, new Observer<Integer>() {
-                @Override
-                    public void onChanged(@Nullable Integer userID) {
-                        showProgress(false);
-                        if (userID != null && viewModel.getCurrentUser().getValue() != null) {
-                            viewModel.getCurrentUser().getValue().setId(userID);
-                            Intent nextIntent = new Intent(QuestionMealSelection.this, MainScreen.class);
-                            startActivity(nextIntent);
+                if(selectedRecipes.size() < 15) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(QuestionMealSelection.this);
+                    builder.setCancelable(true);
+                    builder.setTitle("Not Enough recipes");
+                    builder.setMessage("Please select at least fifteen recipes for your recipe bank.");
+                    builder.setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    MutableLiveData<Integer> id = viewModel.writeUserData(selectedRecipes, QuestionMealSelection.this);
+                    showProgress(true);
+                    id.observe(QuestionMealSelection.this, new Observer<Integer>() {
+                        @Override
+                        public void onChanged(@Nullable Integer userID) {
+                            showProgress(false);
+                            if (userID != null && viewModel.getCurrentUser().getValue() != null) {
+                                viewModel.getCurrentUser().getValue().setId(userID);
+                                Intent nextIntent = new Intent(QuestionMealSelection.this, MainScreen.class);
+                                startActivity(nextIntent);
+                            }
                         }
-                    }
-                });
+                    });
 
-
+                }
             }
         });
 
