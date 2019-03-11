@@ -132,5 +132,15 @@ public class QuestionMealSelection extends AppCompatActivity {
 
     }
 
+    public void updateNextButton() {
+        List<Recipe> selectedRecipes = adapter.getSelectedRecipeList();
+        if (selectedRecipes.size() < 10) {
+            doneButton.setText(selectedRecipes.size() + "/10");
+            doneButton.setBackground(getDrawable(R.drawable.grayroundedbutton));
+        } else {
+            doneButton.setText("Finish");
+            doneButton.setBackground(getDrawable(R.drawable.redroundedbutton));
+        }
+    }
 
 }
