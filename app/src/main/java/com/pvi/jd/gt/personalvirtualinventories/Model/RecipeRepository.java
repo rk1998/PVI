@@ -429,13 +429,14 @@ public class RecipeRepository {
         for(int i = 0; i < hatedFoods.size(); i++) {
             String hatedFood = hatedFoods.get(i);
             hatedFood = hatedFood.replaceAll("\\s", "+");
-            requestURL += "&excludedIngredient[]=" + hatedFood;
+            requestURL += "&excludedIngredient[]=" + hatedFood.toLowerCase();
         }
 
         requestURL += "&excludedIngredient[]=alcohol";
         requestURL += "&maxTotalTimeInSeconds=" + maxTotalTimeInSeconds;
         requestURL += "&excludedCourse[]=course^course-Cocktails" +
-                "&excludedCourse[]=course^course-Condiments+and+Sauces";
+                "&excludedCourse[]=course^course-Condiments+and+Sauces" +
+                "&excludedCourse[]course^course-Beverages";
 
         //add dietary preferences
         for(int i = 0; i < dietaryPreferences.size(); i++) {

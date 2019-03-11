@@ -114,8 +114,6 @@ public class MealCell extends BaseAdapter {
         recipeTitle.setText(recipe.getRecipeTitle());
         final FloatingActionButton addButton = (FloatingActionButton) convertView.findViewById(R.id.fab);
 
-        //Todo: get image from url contained in Recipe object and set it
-
         String imgUrl = recipe.getImgURL();
         if(imgUrl.isEmpty()) {
             img.setImageResource(R.drawable.spagett);

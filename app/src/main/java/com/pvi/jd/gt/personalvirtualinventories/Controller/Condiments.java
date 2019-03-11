@@ -41,7 +41,7 @@ public class Condiments extends AppCompatActivity {
         list.add("BBQ Sauce");
         list.add("Pesto Sauce");
         list.add("Horseradish");
-
+        viewModel = ViewModelProviders.of(this).get(QuestionnaireViewModel.class);
         RecyclerView toolList = (RecyclerView) findViewById(R.id.meats_recycler);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toolList.setLayoutManager(new LinearLayoutManager(this));

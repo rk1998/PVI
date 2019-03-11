@@ -61,9 +61,9 @@ public class QuestionMealSelection extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 List<Recipe> selectedRecipes = adapter.getSelectedRecipeList();
-                MutableLiveData<Integer> userID = viewModel.writeUserData(selectedRecipes, QuestionMealSelection.this);
+                MutableLiveData<Integer> id = viewModel.writeUserData(selectedRecipes, QuestionMealSelection.this);
                 showProgress(true);
-                userID.observe(QuestionMealSelection.this, new Observer<Integer>() {
+                id.observe(QuestionMealSelection.this, new Observer<Integer>() {
                 @Override
                     public void onChanged(@Nullable Integer userID) {
                         showProgress(false);

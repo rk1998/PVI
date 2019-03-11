@@ -100,8 +100,8 @@ public class MealPlanRepository {
         MutableLiveData<MealPlan> mmp = new MutableLiveData<>();
         mmp.setValue(mp);
         model.setCurrentMealPlan(mmp);
-        //addNewMealPlanToDB(model.getCurrentUser().getValue().getId(), jsonArray, currContext);
-        addNewMealPlanToDB(1, jsonArray, currContext);
+        addNewMealPlanToDB(model.getCurrentUser().getValue().getId(), jsonArray, currContext);
+        //addNewMealPlanToDB(1, jsonArray, currContext);
 
     }
 
@@ -134,11 +134,11 @@ public class MealPlanRepository {
                 }
             }
         }
-        //if (model.getCurrentUser().getValue() != null) {
-            //setCompleteStatusInDB(model.getCurrentUser().getValue().getId(), recipe.getApiID(),
-            //        complete, currContext);
-        //}
-        setCompleteStatusInDB(1, recipe.getApiID(), complete, currContext);
+        if (model.getCurrentUser().getValue() != null) {
+            setCompleteStatusInDB(model.getCurrentUser().getValue().getId(), recipe.getApiID(),
+                    complete, currContext);
+        }
+        //setCompleteStatusInDB(1, recipe.getApiID(), complete, currContext);
     }
 
     private void setCompleteStatusInDB(int uid, String recipeApiID, boolean complete, Context currContext) {
