@@ -65,11 +65,11 @@ public class QuestionMealSelection extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 List<Recipe> selectedRecipes = adapter.getSelectedRecipeList();
-                if(selectedRecipes.size() < 15) {
+                if(selectedRecipes.size() < 10) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(QuestionMealSelection.this);
                     builder.setCancelable(true);
-                    builder.setTitle("Not Enough recipes");
-                    builder.setMessage("Please select at least fifteen recipes for your recipe bank.");
+                    builder.setTitle("Not enough recipes");
+                    builder.setMessage("Please select at least 10 recipes for your recipe bank.");
                     builder.setPositiveButton("Ok",
                             new DialogInterface.OnClickListener() {
                                 @Override

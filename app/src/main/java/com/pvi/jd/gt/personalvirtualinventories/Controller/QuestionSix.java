@@ -27,10 +27,6 @@ public class QuestionSix extends AppCompatActivity {
         tools.add("Blender");
         tools.add("Food Processor");
         tools.add("Slow Cooker");
-        tools.add("Grater");
-        tools.add("Whisk");
-        tools.add("Vegetable Peeler");
-        tools.add("Baking Sheet Pan");
         tools.add("NutriBullet");
 
         RecyclerView toolList = (RecyclerView) findViewById(R.id.tool_list);
