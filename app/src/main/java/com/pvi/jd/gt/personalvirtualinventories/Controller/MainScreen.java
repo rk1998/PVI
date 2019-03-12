@@ -188,16 +188,30 @@ public class MainScreen extends AppCompatActivity
                     }
                 });
             }
+            ImageButton addButton = (ImageButton) findViewById(R.id.add_button);
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent nextIntent = new Intent(MainScreen.this,
+                            MealSelection.class);
+                    startActivity(nextIntent);
+                }
+            });
         }
     }
 
     public void editMode(MenuItem item) {
         boolean editMode = adapter.getEditMode();
+        ImageButton addButton = (ImageButton) findViewById(R.id.add_button);
         if (!editMode) {
             item.setTitle("Done");
+            addButton.setVisibility(View.VISIBLE);
+            addButton.bringToFront();
+            addButton.invalidate();
             adapter.setEditMode(true);
         } else {
             item.setTitle("Edit");
+            addButton.setVisibility(View.GONE);
             adapter.setEditMode(false);
         }
     }
