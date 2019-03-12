@@ -137,6 +137,9 @@ public class MealCell extends BaseAdapter {
                     selectionMap.put(recipe, new Boolean(false));
 
                 }
+                if (mContext instanceof QuestionMealSelection) {
+                    ((QuestionMealSelection) mContext).updateNextButton();
+                }
                 //Toast.makeText(mContext, "Pizza Pizza", Toast.LENGTH_SHORT).show();
             }
         });

@@ -18,7 +18,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/grayroundedbutton"
+        android:background="@drawable/redroundedbutton"
         android:text="CREATE MEAL PLAN\nFOR THE WEEK"
         android:textColor="@android:color/white"
         android:textSize="24sp"
@@ -41,4 +41,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.901" />
+
+    <ImageButton
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="?android:selectableItemBackground"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:srcCompat="@drawable/ic_add_circle_red_80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"  />
 </android.support.constraint.ConstraintLayout>

@@ -145,7 +145,7 @@ public class MealPlanCell extends BaseAdapter {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setCancelable(true);
-                builder.setTitle("Remove " + recipeTitle.getText() + " from your meal plan?");
+                builder.setMessage("Remove " + recipeTitle.getText() + " from your meal plan?");
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -162,6 +162,7 @@ public class MealPlanCell extends BaseAdapter {
                 dialog.show();
             }
         });
+
         if (!editMode) {
             deleteButton.setVisibility(View.GONE);
         } else {

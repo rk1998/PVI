@@ -57,6 +57,7 @@
         android:horizontalSpacing="10dp"
         android:numColumns="2"
         android:verticalSpacing="10dp"
+        android:paddingBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

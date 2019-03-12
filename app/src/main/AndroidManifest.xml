@@ -42,14 +42,30 @@
         <activity
             android:name=".Controller.RegistrationActivity"
             android:label="@string/title_activity_registration" />
-        <activity android:name=".Controller.SplashScreen"></activity>
-        <activity android:name=".Controller.QuestionOne" />
-        <activity android:name=".Controller.QuestionTwo" />
-        <activity android:name=".Controller.QuestionThree" />
-        <activity android:name=".Controller.QuestionFour" />
-        <activity android:name=".Controller.QuestionFive" />
-        <activity android:name=".Controller.QuestionSix" />
-        <activity android:name=".Controller.QuestionMealSelection" />
+        <activity
+            android:name=".Controller.SplashScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Controller.QuestionOne"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Controller.QuestionTwo"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Controller.QuestionThree"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Controller.QuestionFour"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Controller.QuestionFive"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Controller.QuestionSix"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Controller.QuestionMealSelection"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Controller.Fruits"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
