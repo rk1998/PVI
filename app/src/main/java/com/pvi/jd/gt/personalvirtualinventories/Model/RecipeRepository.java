@@ -446,7 +446,7 @@ public class RecipeRepository {
         int mealCount = 0;
         for(int i = 0; i < favoriteMeals.size(); i++) {
             String faveMeal = favoriteMeals.get(i);
-            String requestFaveMealURL =  requestURL + "&q=" + faveMeal + "&maxResult=4";
+            String requestFaveMealURL =  requestURL + "&q=" + faveMeal + "&maxResult=4&start=1";
             JsonObjectRequest searchRecipeRequest = new JsonObjectRequest(Request.Method.GET,
                     requestFaveMealURL, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -487,7 +487,7 @@ public class RecipeRepository {
 
         int mealsRemaining = MAX_RESULTS_PER_MEAL - mealCount;
 
-        String remainingMealRequest = requestURL + "&maxResult=" + mealsRemaining;
+        String remainingMealRequest = requestURL + "&maxResult=" + mealsRemaining + "&start=1";
 
         JsonObjectRequest searchRecipeRequest = new JsonObjectRequest(Request.Method.GET,
                 remainingMealRequest, null, new Response.Listener<JSONObject>() {

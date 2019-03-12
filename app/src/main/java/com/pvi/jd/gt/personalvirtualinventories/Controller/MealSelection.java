@@ -5,11 +5,15 @@ import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealSelectionViewModel;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -37,32 +41,7 @@ public class MealSelection extends AppCompatActivity {
     private ArrayList<String> tempRecipeId;
     private MealCell adapter;
     private LiveData<List<Recipe>> recipeDataList;
-
-    /*private void createDummyRecipes() {
-        Recipe spaghetti = new Recipe("Spaghetti", 10, 20, "Make spaghetti", new ArrayList<>(Arrays.asList(ingredients[0].split(", "))));
-        spaghetti.setImgURL("http://i2.yummly.com/Hot-Turkey-Salad-Sandwiches-Allrecipes.l.png");
-        Recipe pizza = new Recipe("Pizza", 20, 40, "Make pizza", new ArrayList<>(Arrays.asList(ingredients[1].split(", "))));
-        pizza.setImgURL("https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg");
-        Recipe tacos = new Recipe("Tacos", 10, 20, "TACO NIGHT", new ArrayList<>(Arrays.asList(ingredients[2].split(", "))));
-        tacos.setImgURL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwwwDZTip_gvqPmL75Wt1yasSnozKSRNBDyJAm5OgZvNl8tN7W");
-        Recipe chickenSalad = new Recipe("Chicken Salad", 5, 20, "Put the salad together", new ArrayList<>(Arrays.asList(ingredients[3].split(", "))));
-        chickenSalad.setImgURL("https://www.tasteofhome.com/wp-content/uploads/2017/10/Berry-Chicken-Salad_exps47579_CW143042B02_27_1b_RMS-696x696.jpg");
-        dummyRecipes.add(spaghetti);
-        dummyRecipes.add(pizza);
-        dummyRecipes.add(tacos);
-        dummyRecipes.add(chickenSalad);
-        tempRecipeId = new ArrayList<>();
-        tempRecipeId.add("Simple-Skillet-Green-Beans-2352743");
-        tempRecipeId.add("Chocolate-Pots-De-Creme-_Vegan-_-Paleo_-2615006");
-        tempRecipeId.add("Arrabbiata-Pasta-1686610");
-        tempRecipeId.add("Creamy-Pesto-Pasta-2137433");
-        tempRecipeId.add("Greek-Pasta-Salad-2559770");
-        tempRecipeId.add("Pasta-caprese-299294");
-        tempRecipeId.add("Vegan-Spinach-Pesto-Pasta-2596986");
-        tempRecipeId.add("Italian-Grilled-Cheese-1600270");
-        tempRecipeId.add("Easy-4-Ingredient-Instant-Pot-Mac-and-Cheese-2623416");
-        tempRecipeId.add("Marinated-Cucumbers-and-Red-Onions-2555614");
-    }*/
+    private View mProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +59,8 @@ public class MealSelection extends AppCompatActivity {
         });
         //createDummyRecipes();
         GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
-
+        mProgressView = findViewById(R.id.meal_loading_bar);
+        showProgress(true);
         viewModel = ViewModelProviders.of(this).get(MealSelectionViewModel.class);
         viewModel.init(this);
 
@@ -88,6 +68,7 @@ public class MealSelection extends AppCompatActivity {
         recipeDataList.observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
+                showProgress(false);
                 adapter = new MealCell(MealSelection.this, recipes);
                 mealSelectionGrid.setAdapter(adapter);
             }
@@ -146,6 +127,33 @@ public class MealSelection extends AppCompatActivity {
                 startActivity(newIntent);
             }
         });
+    }
+
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+
+        }
     }
 
 }

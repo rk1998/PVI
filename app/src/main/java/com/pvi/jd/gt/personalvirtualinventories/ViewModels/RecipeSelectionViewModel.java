@@ -47,6 +47,7 @@ public class RecipeSelectionViewModel extends ViewModel {
      * from the questionnaire
      * @param selectedRecipes recipe IDs the user selected for their meal bank
      * @param currentContext current activity context
+     * @return MutableLiveData<Integer> live data that observes the user id returned from the database
      */
     public MutableLiveData<Integer> writeUserData(List<Recipe> selectedRecipes, Context currentContext) {
         this.currentUser.setRecipes(selectedRecipes);
