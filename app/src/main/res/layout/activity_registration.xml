@@ -8,7 +8,7 @@
     tools:context="com.pvi.jd.gt.personalvirtualinventories.Controller.RegistrationActivity">
 
     <!-- Login progress -->
-    <ProgressBar
+    <!--<ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
         android:layout_marginTop="16dp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" /> -->
 
 
     <android.support.design.widget.TextInputLayout
@@ -140,6 +140,19 @@
         app:layout_constraintBottom_toTopOf="@+id/continue_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/username_verification_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="96dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/already_has_account_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
 
 
 </android.support.constraint.ConstraintLayout>
