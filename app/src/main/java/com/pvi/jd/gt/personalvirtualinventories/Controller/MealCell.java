@@ -112,7 +112,7 @@ public class MealCell extends BaseAdapter {
         //recipeTitle.setText(mealNames[position]);
         final Recipe recipe = (Recipe) getItem(position);
         recipeTitle.setText(recipe.getRecipeTitle());
-        final FloatingActionButton addButton = (FloatingActionButton) convertView.findViewById(R.id.fab);
+        FloatingActionButton addButton = (FloatingActionButton) convertView.findViewById(R.id.fab);
 
         String imgUrl = recipe.getImgURL();
         if(imgUrl.isEmpty()) {
@@ -124,6 +124,11 @@ public class MealCell extends BaseAdapter {
                     R.drawable.spagett, R.drawable.spagett));
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
             img.setImageUrl(imgUrl, imageLoader);
+        }
+        if(!selectionMap.containsKey(recipe)) {
+            addButton.setImageResource(R.drawable.addbtn);
+        } else {
+            addButton.setImageResource(R.drawable.checkbtn);
         }
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
