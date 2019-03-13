@@ -31,16 +31,20 @@ public class Condiments extends AppCompatActivity {
 
 
         ArrayList<String> list = new ArrayList<>();
-        list.add("Ketchup");
-        list.add("Mustard");
         list.add("Mayonnaise");
+        list.add("Cilantro");
+        list.add("Mustard");
+        list.add("Ketchup");
+        list.add("Wasabi");
+        list.add("Horseradish");
         list.add("Oil");
         list.add("Vinegar");
         list.add("Soy Sauce");
         list.add("Hot Sauce");
         list.add("BBQ Sauce");
+        list.add("Ranch");
+        list.add("Relish");
         list.add("Pesto Sauce");
-        list.add("Horseradish");
         viewModel = ViewModelProviders.of(this).get(QuestionnaireViewModel.class);
         RecyclerView toolList = (RecyclerView) findViewById(R.id.meats_recycler);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));

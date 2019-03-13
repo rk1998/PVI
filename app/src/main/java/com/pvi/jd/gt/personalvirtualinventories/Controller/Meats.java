@@ -35,12 +35,21 @@ public class Meats extends AppCompatActivity {
 
 
         ArrayList<String> list = new ArrayList<>();
-        list.add("Chicken");
-        list.add("Beef");
+        list.add("No Meats");
+        list.add("No Seafood");
+        list.add("Tofu");
         list.add("Pork");
         list.add("Fish");
+        list.add("Salmon");
+        list.add("Shrimp");
+        list.add("Tuna");
+        list.add("Chicken");
+        list.add("Oysters");
+        list.add("Beef");
+        list.add("Crab");
         list.add("Turkey");
         list.add("Lamb");
+        list.add("Duck");
 
 
         viewModel = ViewModelProviders.of(this).get(QuestionnaireViewModel.class);

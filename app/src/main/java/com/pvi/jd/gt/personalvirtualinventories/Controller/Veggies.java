@@ -33,19 +33,27 @@ public class Veggies extends AppCompatActivity {
         setContentView(R.layout.activity_meats);
 
         ArrayList<String> list = new ArrayList<>();
-        list.add("Broccoli");
-        list.add("Cucumbers");
+        list.add("No Veggies");
+        list.add("Brussel Sprouts");
         list.add("Tomatoes");
-        list.add("Potatoes");
+        list.add("Broccoli");
+        list.add("Mushrooms");
+        list.add("Olives");
+        list.add("Garlic");
+        list.add("Onions");
+        list.add("Eggplant");
+        list.add("Cauliflower");
+        list.add("Beets");
+        list.add("Turnips");
+        list.add("Celery");
         list.add("Corn");
         list.add("Carrots");
         list.add("Green Beans");
-        list.add("Garlic");
-        list.add("Onions");
         list.add("Spinach");
-        list.add("Mushrooms");
-        list.add("Cauliflower");
-        list.add("Brussel Sprouts");
+        list.add("Cucumbers");
+        list.add("Sweet Potatoes");
+        list.add("Potatoes");
+
         viewModel = ViewModelProviders.of(this).get(QuestionnaireViewModel.class);
         RecyclerView toolList = (RecyclerView) findViewById(R.id.meats_recycler);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));

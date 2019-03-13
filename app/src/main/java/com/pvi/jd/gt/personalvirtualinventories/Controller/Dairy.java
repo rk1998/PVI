@@ -36,8 +36,10 @@ public class Dairy extends AppCompatActivity {
 
 
         ArrayList<String> list = new ArrayList<>();
+        list.add("No Dairy");
         list.add("Butter");
         list.add("Sour Cream");
+        list.add("Cottage Cheese");
         list.add("Milk");
         list.add("Yogurt");
         list.add("Ice Cream");

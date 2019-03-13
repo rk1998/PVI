@@ -35,12 +35,14 @@ public class Fruits extends AppCompatActivity {
 
 
         ArrayList<String> list = new ArrayList<>();
+        list.add("No Fruits");
         list.add("Bananas");
         list.add("Avocados");
+        list.add("Coconut");
+        list.add("Cherries");
         list.add("Apples");
         list.add("Pineapples");
         list.add("Strawberries");
-        list.add("Coconut");
         list.add("Pears");
         list.add("Grapes");
         list.add("Oranges");
