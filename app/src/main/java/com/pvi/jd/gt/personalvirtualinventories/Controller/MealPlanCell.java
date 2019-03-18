@@ -89,9 +89,12 @@ public class MealPlanCell extends BaseAdapter {
         final CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.meal_checkbox);
         Meal meal = (Meal) getItem(position);
         if (meal.isCompleted()) {
-            checkbox.setSelected(true);
+            checkbox.setChecked(true);
+            countSelected++;
+            img.setColorFilter(Color.argb(175,50,50,50));
         } else {
-            checkbox.setSelected(false);
+            checkbox.setChecked(false);
+            img.setColorFilter(null);
         }
         checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +135,6 @@ public class MealPlanCell extends BaseAdapter {
                     countSelected--;
                     mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(), false, mContext);
                 }
-                //Toast.makeText(mContext, "Pizza Pizza", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -212,6 +214,7 @@ public class MealPlanCell extends BaseAdapter {
     public void removeRecipe(Meal meal) {
         if (planMeals.contains(meal)) {
             planMeals.remove(meal);
+            mpVM.removeMeal(meal, mContext);
         }
         notifyDataSetChanged();
         if (planMeals.isEmpty()) {

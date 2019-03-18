@@ -52,7 +52,6 @@ public class MealPlanViewModel extends ViewModel {
 //        User user = new User();
 //        user.setId(1);
         MutableLiveData<User> userMutableLiveData = userRepo.getCurrUser();
-        //userMutableLiveData.setValue(user);
         this.mealplanRecipes = mpRepo.getCurrMealPlan(userMutableLiveData.getValue(), currentContext);
 
 
@@ -83,9 +82,25 @@ public class MealPlanViewModel extends ViewModel {
         return recipeRepo.getRecipe(apiID, currContext);
     }
 
-
+    /**
+     * Changes meal completion status in the database
+     * @param recipe recipe that is changing completion status
+     * @param completed the new completion status
+     * @param currContext current activity context
+     */
     public void changeMealCompletionStatus(Recipe recipe, boolean completed, Context currContext) {
         mpRepo.setCompleteStatus(recipe, completed, currContext);
+    }
+
+    /**
+     * removes a meal from the user's meal plan and updates it in the database
+     * @param mealToRemove meal that is being removed.
+     */
+    public void removeMeal(Meal mealToRemove, Context currentContext) {
+        List<Recipe> recipesToRemove = new LinkedList<>();
+        recipesToRemove.add(mealToRemove.getRecipe());
+        mpRepo.editMealPlan(userRepo.getCurrUser().getValue(), new LinkedList<>(), recipesToRemove,
+                currentContext);
     }
 
 }

@@ -8,10 +8,12 @@ import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealSelectionViewMode
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -73,58 +75,60 @@ public class MealSelection extends AppCompatActivity {
                 mealSelectionGrid.setAdapter(adapter);
             }
         });
-//        List<MutableLiveData<Recipe>> recipeDataList = viewModel.getUserRecipes(tempRecipeId, this);
-//        for(MutableLiveData<Recipe> data : recipeDataList) {
-//            data.observe(this, new Observer<Recipe>() {
-//                @Override
-//                public void onChanged(@Nullable Recipe recipe) {
-//                    selectionAdapter.addNewRecipe(recipe);
-//                }
-//            });
-//        }
-//        apiIDS.observe(this, new Observer<List<String>>() {
-//            @Override
-//            public void onChanged(@Nullable List<String> strings) {
-//                List<MutableLiveData<Recipe>> recipeDataList = viewModel.getUserRecipes(strings,
-//                        MealSelection.this);
-//                mealSelectionGrid.setAdapter(selectionAdapter);
-//
-//                for(MutableLiveData<Recipe> liveData : recipeDataList) {
-//                    liveData.observe(MealSelection.this, new Observer<Recipe>() {
-//                        @Override
-//                        public void onChanged(@Nullable Recipe recipe) {
-//                            selectionAdapter.addNewRecipe(recipe);
-//                        }
-//                    });
-//                }
-//            }
-//        });
-
-
-        //List<MutableLiveData<Recipe>> userRecipes = viewModel.getUserRecipes();
-
-
 
         Button doneButton = (Button) findViewById(R.id.confirm_meal_selection);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ArrayList<String> selectedRecipeIDs = adapter.getSelectedMeals();
+                if(selectedRecipeIDs.isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MealSelection.this);
+                    builder.setCancelable(false);
+                    builder.setTitle("No Meals Selected");
+                    builder.setMessage("Please choose at least one meal for your new meal plan.");
+                    builder.setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    List<Recipe> selectedRecipes = recipeDataList.getValue().stream()
+                            .filter(recipe -> selectedRecipeIDs.contains(recipe.getApiID()))
+                            .collect(Collectors.toList());
+                    if(MealSelection.this.getIntent().hasExtra("EDIT_MODE")) {
+                        boolean editMode = MealSelection.this.getIntent().getBooleanExtra("EDIT_MODE", false);
+                        if(editMode) {
+                            viewModel.editCurrentMealPlan(selectedRecipes, getApplicationContext());
+                            Intent newIntent = new Intent(MealSelection.this,
+                                    MainScreen.class);
+                            startActivity(newIntent);
+                        } else {
+                            viewModel.createMealPlan(selectedRecipes, getApplicationContext());
+                            Intent newIntent = new Intent(MealSelection.this,
+                                    MainScreen.class);
+                            startActivity(newIntent);
+                        }
+                    } else {
+                        viewModel.createMealPlan(selectedRecipes, getApplicationContext());
+                        Intent newIntent = new Intent(MealSelection.this,
+                                MainScreen.class);
+                        startActivity(newIntent);
+                    }
+                }
 
-                List<Recipe> selectedRecipes = recipeDataList.getValue().stream()
-                        .filter(recipe -> selectedRecipeIDs.contains(recipe.getApiID()))
-                        .collect(Collectors.toList());
-
-                viewModel.createMealPlan(selectedRecipes, getApplicationContext());
-                Intent newIntent = new Intent(MealSelection.this,
-                        MainScreen.class);
-                newIntent.putExtra("MEAL_PLAN_CREATED", true);
-
-                Bundle bundle = new Bundle();
-                bundle.putStringArrayList("SELECTED_IDS", selectedRecipeIDs);
-
-                newIntent.putExtra("ID_BUNDLE", bundle);
-                startActivity(newIntent);
+//                viewModel.createMealPlan(selectedRecipes, getApplicationContext());
+//                Intent newIntent = new Intent(MealSelection.this,
+//                        MainScreen.class);
+//                newIntent.putExtra("MEAL_PLAN_CREATED", true);
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putStringArrayList("SELECTED_IDS", selectedRecipeIDs);
+//
+//                newIntent.putExtra("ID_BUNDLE", bundle);
+                //startActivity(newIntent);
             }
         });
     }

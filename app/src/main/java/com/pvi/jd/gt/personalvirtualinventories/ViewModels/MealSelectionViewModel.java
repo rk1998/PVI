@@ -12,6 +12,7 @@ import com.pvi.jd.gt.personalvirtualinventories.Model.RecipeRepository;
 import com.pvi.jd.gt.personalvirtualinventories.Model.User;
 import com.pvi.jd.gt.personalvirtualinventories.Model.UserRepository;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -46,7 +47,21 @@ public class MealSelectionViewModel extends ViewModel {
         return apiIDS;
     }
 
+    /**
+     * Writes new meal plan back to the meal plan repository
+     * @param recipeApiIDs new meal plan selected from user's recipe bank
+     * @param currContext current activity context
+     */
     public void createMealPlan(List<Recipe> recipeApiIDs, Context currContext) {
         mpRepo.createCurrMealPlan(recipeApiIDs, currContext);
+    }
+
+    /**
+     * Edits current meal plan
+     * @param newRecipes new recipes to add to current meal plan
+     * @param currContext current activity context
+     */
+    public void editCurrentMealPlan(List<Recipe> newRecipes, Context currContext) {
+        mpRepo.editMealPlan(this.currUser.getValue(), newRecipes, new LinkedList<>(), currContext);
     }
 }

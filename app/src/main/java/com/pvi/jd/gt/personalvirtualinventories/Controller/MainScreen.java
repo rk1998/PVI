@@ -160,6 +160,7 @@ public class MainScreen extends AppCompatActivity
                 public void onClick(View view) {
                     Intent nextIntent = new Intent(MainScreen.this,
                             MealSelection.class);
+                    nextIntent.putExtra("EDIT_MODE", false);
                     startActivity(nextIntent);
                 }
             });
@@ -194,6 +195,7 @@ public class MainScreen extends AppCompatActivity
                 public void onClick(View v) {
                     Intent nextIntent = new Intent(MainScreen.this,
                             MealSelection.class);
+                    nextIntent.putExtra("EDIT_MODE", true);
                     startActivity(nextIntent);
                 }
             });

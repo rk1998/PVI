@@ -26,8 +26,6 @@ import static java.util.stream.Collectors.toList;
  * Created by paige on 2/11/2019.
  */
 
-//TODO: meal plan view screen queries DB for meal plan rather than just model
-
 public class MealPlanRepository {
 
     private static final MealPlanRepository MEALPLAN_REPOSITORY = new MealPlanRepository();
