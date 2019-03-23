@@ -79,6 +79,7 @@ public class RecipeScreen extends AppCompatActivity {
             recipeIngredientsView.append("\u2022 " + s);
             recipeIngredientsView.append(System.getProperty("line.separator"));
         }
+        recipeIngredientsView.setMovementMethod(new ScrollingMovementMethod());
 
         // tab functionality
         TabLayout tabs = (TabLayout) findViewById(R.id.tab_layout);

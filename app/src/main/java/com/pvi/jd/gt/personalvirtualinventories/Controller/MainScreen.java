@@ -181,7 +181,9 @@ public class MainScreen extends AppCompatActivity
                 mealPlanMutableLiveData.observe(this, new Observer<MealPlan>() {
                     @Override
                     public void onChanged(@Nullable MealPlan mealPlan) {
-                        adapter = new MealPlanCell(MainScreen.this, mealPlan, viewModel);
+                        int numCompleted = mealPlan.numCompleted();
+                        adapter = new MealPlanCell(MainScreen.this, mealPlan, viewModel,
+                                numCompleted);
                         mealPlanList.setAdapter(adapter);
                         layout.addView(mealPlanList);
                         showProgress(false);

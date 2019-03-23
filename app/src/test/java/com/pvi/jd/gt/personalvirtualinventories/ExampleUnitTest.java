@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.*;
 
 import static org.junit.Assert.*;
 
@@ -31,6 +32,38 @@ public class ExampleUnitTest {
             assertEquals("5f4dcc3b5aa765d61d8327deb882cf99", hashtext);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void parseIngredientLine() {
+        String exampleLine = "4 oz. vegetable broth";
+        String exampleLine2 = "5 garlic cloves minced";
+
+        String regex = "(\\d+(/\\d+)?)\\s((cup(s)?)|(oz.)|(ounce(s)?)|(tbs.)|(tsp.)|(tablespoon(s)?)|(teaspoon(s)?))?(\\w*)?\\s";
+        String negatedRegex = "(?!" + regex + "$).*";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(exampleLine);
+        if(m.find()) {
+            System.out.println("start(): " + m.start());
+            System.out.println("end(): " + m.end());
+            System.out.println(exampleLine.substring(m.start(), m.end()-1));
+            System.out.println(exampleLine.substring(m.end(), exampleLine.length()));
+        }
+
+//        Pattern neg = Pattern.compile(negatedRegex);
+//        Matcher negM = neg.matcher(exampleLine);
+//        if(negM.find()){
+//            System.out.println("start(): " + negM.start());
+//            System.out.println("end(): " + negM.end());
+//        }
+
+        Matcher example2 = p.matcher(exampleLine2);
+        if(example2.find()) {
+            System.out.println("start(): " + example2.start());
+            System.out.println("end(): " + example2.end());
+            System.out.println(exampleLine2.substring(example2.start(), example2.end()-1));
+            System.out.println(exampleLine2.substring(example2.end(), exampleLine2.length()));
         }
     }
 }

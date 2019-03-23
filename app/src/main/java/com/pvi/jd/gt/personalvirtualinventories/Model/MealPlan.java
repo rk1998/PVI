@@ -47,4 +47,14 @@ public class MealPlan {
     public void setExists(boolean exists) {
         this.exists = exists;
     }
+
+    public int numCompleted() {
+        int completed = 0;
+        for(Meal m: mealPlan) {
+            if(m.isCompleted()) {
+                completed++;
+            }
+        }
+        return completed;
+    }
 }

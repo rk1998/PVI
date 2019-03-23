@@ -47,13 +47,13 @@ public class MealPlanCell extends BaseAdapter {
      * @param c current activity context
      * @param mealPlan current meal plan
      */
-    public MealPlanCell(Context c, MealPlan mealPlan, MealPlanViewModel mpVM) {
+    public MealPlanCell(Context c, MealPlan mealPlan, MealPlanViewModel mpVM, int numCompleted) {
         this.mContext = c;
         this.mpVM = mpVM;
         this.planMeals = mealPlan.getMealPlan();
         mealNames = new String[0];
         mealIngredients = new String[0];
-
+        countSelected = numCompleted;
     }
 
     @Override
@@ -90,12 +90,12 @@ public class MealPlanCell extends BaseAdapter {
         Meal meal = (Meal) getItem(position);
         if (meal.isCompleted()) {
             checkbox.setChecked(true);
-            countSelected++;
             img.setColorFilter(Color.argb(175,50,50,50));
         } else {
             checkbox.setChecked(false);
             img.setColorFilter(null);
         }
+        Log.d("NUM SELECTED: ", ""+countSelected);
         checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +105,9 @@ public class MealPlanCell extends BaseAdapter {
                 if(checkbox.isChecked()) {
                     img.setColorFilter(Color.argb(175,50,50,50));
                     countSelected++;
-                    mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(), true, mContext);
+                    Log.d("NUM SELECTED: ", ""+countSelected);
+                    mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(),
+                            true, mContext);
                     if (countSelected == planMeals.size()) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                         builder.setCancelable(true);
@@ -122,6 +124,11 @@ public class MealPlanCell extends BaseAdapter {
                         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                countSelected--;
+                                img.setColorFilter(null);
+                                checkbox.setChecked(false);
+                                mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(),
+                                        false, mContext);
                             }
                         });
 
@@ -133,6 +140,7 @@ public class MealPlanCell extends BaseAdapter {
                 } else {
                     img.setColorFilter(null);
                     countSelected--;
+                    Log.d("NUM SELECTED: ", ""+countSelected);
                     mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(), false, mContext);
                 }
             }
