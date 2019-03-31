@@ -37,13 +37,17 @@ public class ExampleUnitTest {
 
     @Test
     public void parseIngredientLine() {
-        String exampleLine = "4 oz. vegetable broth";
+        String exampleLine = "4.5 teaspoons dry yeast";
         String exampleLine2 = "5 garlic cloves minced";
 
-        String regex = "(\\d+(/\\d+)?)\\s((cup(s)?)|(oz.)|(ounce(s)?)|(tbs.)|(tsp.)|(tablespoon(s)?)|(teaspoon(s)?))?(\\w*)?\\s";
+        String regex = "(\\d+(\\.\\d+)?(/\\d+)?)\\s((cup(s)?)|(oz(\\.)?)|(ounce(s)?)|(tbs(p)?(\\.)?)|(tsp(\\.)?)|(tablespoon(s)?)|(teaspoon(s)?))?(\\w*)?\\s";
         String negatedRegex = "(?!" + regex + "$).*";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(exampleLine);
+        String[] results = p.split(exampleLine);
+        for(String s: results) {
+            System.out.println(s);
+        }
         if(m.find()) {
             System.out.println("start(): " + m.start());
             System.out.println("end(): " + m.end());
@@ -51,12 +55,12 @@ public class ExampleUnitTest {
             System.out.println(exampleLine.substring(m.end(), exampleLine.length()));
         }
 
-//        Pattern neg = Pattern.compile(negatedRegex);
-//        Matcher negM = neg.matcher(exampleLine);
-//        if(negM.find()){
-//            System.out.println("start(): " + negM.start());
-//            System.out.println("end(): " + negM.end());
-//        }
+        Pattern neg = Pattern.compile(negatedRegex);
+        Matcher negM = neg.matcher(exampleLine);
+        if(negM.find()){
+            System.out.println("start(): " + negM.start());
+            System.out.println("end(): " + negM.end());
+        }
 
         Matcher example2 = p.matcher(exampleLine2);
         if(example2.find()) {

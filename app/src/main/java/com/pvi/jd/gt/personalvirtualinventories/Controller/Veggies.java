@@ -65,7 +65,16 @@ public class Veggies extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<String> selectedFoods = adapter.getSelectedData();
-                viewModel.addDislikedFoods(selectedFoods);
+                List<String> dislikedFoods = new ArrayList<>();
+                if(selectedFoods.contains("No Veggies")) {
+                    for(int i = 1; i < list.size(); i++) {
+                        dislikedFoods.add(list.get(i));
+                    }
+                } else {
+                    dislikedFoods = selectedFoods;
+                }
+                viewModel.addDislikedFoods(dislikedFoods);
+                //viewModel.addDislikedFoods(selectedFoods);
                 Intent nextIntent = new Intent(Veggies.this,
                         QuestionFour.class);
                 startActivity(nextIntent);

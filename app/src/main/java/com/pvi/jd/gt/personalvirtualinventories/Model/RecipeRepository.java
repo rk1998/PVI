@@ -240,7 +240,8 @@ public class RecipeRepository {
         final MutableLiveData<List<Recipe>> dataList = new MutableLiveData<>();
         dataList.setValue(new LinkedList<>());
         for(int i = 0; i < recipeIds.size(); i++) {
-            if(model.getStoredRecipes().containsKey(recipeIds.get(i))) {
+            if(model.getStoredRecipes().containsKey(recipeIds.get(i))
+                    && model.getStoredRecipes().get(recipeIds.get(i)).hasInfo()) {
                 Recipe rep = model.getStoredRecipes().get(recipeIds.get(i));
                 dataList.getValue().add(rep);
                 dataList.setValue(dataList.getValue());
@@ -253,7 +254,12 @@ public class RecipeRepository {
                         requestURL, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Recipe requestedRecipe = new Recipe();
+                        Recipe requestedRecipe;
+                        if(model.getStoredRecipes().containsKey(currentID)) {
+                            requestedRecipe = model.getStoredRecipes().get(currentID);
+                        } else {
+                            requestedRecipe = new Recipe();
+                        }
                         requestedRecipe.setApiID(currentID);
                         try {
                             String recipeTitle = response.getString("name");
@@ -271,11 +277,13 @@ public class RecipeRepository {
                                 ingredientList.add(ingredientLine);
                             }
                             requestedRecipe.setIngredients(ingredientList);
+                            requestedRecipe.createIngredientMap();
 
                         } catch(JSONException e) {
                             requestedRecipe.setIngredients(new ArrayList<String>());
 
                         }
+
                         ArrayList<String> nutrientInfo = new ArrayList<>();
                         try {
                             JSONArray nutrients = response.getJSONArray("nutritionEstimates");
@@ -446,7 +454,7 @@ public class RecipeRepository {
         int mealCount = 0;
         for(int i = 0; i < favoriteMeals.size(); i++) {
             String faveMeal = favoriteMeals.get(i);
-            String requestFaveMealURL =  requestURL + "&q=" + faveMeal + "&maxResult=4&start=1";
+            String requestFaveMealURL =  requestURL + "&q=" + faveMeal + "&maxResult=4&start=5";
             JsonObjectRequest searchRecipeRequest = new JsonObjectRequest(Request.Method.GET,
                     requestFaveMealURL, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -456,9 +464,20 @@ public class RecipeRepository {
                         JSONArray matches = response.getJSONArray("matches");
                         for(int i = 0; i < matches.length(); i++) {
                             JSONObject obj = matches.getJSONObject(i);
+                            Recipe tempRecipe = new Recipe();
                             try {
                                 String recipeId = obj.getString("id");
                                 recipeIds.add(recipeId);
+
+                                JSONArray ingredientNames = obj.getJSONArray("ingredients");
+                                ArrayList<String> ingredients = new ArrayList<>();
+                                for(int j = 0; j < ingredientNames.length(); j++) {
+                                    String ingredient = ingredientNames.getString(j);
+                                    ingredients.add(ingredient);
+                                }
+                                tempRecipe.setIngredientNames(ingredients);
+                                tempRecipe.setApiID(recipeId);
+                                model.getStoredRecipes().put(recipeId, tempRecipe);
                             } catch(JSONException e) {
                                 recipeIds.add("none");
                             }
@@ -487,7 +506,7 @@ public class RecipeRepository {
 
         int mealsRemaining = MAX_RESULTS_PER_MEAL - mealCount;
 
-        String remainingMealRequest = requestURL + "&maxResult=" + mealsRemaining + "&start=1";
+        String remainingMealRequest = requestURL + "&maxResult=" + mealsRemaining + "&start=10";
 
         JsonObjectRequest searchRecipeRequest = new JsonObjectRequest(Request.Method.GET,
                 remainingMealRequest, null, new Response.Listener<JSONObject>() {
@@ -498,9 +517,19 @@ public class RecipeRepository {
                     JSONArray matches = response.getJSONArray("matches");
                     for(int i = 0; i < matches.length(); i++) {
                         JSONObject obj = matches.getJSONObject(i);
+                        Recipe tempRecipe = new Recipe();
                         try {
                             String recipeId = obj.getString("id");
                             recipeIds.add(recipeId);
+                            tempRecipe.setApiID(recipeId);
+                            JSONArray ingredientNames = obj.getJSONArray("ingredients");
+                            ArrayList<String> ingredients = new ArrayList<>();
+                            for(int j = 0; j < ingredientNames.length(); j++) {
+                                String ingredient = ingredientNames.getString(j);
+                                ingredients.add(ingredient);
+                            }
+                            tempRecipe.setIngredientNames(ingredients);
+                            model.getStoredRecipes().put(recipeId, tempRecipe);
                         } catch(JSONException e) {
                             recipeIds.add("none");
                         }

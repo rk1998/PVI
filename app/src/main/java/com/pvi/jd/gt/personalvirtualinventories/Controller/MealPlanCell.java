@@ -179,6 +179,7 @@ public class MealPlanCell extends BaseAdapter {
             deleteButton.setVisibility(View.VISIBLE);
         }
 
+        img.setImageResource(R.color.gray);
         String img_resource = currMeal.getRecipe().getImgURL();
         if(img_resource.isEmpty()) {
             img.setDefaultImageResId(R.drawable.chickensalad);

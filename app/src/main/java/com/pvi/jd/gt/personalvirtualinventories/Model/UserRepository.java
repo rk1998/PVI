@@ -149,6 +149,7 @@ public class UserRepository {
                 Log.d("DATABASE RESPONSE", response.toString());
                 try {
                     int userID = response.getInt("id");
+                    Log.d("NEW USER ID", "" + userID);
                     //model.getCurrentUser().getValue().setId(userID);
                     id.setValue(userID);
                 } catch (JSONException e) {

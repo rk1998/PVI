@@ -17,6 +17,7 @@ import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.QuestionnaireViewModel;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -57,6 +58,14 @@ public class Dairy extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<String> selectedFoods = adapter.getSelectedData();
+                List<String> dislikedFoods = new ArrayList<>();
+                if(selectedFoods.contains("No Dairy")) {
+                    for(int i = 1; i < list.size(); i++) {
+                        dislikedFoods.add(list.get(i));
+                    }
+                } else {
+                    dislikedFoods = selectedFoods;
+                }
                 viewModel.addDislikedFoods(selectedFoods);
                 Intent nextIntent = new Intent(Dairy.this,
                         QuestionFour.class);

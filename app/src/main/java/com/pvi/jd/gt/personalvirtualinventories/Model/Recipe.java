@@ -3,8 +3,10 @@ package com.pvi.jd.gt.personalvirtualinventories.Model;
 import android.arch.lifecycle.LiveData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Recipe {
     private String apiID;
@@ -14,7 +16,9 @@ public class Recipe {
     private int numServings;
     private String instructions;
     private ArrayList<String> ingredients;
+    private ArrayList<String> ingredientNames;
     private ArrayList<String> nutritionInfo;
+    private Map<String, String> ingredientToUnit;
     private String recipeSource;
     private String imgURL;
 
@@ -37,6 +41,8 @@ public class Recipe {
         recipeSource = "custom";
         imgURL = "";
         nutritionInfo = new ArrayList<>();
+        ingredientNames = new ArrayList<>();
+        ingredientToUnit = new HashMap<>();
     }
 
     public Recipe(String id, String title, int cook, int prep, int servings, String instructions,
@@ -51,6 +57,8 @@ public class Recipe {
         recipeSource = source;
         imgURL = imgSource;
         nutritionInfo = new ArrayList<>();
+        ingredientNames = new ArrayList<>();
+        ingredientToUnit = new HashMap<>();
 
     }
 
@@ -65,6 +73,8 @@ public class Recipe {
         imgURL = "";
         apiID = "";
         nutritionInfo = new ArrayList<>();
+        ingredientNames = new ArrayList<>();
+        ingredientToUnit = new HashMap<>();
     }
 
     @Override
@@ -85,6 +95,10 @@ public class Recipe {
         return prepTime;
     }
 
+    public boolean hasInfo() {
+        return !this.ingredients.isEmpty();
+    }
+
     public int getNumServings() {
         return numServings;
     }
@@ -97,11 +111,45 @@ public class Recipe {
         }
         return details;
     }
+
+    /**
+     * Creates mapping of recipe name to the required amount for the recipe
+     */
+    public void createIngredientMap() {
+        if(!ingredients.isEmpty() && !ingredientNames.isEmpty()) {
+            for(int i = 0; i < ingredientNames.size(); i++) {
+                for(int j = 0; j < ingredients.size(); j++) {
+                    if(ingredients.get(j).contains(ingredientNames.get(i))) {
+                        String[] splitArr = ingredients.get(j).split(ingredientNames.get(i));
+                        String unit = "";
+                        if(splitArr.length != 0) {
+                            unit = splitArr[0];
+                        }
+//                        if(splitArr.length != 0 && !splitArr[0].equals("")) {
+//                            unit = splitArr[0];
+//                        } else if(splitArr.length != 0 && splitArr[0].equals("")) {
+//                            unit = splitArr[1];
+//                        }
+                        this.ingredientToUnit.put(ingredientNames.get(i), unit);
+                    }
+                }
+            }
+        }
+    }
+
+    public Map<String, String> getIngredientToUnit() {
+        return ingredientToUnit;
+    }
+
     public String getInstructions() {
         return instructions;
     }
     public ArrayList<String> getIngredients() {
         return ingredients;
+    }
+
+    public ArrayList<String> getIngredientNames() {
+        return ingredientNames;
     }
 
     public ArrayList<String> getNutritionInfo() {
@@ -134,6 +182,10 @@ public class Recipe {
         this.nutritionInfo = nutritionInfo;
     }
 
+    public void setIngredientToUnit(Map<String, String> ingredientToUnit) {
+        this.ingredientToUnit = ingredientToUnit;
+    }
+
     public void setNumServings(int servings) {
         this.numServings = servings;
     }
@@ -148,5 +200,9 @@ public class Recipe {
     }
     public void setImgURL(String url) {
         this.imgURL = url;
+    }
+
+    public void setIngredientNames(ArrayList<String> ingredientNames) {
+        this.ingredientNames = ingredientNames;
     }
 }
