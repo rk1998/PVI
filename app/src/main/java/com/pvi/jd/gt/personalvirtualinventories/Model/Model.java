@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import com.pvi.jd.gt.personalvirtualinventories.Model.User;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class Model {
     private MutableLiveData<User> currentUser;
     private MutableLiveData<MealPlan> currentMealPlan;
     private Map<String, Recipe> storedRecipes;
+    private Map<String, ArrayList<String>> currentGroceryList;
     private User tempUser;
 
     private Model() {
@@ -26,6 +28,7 @@ public class Model {
         currentMealPlan = new MutableLiveData<>();
         storedRecipes = new HashMap<>();
         tempUser = new User();
+        currentGroceryList = new HashMap<>();
     }
 
 
@@ -33,6 +36,17 @@ public class Model {
         return currentUser;
     }
 
+    /**
+     * Sets map of ingredient name to units. local storage for grocery list
+     * @param groceryList
+     */
+    public void setCurrentGroceryList(Map<String, ArrayList<String>> groceryList) {
+        this.currentGroceryList = groceryList;
+    }
+
+    public Map<String, ArrayList<String>> getCurrentGroceryList() {
+        return currentGroceryList;
+    }
 
     public void setCurrentUser(MutableLiveData<User> currentUser) {
         this.currentUser = currentUser;
