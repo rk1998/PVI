@@ -449,6 +449,13 @@ public class RecipeRepository {
         //add dietary preferences
         for(int i = 0; i < dietaryPreferences.size(); i++) {
             String diet = dietaryRestrictionMap.get(dietaryPreferences.get(i));
+            if(diet.equals("Low Sugar")) {
+                requestURL += "&nutrition.SUGAR.min=0&nutrition.SUGAR.max=10";
+            }
+
+            if(diet.equals("Low Carb")) {
+                requestURL += "&nutrition.CHOCDF.min=50&nutrition.CHOCDF.max=150";
+            }
             requestURL += "&allowedDiet[]=" + diet;
         }
         int mealCount = 0;

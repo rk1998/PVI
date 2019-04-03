@@ -6,6 +6,7 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 
+import com.pvi.jd.gt.personalvirtualinventories.Model.GroceryListRepository;
 import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlanRepository;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.Model.RecipeRepository;
@@ -25,6 +26,7 @@ public class MealSelectionViewModel extends ViewModel {
     private UserRepository userRepo = UserRepository.getUserRepository();
     private MealPlanRepository mpRepo = MealPlanRepository.getMealPlanRepository();
     private RecipeRepository recipeRepo = RecipeRepository.getRecipeRepository();
+    private GroceryListRepository groceryRepo = GroceryListRepository.getGroceryListRepository();
     private LiveData<List<Recipe>> userRecipes;
     private MutableLiveData<List<String>> apiIDS;
 
@@ -53,6 +55,7 @@ public class MealSelectionViewModel extends ViewModel {
      * @param currContext current activity context
      */
     public void createMealPlan(List<Recipe> recipeApiIDs, Context currContext) {
+        groceryRepo.generateGroceryList(recipeApiIDs);
         mpRepo.createCurrMealPlan(recipeApiIDs, currContext);
     }
 

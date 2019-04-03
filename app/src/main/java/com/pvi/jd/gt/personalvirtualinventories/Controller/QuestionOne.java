@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +51,8 @@ public class QuestionOne extends AppCompatActivity {
                     int numFamily = Integer.parseInt(family);
                     int numDays = Integer.parseInt(days);
                     int timePerMeal = Integer.parseInt(time);
+                    Log.d("NUM FAMILY", "" + numFamily);
+                    Log.d("TIME PER MEAL", "" + timePerMeal);
                     if(timePerMeal <= 0 || numFamily <= 0) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(QuestionOne.this);
                         builder.setCancelable(true);
