@@ -261,7 +261,9 @@ public class MainScreen extends AppCompatActivity
         if (id == R.id.meal_planning) {
             // Handle the camera action
         } else if (id == R.id.inventory) {
-
+            Intent intent = new Intent(this,
+                    Inventory.class);
+            startActivity(intent);
         } else if (id == R.id.grocery_list) {
             Intent intent = new Intent(this,
                     GroceryList.class);
