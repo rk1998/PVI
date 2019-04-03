@@ -130,7 +130,7 @@ public class Recipe {
 //                        } else if(splitArr.length != 0 && splitArr[0].equals("")) {
 //                            unit = splitArr[1];
 //                        }
-                        this.ingredientToUnit.put(ingredientNames.get(i), unit);
+                        this.ingredientToUnit.put(ingredientNames.get(i).toLowerCase(), unit);
                     }
                 }
             }

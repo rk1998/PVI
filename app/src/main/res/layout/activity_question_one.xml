@@ -51,14 +51,15 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/question_one_header"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question_one_header">
 
         <TextView
             android:id="@+id/family"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="20dp"
             android:text="Number of people in your family:"
@@ -69,23 +70,26 @@
 
         <EditText
             android:id="@+id/family_input"
-            android:layout_width="54dp"
-            android:layout_height="57dp"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="50dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/edittext_bg"
             android:ems="10"
             android:inputType="numberSigned"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/days_a_week"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/days_a_week"
             android:layout_width="290dp"
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="30dp"
             android:text="Number of days a week you cook meals:"
             android:textColor="@android:color/black"
             android:textSize="20sp"
@@ -94,13 +98,15 @@
 
         <EditText
             android:id="@+id/days_a_week_input"
-            android:layout_width="54dp"
-            android:layout_height="58dp"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="30dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="52dp"
+            android:background="@drawable/edittext_bg"
             android:ems="10"
             android:inputType="numberSigned"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/time_spent_input"
             app:layout_constraintEnd_toEndOf="parent"
@@ -109,9 +115,9 @@
         <TextView
             android:id="@+id/time_spent"
             android:layout_width="290dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="30dp"
             android:text="Maximum time spent preparing each meal:"
             android:textColor="@android:color/black"
             android:textSize="20sp"
@@ -120,12 +126,14 @@
 
         <EditText
             android:id="@+id/time_spent_input"
-            android:layout_width="54dp"
-            android:layout_height="58dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="48dp"
+            android:background="@drawable/edittext_bg"
             android:ems="10"
             android:inputType="numberSigned"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/days_a_week_input" />
@@ -134,11 +142,12 @@
         <TextView
             android:id="@+id/minutes"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="14dp"
             android:text="MINUTES"
             android:textColor="@android:color/black"
             android:textStyle="bold"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/time_spent_input" />
     </android.support.constraint.ConstraintLayout>
