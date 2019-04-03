@@ -30,6 +30,7 @@ public class Grains extends AppCompatActivity {
         setContentView(R.layout.activity_meats);
 
         ArrayList<String> list = new ArrayList<>();
+        list.add("No Grains");
         list.add("Wheat");
         list.add("Oats");
         list.add("Rice");

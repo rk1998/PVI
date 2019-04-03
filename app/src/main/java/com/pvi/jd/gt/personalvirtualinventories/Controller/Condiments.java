@@ -31,6 +31,7 @@ public class Condiments extends AppCompatActivity {
 
 
         ArrayList<String> list = new ArrayList<>();
+        list.add("No Condiments");
         list.add("Mayonnaise");
         list.add("Cilantro");
         list.add("Mustard");
