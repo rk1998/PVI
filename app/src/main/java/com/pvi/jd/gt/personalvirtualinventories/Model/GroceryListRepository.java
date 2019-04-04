@@ -4,8 +4,10 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class GroceryListRepository {
     private static final GroceryListRepository GROCERY_LIST_REPOSITORY = new GroceryListRepository();
@@ -20,26 +22,28 @@ public class GroceryListRepository {
      * @param mealPlanRecipes recipes selected for their meal plan
      */
     public void generateGroceryList(List<Recipe> mealPlanRecipes) {
-        Map<String, ArrayList<String>> ingredientToUnits = new HashMap<>();
+        Set<String> ingredientSet = new HashSet<>();
+        ArrayList<String> groceryListLines = new ArrayList<>();
         for(int i = 0; i < mealPlanRecipes.size(); i++) {
             Recipe currRecipe = mealPlanRecipes.get(i);
             ArrayList<String> mealIngredients = currRecipe.getIngredientNames();
             for(String ingredientName: mealIngredients) {
+                String line = ingredientName;
                 ingredientName.toLowerCase();
-                if(!ingredientToUnits.containsKey(ingredientName)) {
-                    ArrayList<String> ingredientUnits = new ArrayList<>();
-                    ingredientUnits.add(currRecipe.getIngredientToUnit().get(ingredientName));
+                if(!ingredientSet.contains(ingredientName)) {
+                    line += "\n" + "\u2022 " + currRecipe.getIngredientToUnit().get(ingredientName);
                     for(int j = i; j < mealPlanRecipes.size(); j++) {
                         Recipe nextRecipe = mealPlanRecipes.get(j);
                         if(nextRecipe.getIngredientToUnit().containsKey(ingredientName)) {
-                            ingredientUnits.add(nextRecipe.getIngredientToUnit().get(ingredientName));
+                            line += "\n" + "\u2022 " + nextRecipe.getIngredientToUnit().get(ingredientName);
                         }
                     }
-                    ingredientToUnits.put(ingredientName, ingredientUnits);
+                    ingredientSet.add(ingredientName);
+                    groceryListLines.add(line);
                 }
             }
         }
-        model.setCurrentGroceryList(ingredientToUnits);
+        model.setCurrentGroceryList(groceryListLines);
         //TODO: writeback this data to the database
     }
 
@@ -49,7 +53,7 @@ public class GroceryListRepository {
      * @param currContext current activity context
      * @return mapping of ingredient to the units needed in different recipes
      */
-    public Map<String, ArrayList<String>> getCurrentGroceryList(int uid, Context currContext) {
+    public List<String> getCurrentGroceryList(int uid, Context currContext) {
         return model.getCurrentGroceryList();
         //TODO: retrieve from database
     }
