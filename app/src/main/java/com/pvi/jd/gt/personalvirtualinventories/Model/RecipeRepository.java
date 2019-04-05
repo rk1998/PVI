@@ -209,7 +209,7 @@ public class RecipeRepository {
                     //extract recipe source
                     try {
                         JSONObject recipeSource = response.getJSONObject("source");
-                        String sourceSiteUrl = recipeSource.getString("sourceSiteUrl");
+                        String sourceSiteUrl = recipeSource.getString("sourceRecipeUrl");
                         requestedRecipe.setRecipeSource(sourceSiteUrl);
                     } catch(JSONException e) {
                         requestedRecipe.setRecipeSource("");
@@ -383,7 +383,7 @@ public class RecipeRepository {
                         //extract recipe source
                         try {
                             JSONObject recipeSource = response.getJSONObject("source");
-                            String sourceSiteUrl = recipeSource.getString("sourceSiteUrl");
+                            String sourceSiteUrl = recipeSource.getString("sourceRecipeUrl");
                             requestedRecipe.setRecipeSource(sourceSiteUrl);
                         } catch(JSONException e) {
                             requestedRecipe.setRecipeSource("");

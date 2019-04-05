@@ -1,5 +1,7 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -74,6 +77,22 @@ public class RecipeScreen extends AppCompatActivity {
         recipeInstructionsView.setMovementMethod(LinkMovementMethod.getInstance());
         String link = "<a href='" + recipeInstructions + "'> Instructions </a>";
         recipeInstructionsView.setText(Html.fromHtml(link, 0));
+        if(!recipeInstructions.isEmpty()) {
+            recipeInstructionsView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String url = "";
+                    if(!recipeInstructions.startsWith("http://") && !recipeInstructions.startsWith("https://")) {
+                        url = "http://" + recipeInstructions;
+                    }
+                    Uri uri = Uri.parse(url);
+                    Log.d("URI", uri.toString());
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+                }
+            });
+        }
         recipeIngredientsView.setText("");
         for (String s : recipeIngredients) {
             recipeIngredientsView.append("\u2022 " + s);

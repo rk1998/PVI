@@ -31,7 +31,9 @@ public class GroceryListRepository {
                 String line = ingredientName;
                 ingredientName.toLowerCase();
                 if(!ingredientSet.contains(ingredientName)) {
-                    line += "\n" + "\u2022 " + currRecipe.getIngredientToUnit().get(ingredientName);
+                    if(currRecipe.getIngredientToUnit().containsKey(ingredientName)) {
+                        line += "\n" + "\u2022 " + currRecipe.getIngredientToUnit().get(ingredientName);
+                    }
                     for(int j = i; j < mealPlanRecipes.size(); j++) {
                         Recipe nextRecipe = mealPlanRecipes.get(j);
                         if(nextRecipe.getIngredientToUnit().containsKey(ingredientName)) {
