@@ -53,9 +53,9 @@ public class MealPlanViewModel extends ViewModel {
 //        user.setId(1);
         MutableLiveData<User> userMutableLiveData = userRepo.getCurrUser();
         //this.mealplanRecipes = mpRepo.getCurrMealPlan(userMutableLiveData.getValue(), currentContext);
-        this.mealplanRecipes = (MutableLiveData<MealPlan>) Transformations.switchMap(userMutableLiveData, user -> {
-           return mpRepo.getCurrMealPlan(userMutableLiveData.getValue(), currentContext);
-        });
+        this.mealplanRecipes = (MutableLiveData<MealPlan>) Transformations.switchMap(
+                userMutableLiveData, user ->
+                        mpRepo.getCurrMealPlan(userMutableLiveData.getValue(), currentContext));
 
         /*MutableLiveData<MealPlan> userRecipes = Transformations.map(mealplanRecipes, mealplan -> {
             for (int i = 0; i < mealplan.getMealPlan().size(); i++) {

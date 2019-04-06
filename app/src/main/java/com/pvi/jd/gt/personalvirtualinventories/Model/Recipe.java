@@ -125,12 +125,8 @@ public class Recipe {
                         if(splitArr.length != 0) {
                             unit = splitArr[0];
                         }
-//                        if(splitArr.length != 0 && !splitArr[0].equals("")) {
-//                            unit = splitArr[0];
-//                        } else if(splitArr.length != 0 && splitArr[0].equals("")) {
-//                            unit = splitArr[1];
-//                        }
                         this.ingredientToUnit.put(ingredientNames.get(i).toLowerCase(), unit);
+                        break;
                     }
                 }
             }

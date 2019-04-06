@@ -4,6 +4,7 @@ package com.pvi.jd.gt.personalvirtualinventories.Model;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -208,7 +209,7 @@ public class RecipeRepository {
                     //extract recipe source
                     try {
                         JSONObject recipeSource = response.getJSONObject("source");
-                        String sourceSiteUrl = recipeSource.getString("sourceSiteUrl");
+                        String sourceSiteUrl = recipeSource.getString("sourceRecipeUrl");
                         requestedRecipe.setRecipeSource(sourceSiteUrl);
                     } catch(JSONException e) {
                         requestedRecipe.setRecipeSource("");
@@ -382,7 +383,7 @@ public class RecipeRepository {
                         //extract recipe source
                         try {
                             JSONObject recipeSource = response.getJSONObject("source");
-                            String sourceSiteUrl = recipeSource.getString("sourceSiteUrl");
+                            String sourceSiteUrl = recipeSource.getString("sourceRecipeUrl");
                             requestedRecipe.setRecipeSource(sourceSiteUrl);
                         } catch(JSONException e) {
                             requestedRecipe.setRecipeSource("");
@@ -448,20 +449,19 @@ public class RecipeRepository {
 
         //add dietary preferences
         for(int i = 0; i < dietaryPreferences.size(); i++) {
-            String diet = dietaryRestrictionMap.get(dietaryPreferences.get(i));
-            if(diet.equals("Low Sugar")) {
+            if(dietaryPreferences.get(i).equals("Low Sugar")) {
                 requestURL += "&nutrition.SUGAR.min=0&nutrition.SUGAR.max=10";
-            }
-
-            if(diet.equals("Low Carb")) {
+            } else if(dietaryPreferences.get(i).equals("Low Carb")) {
                 requestURL += "&nutrition.CHOCDF.min=50&nutrition.CHOCDF.max=150";
+            } else {
+                String diet = dietaryRestrictionMap.get(dietaryPreferences.get(i));
+                requestURL += "&allowedDiet[]=" + diet;
             }
-            requestURL += "&allowedDiet[]=" + diet;
         }
         int mealCount = 0;
         for(int i = 0; i < favoriteMeals.size(); i++) {
             String faveMeal = favoriteMeals.get(i);
-            String requestFaveMealURL =  requestURL + "&q=" + faveMeal + "&maxResult=4&start=5";
+            String requestFaveMealURL =  requestURL + "&q=" + faveMeal + "&maxResult=4&start=10";
             JsonObjectRequest searchRecipeRequest = new JsonObjectRequest(Request.Method.GET,
                     requestFaveMealURL, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -475,7 +475,6 @@ public class RecipeRepository {
                             try {
                                 String recipeId = obj.getString("id");
                                 recipeIds.add(recipeId);
-
                                 JSONArray ingredientNames = obj.getJSONArray("ingredients");
                                 ArrayList<String> ingredients = new ArrayList<>();
                                 for(int j = 0; j < ingredientNames.length(); j++) {
@@ -513,7 +512,7 @@ public class RecipeRepository {
 
         int mealsRemaining = MAX_RESULTS_PER_MEAL - mealCount;
 
-        String remainingMealRequest = requestURL + "&maxResult=" + mealsRemaining + "&start=10";
+        String remainingMealRequest = requestURL + "&maxResult=" + mealsRemaining + "&start=20";
 
         JsonObjectRequest searchRecipeRequest = new JsonObjectRequest(Request.Method.GET,
                 remainingMealRequest, null, new Response.Listener<JSONObject>() {

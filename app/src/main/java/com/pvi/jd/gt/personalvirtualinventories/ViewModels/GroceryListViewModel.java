@@ -9,6 +9,7 @@ import com.pvi.jd.gt.personalvirtualinventories.Model.User;
 import com.pvi.jd.gt.personalvirtualinventories.Model.UserRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,7 +20,7 @@ public class GroceryListViewModel extends ViewModel {
     private GroceryListRepository groceryRepo;
     private MutableLiveData<User> currentUser;
     private Context currentContext;
-    private Map<String, ArrayList<String>> currentGroceryList;
+    private List<String> currentGroceryList;
     public GroceryListViewModel() {
         userRepo = UserRepository.getUserRepository();
         groceryRepo = GroceryListRepository.getGroceryListRepository();
@@ -36,7 +37,7 @@ public class GroceryListViewModel extends ViewModel {
         this.currentGroceryList = groceryRepo.getCurrentGroceryList(uid, this.currentContext);
     }
 
-    public Map<String, ArrayList<String>> getCurrentGroceryList() {
+    public List<String> getCurrentGroceryList() {
         return currentGroceryList;
     }
 }

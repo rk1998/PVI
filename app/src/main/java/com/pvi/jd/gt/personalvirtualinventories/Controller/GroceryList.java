@@ -1,5 +1,6 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.GroceryListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public class GroceryList extends AppCompatActivity {
     private RecyclerView recyclerView;
     private GroceryRecycler adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private GroceryListViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +42,13 @@ public class GroceryList extends AppCompatActivity {
         groceryItems.add("12 Taco Shells");
         groceryItems.add("Frozen Meatballs");
 
-
+        viewModel = ViewModelProviders.of(this).get(GroceryListViewModel.class);
+        viewModel.init(this);
+        List<String> groceryListInfo = viewModel.getCurrentGroceryList();
         RecyclerView toolList = (RecyclerView) findViewById(R.id.grocery_list);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toolList.setLayoutManager(new LinearLayoutManager(this));
-        final GroceryRecycler adapter = new GroceryRecycler(this, groceryItems);
+        final GroceryRecycler adapter = new GroceryRecycler(this, groceryListInfo);
         toolList.setAdapter(adapter);
 
 
