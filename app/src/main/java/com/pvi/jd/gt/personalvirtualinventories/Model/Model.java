@@ -20,8 +20,7 @@ public class Model {
     private MutableLiveData<User> currentUser;
     private MutableLiveData<MealPlan> currentMealPlan;
     private Map<String, Recipe> storedRecipes;
-    private ArrayList<String> currentGroceryList;
-    private ArrayList<String> currentInventory;
+    private MutableLiveData<ArrayList<IngredientQuantity>> currentGroceryList;
     private User tempUser;
 
     private Model() {
@@ -29,8 +28,7 @@ public class Model {
         currentMealPlan = new MutableLiveData<>();
         storedRecipes = new HashMap<>();
         tempUser = new User();
-        currentGroceryList = new ArrayList<>();
-        currentInventory = new ArrayList<>();
+        currentGroceryList = new MutableLiveData<>();
     }
 
 
@@ -39,26 +37,14 @@ public class Model {
     }
 
     /**
-     * Sets current user inventory. Local storage for the user inventory
-     * @param currentInventory
-     */
-    public void setCurrentInventory(ArrayList<String> currentInventory) {
-        this.currentInventory = currentInventory;
-    }
-
-    public ArrayList<String> getCurrentInventory() {
-        return currentInventory;
-    }
-
-    /**
      * Sets map of ingredient name to units. local storage for grocery list
      * @param groceryList
      */
-    public void setCurrentGroceryList(ArrayList<String> groceryList) {
+    public void setCurrentGroceryList(MutableLiveData<ArrayList<IngredientQuantity>> groceryList) {
         this.currentGroceryList = groceryList;
     }
 
-    public List<String> getCurrentGroceryList() {
+    public MutableLiveData<ArrayList<IngredientQuantity>> getCurrentGroceryList() {
         return currentGroceryList;
     }
 

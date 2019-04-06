@@ -1,7 +1,10 @@
 package com.pvi.jd.gt.personalvirtualinventories.Controller;
 
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.pvi.jd.gt.personalvirtualinventories.Model.IngredientQuantity;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.GroceryListViewModel;
 
@@ -44,12 +48,21 @@ public class GroceryList extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(GroceryListViewModel.class);
         viewModel.init(this);
-        List<String> groceryListInfo = viewModel.getCurrentGroceryList();
+        MutableLiveData<ArrayList<IngredientQuantity>> mld = viewModel.getCurrentGroceryList();
         RecyclerView toolList = (RecyclerView) findViewById(R.id.grocery_list);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toolList.setLayoutManager(new LinearLayoutManager(this));
-        final GroceryRecycler adapter = new GroceryRecycler(this, groceryListInfo);
-        toolList.setAdapter(adapter);
+
+        mld.observe(this, new Observer<ArrayList<IngredientQuantity>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<IngredientQuantity> ingredientQuantities) {
+                final GroceryRecycler adapter = new GroceryRecycler(GroceryList.this,
+                        viewModel.getGroceryListDisplay(ingredientQuantities));
+                toolList.setAdapter(adapter);
+            }
+        });
+
+
 
 
     }
