@@ -56,7 +56,7 @@ public class GroceryListRepository {
      * @param currContext current activity context
      * @return mapping of ingredient to the units needed in different recipes
      */
-    public MutableLiveData<ArrayList<IngredientQuantity>> getCurrentGroceryList(int uid, Context currContext) {
+    public MutableLiveData<ArrayList<IngredientQuantity>> getUserGroceryList(int uid, Context currContext) {
         if (model.getCurrentGroceryList().getValue() != null
                 && !model.getCurrentGroceryList().getValue().isEmpty()) {
             return model.getCurrentGroceryList();

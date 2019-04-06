@@ -21,6 +21,7 @@ public class Model {
     private MutableLiveData<MealPlan> currentMealPlan;
     private Map<String, Recipe> storedRecipes;
     private MutableLiveData<ArrayList<IngredientQuantity>> currentGroceryList;
+    private MutableLiveData<ArrayList<IngredientQuantity>> currentInventory;
     private User tempUser;
 
     private Model() {
@@ -29,6 +30,7 @@ public class Model {
         storedRecipes = new HashMap<>();
         tempUser = new User();
         currentGroceryList = new MutableLiveData<>();
+        currentInventory = new MutableLiveData<>();
     }
 
 
@@ -78,5 +80,13 @@ public class Model {
 
     public Map<String, Recipe> getStoredRecipes() {
         return storedRecipes;
+    }
+
+    public MutableLiveData<ArrayList<IngredientQuantity>> getCurrentInventory() {
+        return currentInventory;
+    }
+
+    public void setCurrentInventory(MutableLiveData<ArrayList<IngredientQuantity>> currentInventory) {
+        this.currentInventory = currentInventory;
     }
 }
