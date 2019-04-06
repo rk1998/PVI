@@ -62,9 +62,12 @@
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
             android:text="Number of people in your family:"
             android:textColor="@android:color/black"
             android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/family_input"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,8 +75,9 @@
             android:id="@+id/family_input"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="50dp"
             android:background="@drawable/edittext_bg"
             android:ems="10"
             android:inputType="numberSigned"
@@ -81,18 +85,23 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/days_a_week"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.909" />
 
         <TextView
             android:id="@+id/days_a_week"
             android:layout_width="290dp"
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
             android:text="Number of days a week you cook meals:"
             android:textColor="@android:color/black"
             android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/days_a_week_input"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/family" />
 
@@ -100,9 +109,10 @@
             android:id="@+id/days_a_week_input"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="52dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/edittext_bg"
             android:ems="10"
             android:inputType="numberSigned"
@@ -110,6 +120,8 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/time_spent_input"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/family_input" />
 
         <TextView
@@ -117,10 +129,13 @@
             android:layout_width="290dp"
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="8dp"
             android:text="Maximum time spent preparing each meal:"
             android:textColor="@android:color/black"
             android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/time_spent_input"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/days_a_week" />
 

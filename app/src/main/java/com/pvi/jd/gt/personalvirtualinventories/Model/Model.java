@@ -21,6 +21,7 @@ public class Model {
     private MutableLiveData<MealPlan> currentMealPlan;
     private Map<String, Recipe> storedRecipes;
     private ArrayList<String> currentGroceryList;
+    private ArrayList<String> currentInventory;
     private User tempUser;
 
     private Model() {
@@ -29,11 +30,24 @@ public class Model {
         storedRecipes = new HashMap<>();
         tempUser = new User();
         currentGroceryList = new ArrayList<>();
+        currentInventory = new ArrayList<>();
     }
 
 
     public MutableLiveData<User> getCurrentUser() {
         return currentUser;
+    }
+
+    /**
+     * Sets current user inventory. Local storage for the user inventory
+     * @param currentInventory
+     */
+    public void setCurrentInventory(ArrayList<String> currentInventory) {
+        this.currentInventory = currentInventory;
+    }
+
+    public ArrayList<String> getCurrentInventory() {
+        return currentInventory;
     }
 
     /**
