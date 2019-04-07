@@ -38,7 +38,8 @@
         <activity
             android:name=".Controller.RecipeScreen"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Controller.GroceryList" />
+        <activity android:name=".Controller.GroceryList"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Controller.Inventory" />
         <activity android:name=".Controller.AddItem" />
         <activity android:name=".Controller.AddGroceryItem" />
