@@ -35,6 +35,17 @@ public class InventoryViewModel extends ViewModel {
                         inventoryRepo.getUserInventory(user.getId(), this.currContext));
     }
 
+    /**
+     * Adds item to the inventory
+     * @param itemToAdd item to add to the inventory
+     */
+    public void addToInventory(IngredientQuantity itemToAdd) {
+        int userId = this.currentUser.getValue().getId();
+        ArrayList<IngredientQuantity> items = new ArrayList<>();
+        items.add(itemToAdd);
+        this.inventoryRepo.updateUserInventory(userId, items, new ArrayList<IngredientQuantity>(), this.currContext);
+    }
+
     public MutableLiveData<ArrayList<IngredientQuantity>> getCurrentInventory() {
         return currentInventory;
     }
