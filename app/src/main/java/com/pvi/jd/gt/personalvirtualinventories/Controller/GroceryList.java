@@ -102,6 +102,25 @@ public class GroceryList extends AppCompatActivity implements NavigationView.OnN
         });
 
 
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
+        {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // Item swiped.
+                int pos = viewHolder.getAdapterPosition();
+                adapter.notifyItemRemoved(pos);
+            }
+
+
+        };
+        
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(toolList);
+
     }
 
     @Override
