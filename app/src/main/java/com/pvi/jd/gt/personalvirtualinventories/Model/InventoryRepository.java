@@ -29,7 +29,7 @@ public class InventoryRepository {
 
     private Model model = Model.get_instance();
 
-    public void addToInventory(IngredientQuantity newItem) {
+    private IngredientQuantity convertToInventoryItem(IngredientQuantity newItem) {
         String amountString = newItem.getAmount();
         if(amountString.isEmpty()) {
             String defaultAmount = "3 oz.";
@@ -47,7 +47,6 @@ public class InventoryRepository {
             String newAmount = "" + amount + " " + unit;
             newItem.setAmount(newAmount);
         }
-
         if(model.getCurrentInventory().getValue() == null) {
             ArrayList<IngredientQuantity> inventory = new ArrayList<>();
             inventory.add(newItem);
@@ -56,6 +55,8 @@ public class InventoryRepository {
             model.getCurrentInventory().getValue().add(newItem);
             model.getCurrentInventory().setValue(model.getCurrentInventory().getValue());
         }
+
+        return newItem;
 
     }
 
@@ -85,10 +86,11 @@ public class InventoryRepository {
     private Map<String, String> getParamMap(int uid, ArrayList<IngredientQuantity> add, ArrayList<IngredientQuantity> remove) {
         JSONArray addjson = new JSONArray();
         for (IngredientQuantity iq : add) {
+            IngredientQuantity newIq = convertToInventoryItem(iq);
             JSONObject entry = new JSONObject();
             try {
-                entry.put("name", iq.getIngredient());
-                entry.put("amount", iq.getAmount());
+                entry.put("name", newIq.getIngredient());
+                entry.put("amount", newIq.getAmount());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -134,6 +136,7 @@ public class InventoryRepository {
                         inventoryItems.add(item);
                     }
                     jsonresponse.setValue(inventoryItems);
+                    model.getCurrentInventory().setValue(inventoryItems);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

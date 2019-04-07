@@ -35,6 +35,7 @@ public class GroceryListViewModel extends ViewModel {
         inventoryRepo = InventoryRepository.getInventoryRepository();
     }
 
+
     /**
      * Initializes data retrieval for grocery list
      * @param currContext current activity context
@@ -47,6 +48,17 @@ public class GroceryListViewModel extends ViewModel {
                         groceryRepo.getUserGroceryList(user.getId(), this.currentContext));
     }
 
+    /**
+     * Adds item to the grocery list
+     * @param itemToAdd item to add to the grocery list
+     */
+    public void addToGroceryList(IngredientQuantity itemToAdd) {
+        int userId = this.currentUser.getValue().getId();
+        ArrayList<IngredientQuantity> items = new ArrayList<>();
+        items.add(itemToAdd);
+        this.groceryRepo.updateUserGroceryList(userId, items, new ArrayList<>(), this.currentContext);
+    }
+
     public MutableLiveData<ArrayList<IngredientQuantity>> getCurrentGroceryList() {
         return currentGroceryList;
     }
@@ -56,7 +68,11 @@ public class GroceryListViewModel extends ViewModel {
      * @param groceryListItem grocery list item that's been checked off.
      */
     public void checkOffGroceryListItem(IngredientQuantity groceryListItem) {
-        inventoryRepo.addToInventory(groceryListItem);
+        int userID = this.currentUser.getValue().getId();
+        ArrayList<IngredientQuantity> itemsToAdd = new ArrayList<>();
+        itemsToAdd.add(groceryListItem);
+        this.inventoryRepo.updateUserInventory(userID, itemsToAdd, new ArrayList<>(),
+                this.currentContext);
     }
 
     /**

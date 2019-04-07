@@ -85,6 +85,7 @@ public class GroceryListRepository {
                         groceryList.add(item);
                     }
                     jsonresponse.setValue(groceryList);
+                    model.getCurrentGroceryList().setValue(groceryList);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -123,6 +124,8 @@ public class GroceryListRepository {
         JSONArray addjson = new JSONArray();
         for (IngredientQuantity iq : add) {
             JSONObject entry = new JSONObject();
+            model.getCurrentGroceryList().getValue().add(iq);
+            model.getCurrentGroceryList().setValue(model.getCurrentGroceryList().getValue());
             try {
                 entry.put("name", iq.getIngredient());
                 entry.put("amount", iq.getAmount());
@@ -134,6 +137,8 @@ public class GroceryListRepository {
         JSONArray rmjson = new JSONArray();
         for (IngredientQuantity iq : remove) {
             JSONObject entry = new JSONObject();
+            model.getCurrentGroceryList().getValue().remove(iq);
+            model.getCurrentGroceryList().setValue(model.getCurrentGroceryList().getValue());
             try {
                 entry.put("name", iq.getIngredient());
                 entry.put("amount", iq.getAmount());
