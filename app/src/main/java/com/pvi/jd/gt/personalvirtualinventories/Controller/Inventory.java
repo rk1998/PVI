@@ -56,16 +56,20 @@ public class Inventory extends AppCompatActivity implements NavigationView.OnNav
 
         viewModel = ViewModelProviders.of(this).get(InventoryViewModel.class);
         viewModel.init(this);
+        inventoryList = (RecyclerView) findViewById(R.id.inventory_list);
+        inventoryList.addItemDecoration(new DividerItemDecoration(Inventory.this,
+                DividerItemDecoration.VERTICAL));
+        inventoryList.setLayoutManager(new LinearLayoutManager(Inventory.this));
         MutableLiveData<ArrayList<IngredientQuantity>> inventory = viewModel.getCurrentInventory();
 
         inventory.observe(this, new Observer<ArrayList<IngredientQuantity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<IngredientQuantity> ingredientQuantities) {
                 ArrayList<String> displayList = viewModel.getInventoryDisplay(ingredientQuantities);
-                inventoryList = (RecyclerView) findViewById(R.id.inventory_list);
-                inventoryList.addItemDecoration(new DividerItemDecoration(Inventory.this,
-                        DividerItemDecoration.VERTICAL));
-                inventoryList.setLayoutManager(new LinearLayoutManager(Inventory.this));
+//                inventoryList = (RecyclerView) findViewById(R.id.inventory_list);
+//                inventoryList.addItemDecoration(new DividerItemDecoration(Inventory.this,
+//                        DividerItemDecoration.VERTICAL));
+//                inventoryList.setLayoutManager(new LinearLayoutManager(Inventory.this));
                 adapter = new InventoryRecycler(Inventory.this,
                         displayList);
 
@@ -83,7 +87,8 @@ public class Inventory extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int pos = viewHolder.getAdapterPosition();
-                adapter.notifyItemRemoved(pos);
+                adapter.removeInventoryItem(pos);
+                //adapter.notifyItemRemoved(pos);
             }
         };
 

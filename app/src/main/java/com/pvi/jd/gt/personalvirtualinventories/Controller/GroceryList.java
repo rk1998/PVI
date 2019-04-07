@@ -113,7 +113,8 @@ public class GroceryList extends AppCompatActivity implements NavigationView.OnN
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // Item swiped.
                 int pos = viewHolder.getAdapterPosition();
-                adapter.notifyItemRemoved(pos);
+                //adapter.notifyItemRemoved(pos);
+                adapter.removeGroceryListItem(pos);
             }
 
         };

@@ -35,6 +35,17 @@ public class InventoryRecycler extends RecyclerView.Adapter<InventoryRecycler.Vi
         return new ViewHolder(view);
     }
 
+    /**
+     * removes item from the inventory
+     * @param position position in list to remove
+     */
+    public void removeInventoryItem(int position) {
+        if(position >= 0 && position < mData.size()) {
+            mData.remove(position);
+        }
+        notifyItemRemoved(position);
+    }
+
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {

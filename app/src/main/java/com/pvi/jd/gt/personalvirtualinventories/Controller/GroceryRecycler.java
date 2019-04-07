@@ -74,6 +74,18 @@ public class GroceryRecycler extends RecyclerView.Adapter<GroceryRecycler.ViewHo
         return mData.size();
     }
 
+    /**
+     * Removes item from grocery list view
+     * @param position position
+     */
+    public void removeGroceryListItem(int position) {
+        if(position >= 0 && position < mData.size()) {
+            mData.remove(position);
+        }
+        notifyItemRemoved(position);
+    }
+
+
     public List<String> getSelectedData() {
         return selectedData;
     }
