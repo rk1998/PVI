@@ -65,7 +65,7 @@ public class Inventory extends AppCompatActivity implements NavigationView.OnNav
                         DividerItemDecoration.VERTICAL));
                 inventoryList.setLayoutManager(new LinearLayoutManager(Inventory.this));
                 final InventoryRecycler adapter = new InventoryRecycler(Inventory.this,
-                        inventoryItems);
+                        displayList);
                 inventoryList.setAdapter(adapter);
             }
         });

@@ -83,7 +83,7 @@ public class GroceryList extends AppCompatActivity implements NavigationView.OnN
         mld.observe(this, new Observer<ArrayList<IngredientQuantity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<IngredientQuantity> ingredientQuantities) {
-                final GroceryRecycler adapter = new GroceryRecycler(GroceryList.this,
+                 adapter = new GroceryRecycler(GroceryList.this,
                         viewModel.getGroceryListDisplay(ingredientQuantities), ingredientQuantities,
                         viewModel);
                 toolList.setAdapter(adapter);
