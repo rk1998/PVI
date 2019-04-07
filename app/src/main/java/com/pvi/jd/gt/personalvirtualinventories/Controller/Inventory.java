@@ -17,6 +17,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.pvi.jd.gt.personalvirtualinventories.Model.IngredientQuantity;
 import com.pvi.jd.gt.personalvirtualinventories.R;
@@ -74,6 +76,16 @@ public class Inventory extends AppCompatActivity implements NavigationView.OnNav
                         displayList);
 
                 inventoryList.setAdapter(adapter);
+            }
+        });
+
+        ImageButton addItem = (ImageButton) findViewById(R.id.add_inventory);
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent nextIntent = new Intent(Inventory.this,
+                        AddItem.class);
+                startActivity(nextIntent);
             }
         });
 
