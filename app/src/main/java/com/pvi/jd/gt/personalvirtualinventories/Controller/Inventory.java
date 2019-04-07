@@ -15,6 +15,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MenuItem;
 
 import com.pvi.jd.gt.personalvirtualinventories.Model.IngredientQuantity;
@@ -24,7 +25,8 @@ import com.pvi.jd.gt.personalvirtualinventories.ViewModels.InventoryViewModel;
 import java.util.ArrayList;
 
 public class Inventory extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private RecyclerView inventoryList;
+    private InventoryRecycler adapter;
     private InventoryViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +62,31 @@ public class Inventory extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void onChanged(@Nullable ArrayList<IngredientQuantity> ingredientQuantities) {
                 ArrayList<String> displayList = viewModel.getInventoryDisplay(ingredientQuantities);
-                RecyclerView inventoryList = (RecyclerView) findViewById(R.id.inventory_list);
+                inventoryList = (RecyclerView) findViewById(R.id.inventory_list);
                 inventoryList.addItemDecoration(new DividerItemDecoration(Inventory.this,
                         DividerItemDecoration.VERTICAL));
                 inventoryList.setLayoutManager(new LinearLayoutManager(Inventory.this));
-                final InventoryRecycler adapter = new InventoryRecycler(Inventory.this,
+                adapter = new InventoryRecycler(Inventory.this,
                         inventoryItems);
                 inventoryList.setAdapter(adapter);
             }
         });
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
+        {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int pos = viewHolder.getAdapterPosition();
+                adapter.notifyItemRemoved(pos);
+            }
+        };
+
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(inventoryList);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
