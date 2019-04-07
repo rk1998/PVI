@@ -1,6 +1,7 @@
 package com.pvi.jd.gt.personalvirtualinventories.ViewModels;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 
@@ -39,8 +40,9 @@ public class GroceryListViewModel extends ViewModel {
     public void init(Context currContext) {
         this.currentContext = currContext;
         this.currentUser = userRepo.getCurrUser();
-        int uid = this.currentUser.getValue().getId();
-        this.currentGroceryList = groceryRepo.getCurrentGroceryList(uid, this.currentContext);
+        this.currentGroceryList = (MutableLiveData<ArrayList<IngredientQuantity>>)
+                Transformations.switchMap(this.currentUser, user ->
+                        groceryRepo.getUserGroceryList(user.getId(), this.currentContext));
     }
 
     public MutableLiveData<ArrayList<IngredientQuantity>> getCurrentGroceryList() {
