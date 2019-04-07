@@ -55,7 +55,7 @@ public class MealSelectionViewModel extends ViewModel {
      * @param currContext current activity context
      */
     public void createMealPlan(List<Recipe> recipeApiIDs, Context currContext) {
-        groceryRepo.generateGroceryList(recipeApiIDs);
+        groceryRepo.generateGroceryList(currUser.getValue().getId(), recipeApiIDs, currContext);
         mpRepo.createCurrMealPlan(recipeApiIDs, currContext);
     }
 
