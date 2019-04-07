@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * View Model for Grocery List
@@ -49,8 +51,12 @@ public class GroceryListViewModel extends ViewModel {
         return currentGroceryList;
     }
 
+    /**
+     * Writes back checked off grocery list items to the database
+     * @param groceryListItem grocery list item that's been checked off.
+     */
     public void checkOffGroceryListItem(IngredientQuantity groceryListItem) {
-
+        inventoryRepo.addToInventory(groceryListItem);
     }
 
     /**
@@ -65,13 +71,13 @@ public class GroceryListViewModel extends ViewModel {
             IngredientQuantity entry = ingredientQuantities.get(i);
             if(!ingredientSet.contains(entry.getIngredient())) {
                 String line = entry.getIngredient();
-                if(!entry.getAmount().equals("null")) {
+                if(!entry.getAmount().isEmpty()) {
                     line += "\n" + "\u2022 " + entry.getAmount();
                 }
                 for(int j = i; j < ingredientQuantities.size(); j++) {
                     IngredientQuantity nextEntry = ingredientQuantities.get(j);
                     if(nextEntry.getIngredient().equals(entry.getIngredient())) {
-                        if(!nextEntry.getAmount().equals("null")) {
+                        if(!nextEntry.getAmount().isEmpty()) {
                             line += "\n" + "\u2022 " + nextEntry.getAmount();
                         }
                     }

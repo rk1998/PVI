@@ -7,6 +7,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.pvi.jd.gt.personalvirtualinventories.Controller.Inventory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,6 +16,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.regex.Pattern;
 
 public class InventoryRepository {
     private static final InventoryRepository INVENTORY_REPOSITORY = new InventoryRepository();
@@ -25,12 +28,37 @@ public class InventoryRepository {
 
     private Model model = Model.get_instance();
 
-    public void addToInventory(String newItem) {
+    public void addToInventory(IngredientQuantity newItem) {
+        String amountString = newItem.getAmount();
+        if(amountString.isEmpty()) {
+            String defaultAmount = "3 oz.";
+            newItem.setAmount(defaultAmount);
+        } else {
+            String regex = "(\\d+(\\.\\d+)?(/\\d+)?)\\s";
+            Pattern p = Pattern.compile(regex);
+            String[] results = p.split(amountString);
+            String unit = "";
+            if(results.length != 0) {
+                unit = results[0];
+            }
+            Random rng = new Random();
+            int amount = rng.nextInt(10) + 1;
+            String newAmount = "" + amount + " " + unit;
+            newItem.setAmount(newAmount);
+        }
 
+        if(model.getCurrentInventory().getValue() == null) {
+            ArrayList<IngredientQuantity> inventory = new ArrayList<>();
+            inventory.add(newItem);
+            model.getCurrentInventory().setValue(inventory);
+        } else {
+            model.getCurrentInventory().getValue().add(newItem);
+            model.getCurrentInventory().setValue(model.getCurrentInventory().getValue());
+        }
 
     }
 
-    public void removeFromInventory(String itemToRemove) {
+    public void removeFromInventory(IngredientQuantity itemToRemove) {
 
     }
 

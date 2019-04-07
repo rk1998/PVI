@@ -34,4 +34,23 @@ public class InventoryViewModel extends ViewModel {
                 Transformations.switchMap(this.currentUser, user ->
                         inventoryRepo.getUserInventory(user.getId(), this.currContext));
     }
+
+    public MutableLiveData<ArrayList<IngredientQuantity>> getCurrentInventory() {
+        return currentInventory;
+    }
+
+    /**
+     * Convert Ingredient Quantity items to a string that can be displayed on the Inventory
+     * @param inventoryItems
+     * @return list of display strings
+     */
+    public ArrayList<String> getInventoryDisplay(ArrayList<IngredientQuantity> inventoryItems) {
+        ArrayList<String> displayList = new ArrayList<>();
+        for(int i = 0; i < inventoryItems.size(); i++) {
+            String inventoryLine = inventoryItems.get(i).getAmount()
+                    + " " + inventoryItems.get(i).getIngredient();
+            displayList.add(inventoryLine);
+        }
+        return displayList;
+    }
 }

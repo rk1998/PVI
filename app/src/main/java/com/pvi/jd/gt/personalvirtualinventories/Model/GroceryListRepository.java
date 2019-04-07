@@ -39,9 +39,15 @@ public class GroceryListRepository {
             Recipe currRecipe = mealPlanRecipes.get(i);
             ArrayList<String> mealIngredients = currRecipe.getIngredientNames();
             for(String ingredientName: mealIngredients) {
-                String amount = currRecipe.getIngredientToUnit().get(ingredientName);
-                IngredientQuantity iq = new IngredientQuantity(ingredientName, amount);
-                ingredientQuantities.add(iq);
+                if(currRecipe.getIngredientToUnit().containsKey(ingredientName)) {
+                    String amount = currRecipe.getIngredientToUnit().get(ingredientName);
+                    IngredientQuantity iq = new IngredientQuantity(ingredientName, amount);
+                    ingredientQuantities.add(iq);
+                } else {
+                    String amount = "";
+                    IngredientQuantity iq = new IngredientQuantity(ingredientName, amount);
+                    ingredientQuantities.add(iq);
+                }
             }
         }
         MutableLiveData<ArrayList<IngredientQuantity>> mld = new MutableLiveData<>();

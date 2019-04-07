@@ -58,6 +58,13 @@ public class GroceryRecycler extends RecyclerView.Adapter<GroceryRecycler.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         String text = mData.get(position);
         holder.myTextView.setText(text);
+        holder.myTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IngredientQuantity ingredient = mIngredientQuantities.get(position);
+                groceryListViewModel.checkOffGroceryListItem(ingredient);
+            }
+        });
         holder.setPosition(position);
     }
 
@@ -90,7 +97,8 @@ public class GroceryRecycler extends RecyclerView.Adapter<GroceryRecycler.ViewHo
 
         @Override
         public void onClick(View view) {
-            IngredientQuantity ingredient = mIngredientQuantities.get(this.position);
+
+
 //            if (!selected) {
 //                myTextView.setBackgroundColor(ContextCompat.getColor(context, R.color.gray));
 //                selectedData.add(myTextView.getText().toString());

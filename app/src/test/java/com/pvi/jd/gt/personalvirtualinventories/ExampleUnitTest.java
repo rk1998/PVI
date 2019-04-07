@@ -41,33 +41,41 @@ public class ExampleUnitTest {
         String exampleLine2 = "5 garlic cloves minced";
 
         String regex = "(\\d+(\\.\\d+)?(/\\d+)?)\\s((cup(s)?)|(oz(\\.)?)|(ounce(s)?)|(tbs(p)?(\\.)?)|(tsp(\\.)?)|(tablespoon(s)?)|(teaspoon(s)?))?(\\w*)?\\s";
-        String negatedRegex = "(?!" + regex + "$).*";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(exampleLine);
-        String[] results = p.split(exampleLine);
+        String regex2 = "(\\d+(\\.\\d+)?(/\\d+)?)\\s";
+        String exampleline = "13/2 cup";
+        Pattern p = Pattern.compile(regex2);
+        String[] results = p.split(exampleline);
         for(String s: results) {
             System.out.println(s);
         }
-        if(m.find()) {
-            System.out.println("start(): " + m.start());
-            System.out.println("end(): " + m.end());
-            System.out.println(exampleLine.substring(m.start(), m.end()-1));
-            System.out.println(exampleLine.substring(m.end(), exampleLine.length()));
-        }
 
-        Pattern neg = Pattern.compile(negatedRegex);
-        Matcher negM = neg.matcher(exampleLine);
-        if(negM.find()){
-            System.out.println("start(): " + negM.start());
-            System.out.println("end(): " + negM.end());
-        }
-
-        Matcher example2 = p.matcher(exampleLine2);
-        if(example2.find()) {
-            System.out.println("start(): " + example2.start());
-            System.out.println("end(): " + example2.end());
-            System.out.println(exampleLine2.substring(example2.start(), example2.end()-1));
-            System.out.println(exampleLine2.substring(example2.end(), exampleLine2.length()));
-        }
+//        String negatedRegex = "(?!" + regex + "$).*";
+//        Pattern p = Pattern.compile(regex);
+//        Matcher m = p.matcher(exampleLine);
+//        String[] results = p.split(exampleLine);
+//        for(String s: results) {
+//            System.out.println(s);
+//        }
+//        if(m.find()) {
+//            System.out.println("start(): " + m.start());
+//            System.out.println("end(): " + m.end());
+//            System.out.println(exampleLine.substring(m.start(), m.end()-1));
+//            System.out.println(exampleLine.substring(m.end(), exampleLine.length()));
+//        }
+//
+//        Pattern neg = Pattern.compile(negatedRegex);
+//        Matcher negM = neg.matcher(exampleLine);
+//        if(negM.find()){
+//            System.out.println("start(): " + negM.start());
+//            System.out.println("end(): " + negM.end());
+//        }
+//
+//        Matcher example2 = p.matcher(exampleLine2);
+//        if(example2.find()) {
+//            System.out.println("start(): " + example2.start());
+//            System.out.println("end(): " + example2.end());
+//            System.out.println(exampleLine2.substring(example2.start(), example2.end()-1));
+//            System.out.println(exampleLine2.substring(example2.end(), exampleLine2.length()));
+//        }
     }
 }
