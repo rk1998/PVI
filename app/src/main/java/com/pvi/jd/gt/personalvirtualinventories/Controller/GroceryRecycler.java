@@ -7,9 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.pvi.jd.gt.personalvirtualinventories.Model.IngredientQuantity;
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.GroceryListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +20,30 @@ import java.util.List;
 public class GroceryRecycler extends RecyclerView.Adapter<GroceryRecycler.ViewHolder> {
 
     private List<String> mData;
+    private List<IngredientQuantity> mIngredientQuantities;
     private LayoutInflater mInflater;
     private Context context;
     private List<String> selectedData = new ArrayList<>();
-
+    private GroceryListViewModel groceryListViewModel;
     // data is passed into the constructor
     GroceryRecycler(Context context, List<String> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.context = context;
+    }
+
+    /**
+     * Constructor for GroceryRecycler
+     * @param context Grocery List activity context
+     * @param data grocery list data
+     * @param viewModel reference to GroceryListViewModel
+     */
+    GroceryRecycler(Context context, List<String> data,
+                    List<IngredientQuantity> ingredientQuantities, GroceryListViewModel viewModel) {
+        this.mInflater = LayoutInflater.from(context);
+        this.mData = data;
+        this.groceryListViewModel = viewModel;
+        this.mIngredientQuantities = ingredientQuantities;
     }
 
     // inflates the row layout from xml when needed
@@ -40,6 +58,7 @@ public class GroceryRecycler extends RecyclerView.Adapter<GroceryRecycler.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         String text = mData.get(position);
         holder.myTextView.setText(text);
+        holder.setPosition(position);
     }
 
     // total number of rows
@@ -54,8 +73,9 @@ public class GroceryRecycler extends RecyclerView.Adapter<GroceryRecycler.ViewHo
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+        CheckBox myTextView;
         boolean selected;
+        int position;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -64,8 +84,13 @@ public class GroceryRecycler extends RecyclerView.Adapter<GroceryRecycler.ViewHo
             itemView.setOnClickListener(this);
         }
 
+        public void setPosition(int position) {
+            this.position = position;
+        }
+
         @Override
         public void onClick(View view) {
+            IngredientQuantity ingredient = mIngredientQuantities.get(this.position);
 //            if (!selected) {
 //                myTextView.setBackgroundColor(ContextCompat.getColor(context, R.color.gray));
 //                selectedData.add(myTextView.getText().toString());

@@ -57,7 +57,8 @@ public class GroceryList extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable ArrayList<IngredientQuantity> ingredientQuantities) {
                 final GroceryRecycler adapter = new GroceryRecycler(GroceryList.this,
-                        viewModel.getGroceryListDisplay(ingredientQuantities));
+                        viewModel.getGroceryListDisplay(ingredientQuantities), ingredientQuantities,
+                        viewModel);
                 toolList.setAdapter(adapter);
             }
         });
