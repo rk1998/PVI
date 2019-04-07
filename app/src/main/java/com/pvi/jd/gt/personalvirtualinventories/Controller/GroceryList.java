@@ -28,7 +28,7 @@ import com.pvi.jd.gt.personalvirtualinventories.ViewModels.GroceryListViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroceryList extends AppCompatActivity {
+public class GroceryList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private RecyclerView recyclerView;
     private GroceryRecycler adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -38,6 +38,16 @@ public class GroceryList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_grocery);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_grocery);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_grocery);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
         ArrayList<String> groceryItems = new ArrayList<>();
@@ -63,9 +73,69 @@ public class GroceryList extends AppCompatActivity {
             }
         });
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_grocery);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main_screen, menu);
+//        return true;
+//    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.edit_button) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.meal_planning) {
+            Intent intent = new Intent(this,
+                    MainScreen.class);
+            startActivity(intent);
+        } else if (id == R.id.inventory) {
+            Intent intent = new Intent(this,
+                    Inventory.class);
+            startActivity(intent);
+        } else if (id == R.id.grocery_list) {
+            //
+        } else if (id == R.id.settings) {
+
+        }
+//        else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
+        item.setChecked(true);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_grocery);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
 
