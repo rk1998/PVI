@@ -24,6 +24,9 @@ public class Inventory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
+        getSupportActionBar().setTitle("INVENTORY");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         ArrayList<String> inventoryItems = new ArrayList<>();
         inventoryItems.add("food 1");
         inventoryItems.add("food 2");

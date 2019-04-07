@@ -12,24 +12,38 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.LayoutInflater;
+import android.os.Handler;
+import android.support.v4.content.ContextCompat;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.widget.Toast;
 
 import com.pvi.jd.gt.personalvirtualinventories.Model.IngredientQuantity;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.GroceryListViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GroceryList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private RecyclerView recyclerView;
+    private RecyclerView toolList;
     private GroceryRecycler adapter;
     private RecyclerView.LayoutManager layoutManager;
     private GroceryListViewModel viewModel;
@@ -40,6 +54,9 @@ public class GroceryList extends AppCompatActivity implements NavigationView.OnN
         setContentView(R.layout.activity_grocery_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_grocery);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("GROCERY LIST");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_grocery);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -59,7 +76,7 @@ public class GroceryList extends AppCompatActivity implements NavigationView.OnN
         viewModel = ViewModelProviders.of(this).get(GroceryListViewModel.class);
         viewModel.init(this);
         MutableLiveData<ArrayList<IngredientQuantity>> mld = viewModel.getCurrentGroceryList();
-        RecyclerView toolList = (RecyclerView) findViewById(R.id.grocery_list);
+        toolList = (RecyclerView) findViewById(R.id.grocery_list);
         toolList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toolList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -72,6 +89,18 @@ public class GroceryList extends AppCompatActivity implements NavigationView.OnN
                 toolList.setAdapter(adapter);
             }
         });
+
+
+        ImageButton addItem = (ImageButton) findViewById(R.id.add_grocery);
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent nextIntent = new Intent(GroceryList.this,
+                        AddGroceryItem.class);
+                startActivity(nextIntent);
+            }
+        });
+
 
     }
 
@@ -133,6 +162,7 @@ public class GroceryList extends AppCompatActivity implements NavigationView.OnN
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 
 }

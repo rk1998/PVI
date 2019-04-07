@@ -6,6 +6,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.content.Intent;
 
 import com.pvi.jd.gt.personalvirtualinventories.R;
 
@@ -18,6 +20,16 @@ public class AddGroceryItem extends AppCompatActivity {
 
         getSupportActionBar().setTitle("ADD ITEM");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Button add = (Button) findViewById(R.id.add_button);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent nextIntent = new Intent(AddGroceryItem.this,
+                        GroceryList.class);
+                startActivity(nextIntent);
+            }
+        });
 
     }
 
