@@ -103,6 +103,12 @@ public class GroceryListRepository {
     public void updateUserGroceryList(int uid, ArrayList<IngredientQuantity> add,
                                       ArrayList<IngredientQuantity> remove, Context currContext) {
         String url = "https://personalvirtualinventories.000webhostapp.com/editUserGroceryList.php";
+        for(int i = 0; i < add.size(); i++) {
+            if(!model.getCurrentGroceryList().getValue().contains(add.get(i))) {
+                model.getCurrentGroceryList().getValue().add(add.get(i));
+                model.getCurrentGroceryList().setValue(model.getCurrentGroceryList().getValue());
+            }
+        }
         Map<String, String> params = getParamMap(uid, add, remove);
         final MutableLiveData<ArrayList<IngredientQuantity>> jsonresponse = new MutableLiveData<>();
         JSONArrayRequest jsObjRequest = new JSONArrayRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
