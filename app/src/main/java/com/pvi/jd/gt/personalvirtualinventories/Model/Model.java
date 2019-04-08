@@ -31,6 +31,7 @@ public class Model {
         tempUser = new User();
         currentGroceryList = new MutableLiveData<>();
         currentInventory = new MutableLiveData<>();
+        currentInventory.setValue(new ArrayList<>());
     }
 
 

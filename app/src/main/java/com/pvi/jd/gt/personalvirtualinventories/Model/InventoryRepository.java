@@ -29,7 +29,7 @@ public class InventoryRepository {
 
     private Model model = Model.get_instance();
 
-    private IngredientQuantity convertToInventoryItem(IngredientQuantity newItem) {
+    public IngredientQuantity convertToInventoryItem(IngredientQuantity newItem) {
         String amountString = newItem.getAmount();
         if(amountString.isEmpty()) {
             String defaultAmount = "3 oz.";
@@ -47,22 +47,19 @@ public class InventoryRepository {
             String newAmount = "" + amount + " " + unit;
             newItem.setAmount(newAmount);
         }
-        if(model.getCurrentInventory().getValue() == null) {
-            ArrayList<IngredientQuantity> inventory = new ArrayList<>();
-            inventory.add(newItem);
-            model.getCurrentInventory().setValue(inventory);
-        } else {
-            model.getCurrentInventory().getValue().add(newItem);
-            model.getCurrentInventory().setValue(model.getCurrentInventory().getValue());
-        }
+//        if(model.getCurrentInventory().getValue() == null) {
+//            ArrayList<IngredientQuantity> inventory = new ArrayList<>();
+//            inventory.add(newItem);
+//            model.getCurrentInventory().setValue(inventory);
+//        } else {
+//            model.getCurrentInventory().getValue().add(newItem);
+//            model.getCurrentInventory().setValue(model.getCurrentInventory().getValue());
+//        }
 
         return newItem;
 
     }
 
-    public void removeFromInventory(IngredientQuantity itemToRemove) {
-
-    }
     public void updateUserInventory(int uid, ArrayList<IngredientQuantity> add,
                                       ArrayList<IngredientQuantity> remove, Context currContext) {
         String url = "https://personalvirtualinventories.000webhostapp.com/editUserInventory.php";
@@ -86,11 +83,13 @@ public class InventoryRepository {
     private Map<String, String> getParamMap(int uid, ArrayList<IngredientQuantity> add, ArrayList<IngredientQuantity> remove) {
         JSONArray addjson = new JSONArray();
         for (IngredientQuantity iq : add) {
-            IngredientQuantity newIq = convertToInventoryItem(iq);
+            //IngredientQuantity newIq = convertToInventoryItem(iq);
+            model.getCurrentInventory().getValue().add(iq);
+            model.getCurrentInventory().setValue(model.getCurrentInventory().getValue());
             JSONObject entry = new JSONObject();
             try {
-                entry.put("name", newIq.getIngredient());
-                entry.put("amount", newIq.getAmount());
+                entry.put("name", iq.getIngredient());
+                entry.put("amount", iq.getAmount());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -99,6 +98,8 @@ public class InventoryRepository {
         JSONArray rmjson = new JSONArray();
         for (IngredientQuantity iq : remove) {
             JSONObject entry = new JSONObject();
+            model.getCurrentInventory().getValue().remove(iq);
+            model.getCurrentInventory().setValue(model.getCurrentInventory().getValue());
             try {
                 entry.put("name", iq.getIngredient());
                 entry.put("amount", iq.getAmount());

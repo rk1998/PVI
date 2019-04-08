@@ -44,6 +44,7 @@ public class GroceryRecycler extends RecyclerView.Adapter<GroceryRecycler.ViewHo
         this.mData = data;
         this.groceryListViewModel = viewModel;
         this.mIngredientQuantities = ingredientQuantities;
+        this.context = context;
     }
 
     // inflates the row layout from xml when needed
@@ -58,11 +59,23 @@ public class GroceryRecycler extends RecyclerView.Adapter<GroceryRecycler.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         String text = mData.get(position);
         holder.myTextView.setText(text);
+        if(selectedData.contains(text)) {
+            holder.myTextView.setChecked(true);
+        } else {
+            holder.myTextView.setChecked(false);
+        }
         holder.myTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IngredientQuantity ingredient = mIngredientQuantities.get(position);
-                groceryListViewModel.checkOffGroceryListItem(ingredient);
+                if(holder.myTextView.isChecked()) {
+                    selectedData.add(text);
+                    holder.selected = true;
+                    IngredientQuantity ingredient = mIngredientQuantities.get(position);
+                    groceryListViewModel.checkOffGroceryListItem(ingredient);
+                } else {
+                    selectedData.remove(text);
+                    holder.selected = false;
+                }
             }
         });
         holder.setPosition(position);

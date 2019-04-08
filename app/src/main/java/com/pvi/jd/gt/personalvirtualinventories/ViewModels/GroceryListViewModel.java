@@ -69,8 +69,9 @@ public class GroceryListViewModel extends ViewModel {
      */
     public void checkOffGroceryListItem(IngredientQuantity groceryListItem) {
         int userID = this.currentUser.getValue().getId();
+        IngredientQuantity inventoryItem = this.inventoryRepo.convertToInventoryItem(groceryListItem);
         ArrayList<IngredientQuantity> itemsToAdd = new ArrayList<>();
-        itemsToAdd.add(groceryListItem);
+        itemsToAdd.add(inventoryItem);
         this.inventoryRepo.updateUserInventory(userID, itemsToAdd, new ArrayList<>(),
                 this.currentContext);
     }
