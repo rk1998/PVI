@@ -40,10 +40,10 @@ public class InventoryRepository {
             String[] results = p.split(amountString);
             String unit = "";
             if(results.length != 0) {
-                unit = results[0];
+                unit = results[1];
             }
             Random rng = new Random();
-            int amount = rng.nextInt(10) + 1;
+            int amount = rng.nextInt(20) + 1;
             String newAmount = "" + amount + " " + unit;
             newItem.setAmount(newAmount);
         }

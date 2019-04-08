@@ -120,12 +120,14 @@ public class GroceryListRepository {
     }
 
     @NonNull
-    private Map<String, String> getParamMap(int uid, ArrayList<IngredientQuantity> add, ArrayList<IngredientQuantity> remove) {
+    private Map<String, String> getParamMap(int uid, ArrayList<IngredientQuantity> itemsToAdd, ArrayList<IngredientQuantity> remove) {
         JSONArray addjson = new JSONArray();
-        for (IngredientQuantity iq : add) {
+        for (int j = 0; j < itemsToAdd.size(); j++) {
+            Log.d("ADDING GROCERY ITEM", itemsToAdd.get(j).getIngredient());
+            IngredientQuantity iq = itemsToAdd.get(j);
             JSONObject entry = new JSONObject();
-            model.getCurrentGroceryList().getValue().add(iq);
-            model.getCurrentGroceryList().setValue(model.getCurrentGroceryList().getValue());
+           // model.getCurrentGroceryList().getValue().add(iq);
+            //model.getCurrentGroceryList().setValue(model.getCurrentGroceryList().getValue());
             try {
                 entry.put("name", iq.getIngredient());
                 entry.put("amount", iq.getAmount());
@@ -135,10 +137,11 @@ public class GroceryListRepository {
             addjson.put(entry);
         }
         JSONArray rmjson = new JSONArray();
-        for (IngredientQuantity iq : remove) {
+        for (int j = 0; j < remove.size(); j++) {
+            IngredientQuantity iq = remove.get(j);
             JSONObject entry = new JSONObject();
-            model.getCurrentGroceryList().getValue().remove(iq);
-            model.getCurrentGroceryList().setValue(model.getCurrentGroceryList().getValue());
+//            model.getCurrentGroceryList().getValue().remove(iq);
+//            model.getCurrentGroceryList().setValue(model.getCurrentGroceryList().getValue());
             try {
                 entry.put("name", iq.getIngredient());
                 entry.put("amount", iq.getAmount());

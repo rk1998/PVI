@@ -104,9 +104,9 @@
         <activity
             android:name=".Controller.Meats"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".Controller.PantryMeals"
+        <!--<activity android:name=".Controller.PantryMeals"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity> -->
     </application>
 
 </manifest>
