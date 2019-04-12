@@ -29,6 +29,31 @@ public class InventoryRepository {
 
     private Model model = Model.get_instance();
 
+    /**
+     * Checks if an ingredient already exists in the inventory based on name
+     * @param item item to check
+     * @return if item is in the inventory or not
+     */
+    public boolean itemExists(IngredientQuantity item) {
+        if(model.getCurrentInventory().getValue() != null
+                && !model.getCurrentInventory().getValue().isEmpty()) {
+            ArrayList<IngredientQuantity> currInventory = model.getCurrentInventory().getValue();
+            for(IngredientQuantity ingredientQuantity: currInventory) {
+                if(ingredientQuantity.getIngredient().equals(item.getIngredient())) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Convert grocery list item to inventory item
+     * @param newItem item to add to inventory
+     * @return IngredientQuantity to add to inventory
+     */
     public IngredientQuantity convertToInventoryItem(IngredientQuantity newItem) {
         String amountString = newItem.getAmount();
         if(amountString.isEmpty()) {
@@ -65,6 +90,13 @@ public class InventoryRepository {
 
     }
 
+    /**
+     * Updates user inventory
+     * @param uid user database id
+     * @param add list of items to add
+     * @param remove list of items to remove
+     * @param currContext current activity context
+     */
     public void updateUserInventory(int uid, ArrayList<IngredientQuantity> add,
                                       ArrayList<IngredientQuantity> remove, Context currContext) {
         String url = "https://personalvirtualinventories.000webhostapp.com/editUserInventory.php";
@@ -84,6 +116,13 @@ public class InventoryRepository {
         ApiRequestQueue.getInstance(currContext.getApplicationContext()).addToRequestQueue(jsObjRequest);
     }
 
+    /**
+     * Creates parameter map to send to database
+     * @param uid user database id
+     * @param add ingredient quantities to add
+     * @param remove ingredient quantities to remove
+     * @return
+     */
     @NonNull
     private Map<String, String> getParamMap(int uid, ArrayList<IngredientQuantity> add, ArrayList<IngredientQuantity> remove) {
         JSONArray addjson = new JSONArray();
@@ -120,6 +159,12 @@ public class InventoryRepository {
         return params;
     }
 
+    /**
+     * Retrieves user inventory from database
+     * @param uid user database id
+     * @param currContext current activity context
+     * @return user inventory as live data object
+     */
     public MutableLiveData<ArrayList<IngredientQuantity>> getUserInventory(int uid, Context currContext) {
         if (model.getCurrentInventory().getValue() != null
                 && !model.getCurrentInventory().getValue().isEmpty()) {

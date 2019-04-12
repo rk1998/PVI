@@ -87,7 +87,7 @@ public class QuestionMealSelection extends AppCompatActivity {
                             showProgress(false);
                             if (userID != null && viewModel.getCurrentUser().getValue() != null) {
                                 viewModel.getCurrentUser().getValue().setId(userID);
-                                Intent nextIntent = new Intent(QuestionMealSelection.this, MainScreen.class);
+                                Intent nextIntent = new Intent(QuestionMealSelection.this, PantryMeals.class);
                                 startActivity(nextIntent);
                             }
                         }
