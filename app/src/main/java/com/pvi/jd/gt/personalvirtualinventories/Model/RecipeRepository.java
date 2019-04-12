@@ -52,7 +52,7 @@ public class RecipeRepository {
         tempRecipeId.add("Chunky-Rice-And-Bean-Soup-Recipezaar");
         tempRecipeId.add("7-Samurai-Vegan-Soup-Recipezaar");
         tempRecipeId.add("Cabbage-And-Tofu-Soup-Recipezaar");
-        MAX_RESULTS_PER_MEAL = 40;
+        MAX_RESULTS_PER_MEAL = 60;
 
         dietaryRestrictionMap = new HashMap<>();
         foodAllergiesMap = new HashMap<>();
@@ -263,6 +263,15 @@ public class RecipeRepository {
                         }
                         requestedRecipe.setApiID(currentID);
                         try {
+                            JSONArray courses = response.getJSONObject("attributes")
+                                    .getJSONArray("course");
+                            for(int j = 0; j < courses.length(); j++) {
+                                Log.d("COURSE FOR ID: " + currentID, courses.getString(j));
+                            }
+                        } catch (JSONException e) {
+
+                        }
+                        try {
                             String recipeTitle = response.getString("name");
                             requestedRecipe.setRecipeTitle(recipeTitle);
                         } catch(JSONException e) {
@@ -445,7 +454,7 @@ public class RecipeRepository {
         requestURL += "&maxTotalTimeInSeconds=" + maxTotalTimeInSeconds;
         requestURL += "&excludedCourse[]=course^course-Cocktails" +
                 "&excludedCourse[]=course^course-Condiments+and+Sauces" +
-                "&excludedCourse[]course^course-Beverages";
+                "&excludedCourse[]=course^course-Beverages";
 
         //add dietary preferences
         for(int i = 0; i < dietaryPreferences.size(); i++) {
@@ -461,7 +470,40 @@ public class RecipeRepository {
         int mealCount = 0;
         for(int i = 0; i < favoriteMeals.size(); i++) {
             String faveMeal = favoriteMeals.get(i);
-            String requestFaveMealURL =  requestURL + "&q=" + faveMeal + "&maxResult=4&start=10";
+            String requestFaveMealURL = searchrecipeAPIURL + "_app_id="
+                    + apiID + "&_app_key=" + apiKey + "&q=" + faveMeal + "&requirePictures=true";
+
+            for(int j = 0; j < foodAllergies.size(); j++) {
+                String allergy = foodAllergiesMap.get(foodAllergies.get(j));
+
+                requestFaveMealURL += "&allowedAllergy[]=" + allergy;
+            }
+            //add hated foods
+            for(int j = 0; j < hatedFoods.size(); j++) {
+                String hatedFood = hatedFoods.get(j);
+                hatedFood = hatedFood.replaceAll("\\s", "+");
+                requestFaveMealURL += "&excludedIngredient[]=" + hatedFood.toLowerCase();
+            }
+
+            requestFaveMealURL += "&excludedIngredient[]=alcohol";
+            requestFaveMealURL += "&maxTotalTimeInSeconds=" + maxTotalTimeInSeconds;
+            requestFaveMealURL += "&excludedCourse[]=course^course-Cocktails" +
+                    "&excludedCourse[]=course^course-Condiments+and+Sauces" +
+                    "&excludedCourse[]=course^course-Beverages";
+
+            //add dietary preferences
+            for(int j = 0; j < dietaryPreferences.size(); j++) {
+                if(dietaryPreferences.get(j).equals("Low Sugar")) {
+                    requestFaveMealURL += "&nutrition.SUGAR.min=0&nutrition.SUGAR.max=10";
+                } else if(dietaryPreferences.get(j).equals("Low Carb")) {
+                    requestFaveMealURL += "&nutrition.CHOCDF.min=50&nutrition.CHOCDF.max=150";
+                } else {
+                    String diet = dietaryRestrictionMap.get(dietaryPreferences.get(j));
+                    requestFaveMealURL += "&allowedDiet[]=" + diet;
+                }
+            }
+            requestFaveMealURL += "&maxResult=6&start=10";
+            //String requestFaveMealURL =  requestURL + "&q=" + faveMeal + "&maxResult=4&start=10";
             JsonObjectRequest searchRecipeRequest = new JsonObjectRequest(Request.Method.GET,
                     requestFaveMealURL, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -474,18 +516,30 @@ public class RecipeRepository {
                             Recipe tempRecipe = new Recipe();
                             try {
                                 String recipeId = obj.getString("id");
-                                recipeIds.add(recipeId);
-                                JSONArray ingredientNames = obj.getJSONArray("ingredients");
-                                ArrayList<String> ingredients = new ArrayList<>();
-                                for(int j = 0; j < ingredientNames.length(); j++) {
-                                    String ingredient = ingredientNames.getString(j);
-                                    ingredients.add(ingredient);
+                                if(!obj.getString("recipeName").contains("Seasoning")) {
+                                    recipeIds.add(recipeId);
+                                    JSONArray ingredientNames = obj.getJSONArray("ingredients");
+                                    ArrayList<String> ingredients = new ArrayList<>();
+                                    for(int j = 0; j < ingredientNames.length(); j++) {
+                                        String ingredient = ingredientNames.getString(j);
+                                        ingredients.add(ingredient);
+                                    }
+                                    tempRecipe.setIngredientNames(ingredients);
+                                    tempRecipe.setApiID(recipeId);
+                                    model.getStoredRecipes().put(recipeId, tempRecipe);
                                 }
-                                tempRecipe.setIngredientNames(ingredients);
-                                tempRecipe.setApiID(recipeId);
-                                model.getStoredRecipes().put(recipeId, tempRecipe);
                             } catch(JSONException e) {
                                 recipeIds.add("none");
+                            }
+                            try {
+                                String recipeId = obj.getString("id");
+                                JSONArray courses = obj.getJSONObject("attributes")
+                                        .getJSONArray("course");
+                                for(int j = 0; j < courses.length(); j++) {
+                                    Log.d("COURSE FOR ID: " + recipeId, courses.getString(j));
+                                }
+                            } catch (JSONException e) {
+                                Log.d("NO ATTRIBUTES", "");
                             }
                         }
                     } catch(JSONException e) {
@@ -506,13 +560,13 @@ public class RecipeRepository {
             });
             ApiRequestQueue.getInstance(currentContext.getApplicationContext())
                     .addToRequestQueue(searchRecipeRequest);
-            mealCount += 4;
+            mealCount += 6;
 
         }
 
         int mealsRemaining = MAX_RESULTS_PER_MEAL - mealCount;
 
-        String remainingMealRequest = requestURL + "&maxResult=" + mealsRemaining + "&start=20";
+        String remainingMealRequest = requestURL + "&maxResult=" + mealsRemaining + "&start=15";
 
         JsonObjectRequest searchRecipeRequest = new JsonObjectRequest(Request.Method.GET,
                 remainingMealRequest, null, new Response.Listener<JSONObject>() {
@@ -526,18 +580,30 @@ public class RecipeRepository {
                         Recipe tempRecipe = new Recipe();
                         try {
                             String recipeId = obj.getString("id");
-                            recipeIds.add(recipeId);
-                            tempRecipe.setApiID(recipeId);
-                            JSONArray ingredientNames = obj.getJSONArray("ingredients");
-                            ArrayList<String> ingredients = new ArrayList<>();
-                            for(int j = 0; j < ingredientNames.length(); j++) {
-                                String ingredient = ingredientNames.getString(j);
-                                ingredients.add(ingredient);
+                            if(!obj.getString("recipeName").contains("Seasoning")) {
+                                recipeIds.add(recipeId);
+                                tempRecipe.setApiID(recipeId);
+                                JSONArray ingredientNames = obj.getJSONArray("ingredients");
+                                ArrayList<String> ingredients = new ArrayList<>();
+                                for(int j = 0; j < ingredientNames.length(); j++) {
+                                    String ingredient = ingredientNames.getString(j);
+                                    ingredients.add(ingredient);
+                                }
+                                tempRecipe.setIngredientNames(ingredients);
+                                model.getStoredRecipes().put(recipeId, tempRecipe);
                             }
-                            tempRecipe.setIngredientNames(ingredients);
-                            model.getStoredRecipes().put(recipeId, tempRecipe);
                         } catch(JSONException e) {
                             recipeIds.add("none");
+                        }
+                        try {
+                            String recipeId = obj.getString("id");
+                            JSONArray courses = obj.getJSONObject("attributes")
+                                    .getJSONArray("course");
+                            for(int j = 0; j < courses.length(); j++) {
+                                Log.d("COURSE FOR ID: " + recipeId, courses.getString(j));
+                            }
+                        } catch (JSONException e) {
+                            Log.d("NO ATTRIBUTES", "");
                         }
                     }
                 } catch(JSONException e) {

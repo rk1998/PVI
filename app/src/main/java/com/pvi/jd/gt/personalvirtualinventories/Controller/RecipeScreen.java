@@ -63,7 +63,7 @@ public class RecipeScreen extends AppCompatActivity {
         ImageLoader imageLoader = ApiRequestQueue.getInstance(
                 this.getApplicationContext()).getImageLoader();
         imageLoader.get(img_resource, ImageLoader.getImageListener(imgView,
-                R.drawable.spagett, R.drawable.spagett));
+                R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground));
         //imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imgView.setImageUrl(img_resource, imageLoader);
 

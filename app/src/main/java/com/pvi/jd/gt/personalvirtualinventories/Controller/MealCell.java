@@ -121,7 +121,7 @@ public class MealCell extends BaseAdapter {
             ImageLoader imageLoader = ApiRequestQueue.getInstance(
                     this.mContext.getApplicationContext()).getImageLoader();
             imageLoader.get(imgUrl, ImageLoader.getImageListener(img,
-                    R.drawable.spagett, R.drawable.spagett));
+                    R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground));
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
             img.setImageUrl(imgUrl, imageLoader);
         }
