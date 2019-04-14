@@ -27,6 +27,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.pvi.jd.gt.personalvirtualinventories.Model.ApiRequestQueue;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -106,7 +107,8 @@ public class MealCell extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.meal_cell_layout, parent, false);
         }
-        final NetworkImageView img = (NetworkImageView) convertView.findViewById(R.id.recipe_img_button);
+        //final NetworkImageView img = (NetworkImageView) convertView.findViewById(R.id.recipe_img_button);
+        final ImageView img = (ImageView) convertView.findViewById(R.id.recipe_img_button);
         final TextView recipeTitle = (TextView) convertView.findViewById(R.id.recipe_select_title);
         recipeTitle.setSelected(true);
         //recipeTitle.setText(mealNames[position]);
@@ -116,15 +118,21 @@ public class MealCell extends BaseAdapter {
 
         String imgUrl = recipe.getImgURL();
         if(imgUrl.isEmpty()) {
-            img.setImageResource(R.drawable.spagett);
+            img.setImageResource(R.drawable.ic_launcher_foreground);
         } else {
-            ImageLoader imageLoader = ApiRequestQueue.getInstance(
-                    this.mContext.getApplicationContext()).getImageLoader();
-            imageLoader.get(imgUrl, ImageLoader.getImageListener(img,
-                    R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground));
-            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            img.setImageUrl(imgUrl, imageLoader);
+            Picasso.get().load(imgUrl).placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground).into(img);
         }
+//        if(imgUrl.isEmpty()) {
+//            img.setImageResource(R.drawable.spagett);
+//        } else {
+//            ImageLoader imageLoader = ApiRequestQueue.getInstance(
+//                    this.mContext.getApplicationContext()).getImageLoader();
+//            imageLoader.get(imgUrl, ImageLoader.getImageListener(img,
+//                    R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground));
+//            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//            img.setImageUrl(imgUrl, imageLoader);
+//        }
         if(!selectionMap.containsKey(recipe)) {
             addButton.setImageResource(R.drawable.addbtn);
         } else {

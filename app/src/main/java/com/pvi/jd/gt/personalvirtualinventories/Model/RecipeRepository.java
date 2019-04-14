@@ -76,6 +76,12 @@ public class RecipeRepository {
 
     }
 
+    /**
+     * Clears stored recipes
+     */
+    public void clearStoredRecipes() {
+        model.getStoredRecipes().clear();
+    }
 
     /**
      * Gets full recipe info from yummly api when given a recipeID

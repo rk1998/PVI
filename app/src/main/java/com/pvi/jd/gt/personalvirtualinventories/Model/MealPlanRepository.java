@@ -39,6 +39,13 @@ public class MealPlanRepository {
         model.setCurrentMealPlan(mp);
     }
 
+    /**
+     * clears current meal plan
+     */
+    public void clearCurrMealPlan() {
+        model.setCurrentMealPlan(new MutableLiveData<>());
+    }
+
     public MutableLiveData<MealPlan> getCurrMealPlan(User user, Context currContext) {
         if (model.getCurrentMealPlan().getValue() != null) {
             return model.getCurrentMealPlan();

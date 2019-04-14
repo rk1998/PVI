@@ -49,6 +49,11 @@ public class InventoryRepository {
         }
     }
 
+    public void clearInventory() {
+        model.setCurrentInventory(new MutableLiveData<>());
+    }
+
+
     /**
      * Convert grocery list item to inventory item
      * @param newItem item to add to inventory

@@ -20,6 +20,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.pvi.jd.gt.personalvirtualinventories.Model.ApiRequestQueue;
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -48,24 +49,30 @@ public class RecipeScreen extends AppCompatActivity {
 
         ArrayList<String> recipeIngredients = recipeBundle.getStringArrayList("RECIPE_INGREDIENTS");
 
-        String img_resource = recipeBundle.getString("IMG_SOURCE");
+        String img_resource = recipeBundle.getString("IMG_SOURCE", "");
 
         final String recipeDetails = recipeBundle.getString("RECIPE_DETAILS");
         final String recipeInstructions = recipeBundle.getString("RECIPE_INSTRUCTIONS");
 
-        NetworkImageView imgView = (NetworkImageView) findViewById(R.id.recipe_img);
+        //NetworkImageView imgView = (NetworkImageView) findViewById(R.id.recipe_img);
+        ImageView imgView = (ImageView) findViewById(R.id.recipe_img);
         TextView recipeTitleView = (TextView) findViewById(R.id.recipe_title);
         final TextView recipeDetailView = (TextView) findViewById(R.id.recipe_details);
         final TextView recipeIngredientsView = (TextView) findViewById(R.id.recipe_ingredients);
         final TextView recipeInstructionsView = (TextView) findViewById(R.id.recipe_instructions);
 
-
-        ImageLoader imageLoader = ApiRequestQueue.getInstance(
-                this.getApplicationContext()).getImageLoader();
-        imageLoader.get(img_resource, ImageLoader.getImageListener(imgView,
-                R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground));
+        if(img_resource.isEmpty()) {
+            imgView.setImageResource(R.drawable.ic_launcher_foreground);
+        } else {
+            Picasso.get().load(img_resource).placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground).into(imgView);
+        }
+//        ImageLoader imageLoader = ApiRequestQueue.getInstance(
+//                this.getApplicationContext()).getImageLoader();
+//        imageLoader.get(img_resource, ImageLoader.getImageListener(imgView,
+//                R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground));
         //imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imgView.setImageUrl(img_resource, imageLoader);
+        //imgView.setImageUrl(img_resource, imageLoader);
 
         //imgView.setImageResource(img_resource);
         recipeTitleView.setText(recipeTitle);

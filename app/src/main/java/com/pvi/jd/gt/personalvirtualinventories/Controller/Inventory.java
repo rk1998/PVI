@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import com.pvi.jd.gt.personalvirtualinventories.Model.IngredientQuantity;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.InventoryViewModel;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.LogoutViewModel;
 
 import java.util.ArrayList;
 
@@ -123,7 +124,11 @@ public class Inventory extends AppCompatActivity implements NavigationView.OnNav
             Intent intent = new Intent(this,
                     GroceryList.class);
             startActivity(intent);
-        } else if (id == R.id.settings) {
+        } else if (id == R.id.logout) {
+            LogoutViewModel logout = ViewModelProviders.of(this).get(LogoutViewModel.class);
+            logout.clearCachedData();
+            Intent intent = new Intent(this, OpeningScreen.class);
+            startActivity(intent);
 
         }
 

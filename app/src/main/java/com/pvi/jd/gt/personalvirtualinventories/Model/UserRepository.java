@@ -51,6 +51,13 @@ public class UserRepository {
         return model.getTempUser();
     }
 
+    /**
+     * Clears current user
+     */
+    public void clearCurrUser() {
+        model.getCurrentUser().setValue(null);
+    }
+
     public void setCurrUser(MutableLiveData<User> user) {
         model.setCurrentUser(user);
     }

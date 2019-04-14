@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.pvi.jd.gt.personalvirtualinventories.Model.IngredientQuantity;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.GroceryListViewModel;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.LogoutViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,7 +172,11 @@ public class GroceryList extends AppCompatActivity implements NavigationView.OnN
             startActivity(intent);
         } else if (id == R.id.grocery_list) {
             //
-        } else if (id == R.id.settings) {
+        } else if (id == R.id.logout) {
+            LogoutViewModel logout = ViewModelProviders.of(this).get(LogoutViewModel.class);
+            logout.clearCachedData();
+            Intent intent = new Intent(this, OpeningScreen.class);
+            startActivity(intent);
 
         }
 

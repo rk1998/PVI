@@ -30,6 +30,10 @@ public class GroceryListRepository {
         return GROCERY_LIST_REPOSITORY;
     }
 
+    public void clearGroceryList() {
+        model.setCurrentGroceryList(new MutableLiveData<>());
+    }
+
     /**
      * Generates a user's grocery list given their current meal plan
      * @param mealPlanRecipes recipes selected for their meal plan

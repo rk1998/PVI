@@ -35,6 +35,7 @@ import com.pvi.jd.gt.personalvirtualinventories.Model.Meal;
 import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlan;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.pvi.jd.gt.personalvirtualinventories.ViewModels.LogoutViewModel;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
 
 import java.util.ArrayList;
@@ -258,8 +259,11 @@ public class MainScreen extends AppCompatActivity
             Intent intent = new Intent(this,
                     GroceryList.class);
             startActivity(intent);
-        } else if (id == R.id.settings) {
-
+        } else if (id == R.id.logout) {
+            LogoutViewModel logout = ViewModelProviders.of(this).get(LogoutViewModel.class);
+            logout.clearCachedData();
+            Intent intent = new Intent(this, OpeningScreen.class);
+            startActivity(intent);
         }
 //        else if (id == R.id.nav_share) {
 //

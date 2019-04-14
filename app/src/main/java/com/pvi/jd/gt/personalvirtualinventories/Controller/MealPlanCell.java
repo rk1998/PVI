@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.Color;
 import android.app.AlertDialog;
@@ -26,6 +27,7 @@ import com.pvi.jd.gt.personalvirtualinventories.Model.MealPlan;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +85,8 @@ public class MealPlanCell extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.meal_plan_row, parent, false);
         }
-        final NetworkImageView img = (NetworkImageView) convertView.findViewById(R.id.meal_image);
+        //final NetworkImageView img = (NetworkImageView) convertView.findViewById(R.id.meal_image);
+        final ImageView img = (ImageView) convertView.findViewById(R.id.meal_image);
         final TextView recipeTitle = (TextView) convertView.findViewById(R.id.meal_name);
         recipeTitle.setSelected(true);
         final CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.meal_checkbox);
@@ -187,18 +190,26 @@ public class MealPlanCell extends BaseAdapter {
             deleteButton.setVisibility(View.VISIBLE);
         }
 
-        img.setImageResource(R.color.gray);
+
+//        img.setImageResource(R.color.gray);
         String img_resource = currMeal.getRecipe().getImgURL();
         if(img_resource.isEmpty()) {
-            img.setDefaultImageResId(R.drawable.chickensalad);
+            img.setImageResource(R.drawable.ic_launcher_foreground);
         } else {
-            ImageLoader imageLoader = ApiRequestQueue.getInstance(
-                    this.mContext.getApplicationContext()).getImageLoader();
-            imageLoader.get(img_resource, ImageLoader.getImageListener(img,
-                    R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground));
-            //imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            img.setImageUrl(img_resource, imageLoader);
+            Picasso.get().load(img_resource).placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground).into(img);
+            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
+//        if(img_resource.isEmpty()) {
+//            img.setDefaultImageResId(R.drawable.chickensalad);
+//        } else {
+//            ImageLoader imageLoader = ApiRequestQueue.getInstance(
+//                    this.mContext.getApplicationContext()).getImageLoader();
+//            imageLoader.get(img_resource, ImageLoader.getImageListener(img,
+//                    R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground));
+//            //imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//            img.setImageUrl(img_resource, imageLoader);
+//        }
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

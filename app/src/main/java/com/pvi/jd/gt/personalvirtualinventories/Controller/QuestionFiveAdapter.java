@@ -15,6 +15,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.pvi.jd.gt.personalvirtualinventories.Model.ApiRequestQueue;
 import com.pvi.jd.gt.personalvirtualinventories.Model.Meal;
 import com.pvi.jd.gt.personalvirtualinventories.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,14 +56,18 @@ public class QuestionFiveAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.meal_cell_layout, parent, false);
         }
-        final NetworkImageView img = (NetworkImageView) convertView.findViewById(R.id.recipe_img_button);
+        //final NetworkImageView img = (NetworkImageView) convertView.findViewById(R.id.recipe_img_button);
+        final ImageView img = (ImageView) convertView.findViewById(R.id.recipe_img_button);
         final TextView recipeTitle = (TextView) convertView.findViewById(R.id.recipe_select_title);
         recipeTitle.setSelected(true);
         final FloatingActionButton fab = (FloatingActionButton) convertView.findViewById(R.id.fab);
-        ImageLoader imageLoader = ApiRequestQueue.getInstance(
-                this.mContext.getApplicationContext()).getImageLoader();
-        img.setImageUrl(mealPicURLs[position], imageLoader);
+        Picasso.get().load(mealPicURLs[position]).placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_launcher_foreground).into(img);
         img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//        ImageLoader imageLoader = ApiRequestQueue.getInstance(
+//                this.mContext.getApplicationContext()).getImageLoader();
+//        img.setImageUrl(mealPicURLs[position], imageLoader);
+//        img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         recipeTitle.setText(mustHaveMeals[position]);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
