@@ -130,6 +130,10 @@ public class Inventory extends AppCompatActivity implements NavigationView.OnNav
             Intent intent = new Intent(this, OpeningScreen.class);
             startActivity(intent);
 
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(this,
+                    Reports.class);
+            startActivity(intent);
         }
 
         item.setChecked(true);
