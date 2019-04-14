@@ -172,7 +172,9 @@ public class GroceryList extends AppCompatActivity implements NavigationView.OnN
         } else if (id == R.id.grocery_list) {
             //
         } else if (id == R.id.settings) {
-
+            Intent intent = new Intent(this,
+                    Reports.class);
+            startActivity(intent);
         }
 
         item.setChecked(true);
