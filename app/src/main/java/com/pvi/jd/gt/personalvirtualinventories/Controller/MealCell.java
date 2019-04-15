@@ -102,7 +102,6 @@ public class MealCell extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        //View gridCell;
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.meal_cell_layout, parent, false);
@@ -111,7 +110,6 @@ public class MealCell extends BaseAdapter {
         final ImageView img = (ImageView) convertView.findViewById(R.id.recipe_img_button);
         final TextView recipeTitle = (TextView) convertView.findViewById(R.id.recipe_select_title);
         recipeTitle.setSelected(true);
-        //recipeTitle.setText(mealNames[position]);
         final Recipe recipe = (Recipe) getItem(position);
         recipeTitle.setText(recipe.getRecipeTitle());
         FloatingActionButton addButton = (FloatingActionButton) convertView.findViewById(R.id.fab);
@@ -122,6 +120,7 @@ public class MealCell extends BaseAdapter {
         } else {
             Picasso.get().load(imgUrl).placeholder(R.drawable.ic_launcher_foreground)
                     .error(R.drawable.ic_launcher_foreground).into(img);
+            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
 //        if(imgUrl.isEmpty()) {
 //            img.setImageResource(R.drawable.spagett);

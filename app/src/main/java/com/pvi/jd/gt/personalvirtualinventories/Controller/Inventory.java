@@ -129,7 +129,6 @@ public class Inventory extends AppCompatActivity implements NavigationView.OnNav
             logout.clearCachedData();
             Intent intent = new Intent(this, OpeningScreen.class);
             startActivity(intent);
-
         } else if (id == R.id.settings) {
             Intent intent = new Intent(this,
                     Reports.class);

@@ -263,6 +263,7 @@ public class MainScreen extends AppCompatActivity
             LogoutViewModel logout = ViewModelProviders.of(this).get(LogoutViewModel.class);
             logout.clearCachedData();
             Intent intent = new Intent(this, OpeningScreen.class);
+            startActivity(intent);
         } else if (id == R.id.settings) {
             Intent intent = new Intent(this,
                     Reports.class);

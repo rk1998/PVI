@@ -79,7 +79,7 @@ public class InventoryRepository {
             }
             Random rng = new Random();
             int amount = rng.nextInt(20) + 10;
-            String newAmount = "" + amount + unit;
+            String newAmount = "" + amount + " " + unit;
             newItem.setAmount(newAmount);
         }
 //        if(model.getCurrentInventory().getValue() == null) {

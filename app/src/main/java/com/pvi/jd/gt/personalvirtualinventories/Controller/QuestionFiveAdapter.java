@@ -61,13 +61,13 @@ public class QuestionFiveAdapter extends BaseAdapter {
         final TextView recipeTitle = (TextView) convertView.findViewById(R.id.recipe_select_title);
         recipeTitle.setSelected(true);
         final FloatingActionButton fab = (FloatingActionButton) convertView.findViewById(R.id.fab);
-        Picasso.get().load(mealPicURLs[position]).placeholder(R.drawable.ic_launcher_foreground)
-                .error(R.drawable.ic_launcher_foreground).into(img);
-        img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//        ImageLoader imageLoader = ApiRequestQueue.getInstance(
-//                this.mContext.getApplicationContext()).getImageLoader();
-//        img.setImageUrl(mealPicURLs[position], imageLoader);
-//        img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        if(!mealPicURLs[position].isEmpty()) {
+            Picasso.get().load(mealPicURLs[position]).placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground).into(img);
+            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        } else {
+            img.setImageResource(R.drawable.ic_launcher_foreground);
+        }
         recipeTitle.setText(mustHaveMeals[position]);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
