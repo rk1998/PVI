@@ -173,13 +173,12 @@ public class MealPlanCell extends BaseAdapter {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setCancelable(true);
                 builder.setMessage("Remove " + recipeTitle.getText() + " from your meal plan?");
-                builder.setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeRecipe(currMeal);
-                            }
-                        });
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeRecipe(currMeal);
+                    }
+                });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -268,9 +267,6 @@ public class MealPlanCell extends BaseAdapter {
     }
 
     private void showNewMealPlanDialog() {
-        if (menu != null) {
-            menu.performIdentifierAction(R.id.edit_button, 0);
-        }
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setCancelable(true);
         builder.setTitle("Your meal plan is empty.");
@@ -286,6 +282,9 @@ public class MealPlanCell extends BaseAdapter {
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (menu != null) {
+                    menu.performIdentifierAction(R.id.edit_button, 0);
+                }
             }
         });
         AlertDialog dialog = builder.create();

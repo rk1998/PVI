@@ -138,7 +138,8 @@ public class MainScreen extends AppCompatActivity
         if (mealPlanMutableLiveData.getValue() == null) {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
             if (createPlan != null) {
-                ((ViewManager) createPlan.getParent()).removeView(createPlan);
+                //((ViewManager) createPlan.getParent()).removeView(createPlan);
+                createPlan.setVisibility(View.INVISIBLE);
             }
             showProgress(true);
             return;
@@ -158,6 +159,7 @@ public class MainScreen extends AppCompatActivity
                     startActivity(nextIntent);
                 }
             });
+            createPlan.setVisibility(View.VISIBLE);
             if (menu != null) {
                 MenuItem editItem = menu.findItem(R.id.edit_button);
                 editItem.setVisible(false);
@@ -165,7 +167,8 @@ public class MainScreen extends AppCompatActivity
         } else {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
             if (createPlan != null) {
-                ((ViewManager) createPlan.getParent()).removeView(createPlan);
+                //((ViewManager) createPlan.getParent()).removeView(createPlan);
+                createPlan.setVisibility(View.INVISIBLE);
             }
             if (menu != null) {
                 MenuItem editItem = menu.findItem(R.id.edit_button);
@@ -247,6 +250,23 @@ public class MainScreen extends AppCompatActivity
             addButton.setVisibility(View.GONE);
             deleteAllButton.setVisibility(View.GONE);
             adapter.setEditMode(false);
+            if (adapter.getCount() == 0) {
+                Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
+                createPlan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent nextIntent = new Intent(MainScreen.this,
+                                MealSelection.class);
+                        nextIntent.putExtra("EDIT_MODE", false);
+                        startActivity(nextIntent);
+                    }
+                });
+                createPlan.setVisibility(View.VISIBLE);
+                if (menu != null) {
+                    MenuItem editItem = menu.findItem(R.id.edit_button);
+                    editItem.setVisible(false);
+                }
+            }
         }
     }
 
