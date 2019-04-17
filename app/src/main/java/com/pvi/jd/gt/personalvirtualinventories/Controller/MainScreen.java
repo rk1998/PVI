@@ -3,10 +3,12 @@ package com.pvi.jd.gt.personalvirtualinventories.Controller;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Build;
@@ -42,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 
 public class MainScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,7 +52,7 @@ public class MainScreen extends AppCompatActivity
     private MealPlanViewModel viewModel;
     private MealPlanCell adapter;
     private View mealPlanProgress;
-
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,10 +158,18 @@ public class MainScreen extends AppCompatActivity
                     startActivity(nextIntent);
                 }
             });
+            if (menu != null) {
+                MenuItem editItem = menu.findItem(R.id.edit_button);
+                editItem.setVisible(false);
+            }
         } else {
             Button createPlan = (Button) findViewById(R.id.createMealPlanButton);
             if (createPlan != null) {
                 ((ViewManager) createPlan.getParent()).removeView(createPlan);
+            }
+            if (menu != null) {
+                MenuItem editItem = menu.findItem(R.id.edit_button);
+                editItem.setVisible(true);
             }
             if (mealPlanMutableLiveData.getValue().isExists() && mealPlanMutableLiveData.getValue()
                     .getMealPlan().stream().filter(meal -> meal.getRecipe() == null).count() == 0) {
@@ -192,21 +203,49 @@ public class MainScreen extends AppCompatActivity
                     startActivity(nextIntent);
                 }
             });
+            ImageButton deleteAllButton = (ImageButton) findViewById(R.id.delete_all_button);
+            deleteAllButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainScreen.this);
+                    builder.setCancelable(true);
+                    builder.setMessage("Delete all meals from your meal plan?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            adapter.removeAllRecipes();
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            });
         }
     }
 
     public void editMode(MenuItem item) {
         boolean editMode = adapter.getEditMode();
         ImageButton addButton = (ImageButton) findViewById(R.id.add_button);
+        ImageButton deleteAllButton = (ImageButton) findViewById(R.id.delete_all_button);
         if (!editMode) {
             item.setTitle("Done");
             addButton.setVisibility(View.VISIBLE);
             addButton.bringToFront();
             addButton.invalidate();
+            deleteAllButton.setVisibility(View.VISIBLE);
+            deleteAllButton.bringToFront();
+            deleteAllButton.invalidate();
             adapter.setEditMode(true);
+            adapter.setMenu(menu);
         } else {
             item.setTitle("Edit");
             addButton.setVisibility(View.GONE);
+            deleteAllButton.setVisibility(View.GONE);
             adapter.setEditMode(false);
         }
     }
@@ -225,6 +264,7 @@ public class MainScreen extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_screen, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -237,6 +277,7 @@ public class MainScreen extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.edit_button) {
+            editMode(item);
             return true;
         }
 

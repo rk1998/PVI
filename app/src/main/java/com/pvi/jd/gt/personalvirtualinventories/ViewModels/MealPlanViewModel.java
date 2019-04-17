@@ -103,6 +103,8 @@ public class MealPlanViewModel extends ViewModel {
         recipesToRemove.add(mealToRemove.getRecipe());
         mpRepo.editMealPlan(userRepo.getCurrUser().getValue(), new LinkedList<>(), recipesToRemove,
                 currentContext);
+        MutableLiveData<User> userMutableLiveData = userRepo.getCurrUser();
+        this.mealplanRecipes = mpRepo.getCurrMealPlan(userMutableLiveData.getValue(), currentContext);
     }
 
 }
