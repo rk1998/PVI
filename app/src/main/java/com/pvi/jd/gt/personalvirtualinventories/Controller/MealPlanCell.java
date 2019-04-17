@@ -5,11 +5,15 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,6 +34,7 @@ import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealPlanViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -42,6 +47,7 @@ public class MealPlanCell extends BaseAdapter {
     private int countSelected = 0;
     private final MealPlanViewModel mpVM;
     private boolean editMode = false;
+    private Menu menu;
     //private List<MutableLiveData<Recipe>> planMeals;
 
     /**
@@ -167,13 +173,12 @@ public class MealPlanCell extends BaseAdapter {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setCancelable(true);
                 builder.setMessage("Remove " + recipeTitle.getText() + " from your meal plan?");
-                builder.setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeRecipe(currMeal);
-                            }
-                        });
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeRecipe(currMeal);
+                    }
+                });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -246,26 +251,44 @@ public class MealPlanCell extends BaseAdapter {
         }
         notifyDataSetChanged();
         if (planMeals.isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setCancelable(true);
-            builder.setTitle("Your meal plan is empty.");
-            builder.setMessage("Would you like to create a new meal plan?");
-            builder.setPositiveButton("Confirm",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent newIntent = new Intent(mContext, MealSelection.class);
-                            mContext.startActivity(newIntent);
-                        }
-                    });
-            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            showNewMealPlanDialog();
         }
+    }
+
+    public void removeAllRecipes() {
+        List<Meal> toRemove = new ArrayList<>();
+        for (Meal meal : planMeals) {
+            mpVM.removeMeal(meal, mContext);
+            toRemove.add(meal);
+        }
+        planMeals.removeAll(toRemove);
+        notifyDataSetChanged();
+        showNewMealPlanDialog();
+    }
+
+    private void showNewMealPlanDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setCancelable(true);
+        builder.setTitle("Your meal plan is empty.");
+        builder.setMessage("Would you like to create a new meal plan?");
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent newIntent = new Intent(mContext, MealSelection.class);
+                        mContext.startActivity(newIntent);
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (menu != null) {
+                    menu.performIdentifierAction(R.id.edit_button, 0);
+                }
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public boolean getEditMode(){
@@ -275,5 +298,9 @@ public class MealPlanCell extends BaseAdapter {
     public void setEditMode(boolean editMode) {
         this.editMode = editMode;
         notifyDataSetChanged();
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 }

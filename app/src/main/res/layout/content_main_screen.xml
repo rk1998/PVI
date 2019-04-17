@@ -53,4 +53,16 @@
         app:srcCompat="@drawable/ic_add_circle_red_80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"  />
+
+    <ImageButton
+        android:id="@+id/delete_all_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="?android:selectableItemBackground"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        app:srcCompat="@drawable/ic_delete_forever_red_80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"  />
 </android.support.constraint.ConstraintLayout>
