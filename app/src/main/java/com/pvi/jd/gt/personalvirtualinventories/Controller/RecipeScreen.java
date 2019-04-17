@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 
 public class RecipeScreen extends AppCompatActivity {
 
+    private Menu menu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +40,7 @@ public class RecipeScreen extends AppCompatActivity {
         Bundle recipeBundle = getIntent().getBundleExtra("RECIPE_BUNDLE");
         String recipeTitle = recipeBundle.getString("RECIPE_NAME");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_recipe);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(recipeTitle);
         toolbar.setNavigationIcon(getDrawable(R.drawable.ic_arrow_back_white_24dp));
@@ -141,5 +145,22 @@ public class RecipeScreen extends AppCompatActivity {
 
         TabLayout.Tab defaultTab = tabs.getTabAt(0);
         defaultTab.select();
+    }
+
+    // create an action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.recipe_screen, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.select_button) {
+            // do something here
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
