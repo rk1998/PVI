@@ -162,7 +162,7 @@ public class MealCell extends BaseAdapter {
                 Intent newIntent = new Intent(mContext,
                         RecipeScreen.class);
                 Bundle recipeBundle = new Bundle();
-
+                recipeBundle.putString("RECIPE_ID", recipe.getApiID());
                 recipeBundle.putString("IMG_SOURCE", recipe.getImgURL());
                 recipeBundle.putString("RECIPE_NAME", recipe.getRecipeTitle());
                 recipeBundle.putString("RECIPE_DETAILS", recipe.getDetails());

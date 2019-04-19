@@ -221,6 +221,7 @@ public class MealPlanCell extends BaseAdapter {
                 Intent newIntent = new Intent(mContext,
                         RecipeScreen.class);
                 Bundle recipeBundle = new Bundle();
+                recipeBundle.putString("RECIPE_ID", currMeal.getRecipe().getApiID());
                 recipeBundle.putString("IMG_SOURCE", currMeal.getRecipe().getImgURL());
                 recipeBundle.putString("RECIPE_NAME", currMeal.getRecipe().getRecipeTitle());
                 recipeBundle.putString("RECIPE_DETAILS", currMeal.getRecipe().getDetails());

@@ -31,15 +31,12 @@ import java.util.ArrayList;
 public class RecipeScreen extends AppCompatActivity {
 
     private Menu menu;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_screen);
-
         Bundle recipeBundle = getIntent().getBundleExtra("RECIPE_BUNDLE");
         String recipeTitle = recipeBundle.getString("RECIPE_NAME");
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_recipe);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(recipeTitle);
@@ -159,7 +156,7 @@ public class RecipeScreen extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.select_button) {
-            // do something here
+
         }
         return super.onOptionsItemSelected(item);
     }
