@@ -1,19 +1,19 @@
 # PVI
 Georgia Tech Junior Design Repo for Personal Virtual Inventories project.
-Release Notes version Personal Virtual Inventories 1.0
 
-# NEW FEATURES
+# Release Notes version Personal Virtual Inventories 1.0
+## NEW FEATURES
 - A Grocery List is now generated from the meals you select for your meal plan.
 - Editing Grocery List: You can add and remove items from your list.
 - Inventory Population is now available.
 - Editing Inventory: You can add and remove items from your inventory.
 - You can log out without exiting the app.
-# BUG FIXES
+## BUG FIXES
 - Miscellaneous items (drinks, seasonings) do not show up in initial recipe generation.
 - Meal plan edit button no longer crashes the app when no meal plan is present.
 - Image Loading is faster with Picasso library. The correct images show up in each meal plan cell adapter when the app first opens.
-# KNOWN BUGS
-- Grocery List does not regenerate; just keeps adding to the list every week.
+## KNOWN BUGS
+- Grocery List does not regenerate; just keeps adding to the list every time a new meal plan is created.
 - If all recipes are deleted from the meal plan and the user does not create a new meal plan directly afterward when prompted, the recipes sometimes remain on screen despite being deleted. Specifically, the screen refreshes such that it contains all the recipes that the user had upon login. If the screen is refreshed again, however, it updates properly.
 
 # Install Guide Personal Virtual Inventories 1.0
@@ -43,4 +43,4 @@ Otherwise you can create an emulator in Android Studio to run the app on.  Look 
 # FUTURE WORK
 - Integrate e-receipt parsing with the app to populate the inventory
 - Implement subtracting from inventory when you check off meals from your meal plan
-- Implement “Reports” features which tracks user’s nutritional intake and purchase history
+- Implement “Reports” feature which tracks user’s nutritional intake and purchase history
