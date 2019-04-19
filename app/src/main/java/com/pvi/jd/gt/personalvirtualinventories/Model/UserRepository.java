@@ -147,7 +147,24 @@ public class UserRepository {
         params.put("allergies", new JSONArray(user.getFoodAllergies()).toString());
         params.put("hatedfoods", new JSONArray(user.getHatedFoods()).toString());
         JSONArray jsonArray = new JSONArray();
-        user.getRecipes().forEach(recipe -> jsonArray.put(recipe.getApiID()));
+        for (Recipe r : user.getRecipes()) {
+            try {
+                JSONObject entry = new JSONObject();
+                entry.put("api_id", r.getApiID());
+                JSONArray ingredients = new JSONArray();
+                for (String ingredient : r.getIngredientNames()) {
+                    JSONObject iq = new JSONObject();
+                    iq.put("name", ingredient);
+                    iq.put("quantity", r.getIngredientToUnit().get(ingredient));
+                    ingredients.put(iq);
+                }
+                entry.put("ingredients", ingredients);
+                jsonArray.put(entry);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d("recipe json", jsonArray.toString());
         params.put("recipes", jsonArray.toString());
         final MutableLiveData<Integer> id = new MutableLiveData<>();
         JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener< JSONObject >() {

@@ -115,10 +115,31 @@ public class MealPlanRepository {
         Map<String, String> params = new HashMap<>();
         params.put("uid", uid + "");
         params.put("recipes", recipeids.toString());
-        JSONObjectRequest jsObjRequest = new JSONObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+        JSONArrayRequest jsObjRequest = new JSONArrayRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 Log.i("HELLO", "DATABASE RESPONSE: " +  response.toString());
+                List<Recipe> meals = new ArrayList<>();
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject recipe = response.getJSONObject(i);
+                        Recipe r = new Recipe();
+                        r.setApiID(recipe.getString("api_id"));
+                        JSONArray ingredients = recipe.getJSONArray("ingredients");
+                        for (int j = 0; j < ingredients.length(); j++) {
+                            JSONObject iq = ingredients.getJSONObject(j);
+                            String name = iq.getString("name");
+                            r.getIngredientNames().add(name);
+                            String quant = iq.getString("amount");
+                            r.getIngredientToUnit().put(name, quant);
+                        }
+                        meals.add(r);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                GroceryListRepository.getGroceryListRepository().generateGroceryList(uid, meals, currContext);
+
             }
         }, new Response.ErrorListener() {
             @Override
