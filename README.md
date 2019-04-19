@@ -1,7 +1,7 @@
 # PVI
 Georgia Tech Junior Design Repo for Personal Virtual Inventories project.
 
-# Release Notes version Personal Virtual Inventories 1.0
+# Release Notes: Personal Virtual Inventories version 1.0
 ## NEW FEATURES
 - A Grocery List is now generated from the meals you select for your meal plan.
 - Editing Grocery List: You can add and remove items from your list.
