@@ -31,12 +31,16 @@ import java.util.ArrayList;
 public class RecipeScreen extends AppCompatActivity {
 
     private Menu menu;
+    private String activityName;
+    private String recipeID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_screen);
         Bundle recipeBundle = getIntent().getBundleExtra("RECIPE_BUNDLE");
         String recipeTitle = recipeBundle.getString("RECIPE_NAME");
+        activityName = recipeBundle.getString("ACTIVITY", "");
+        recipeID = recipeBundle.getString("RECIPE_ID", "");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_recipe);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(recipeTitle);
@@ -156,6 +160,19 @@ public class RecipeScreen extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.select_button) {
+            if(activityName.equals("QuestionMealSelection")) {
+                Intent newIntent = new Intent(this, QuestionMealSelection.class);
+                newIntent.putExtra("SELECTED_MEAL_ID", recipeID);
+                startActivity(newIntent);
+            } else if(activityName.equals("MealSelection")) {
+                Intent newIntent = new Intent(this, MealSelection.class);
+                newIntent.putExtra("SELECTED_MEAL_ID", recipeID);
+                startActivity(newIntent);
+            } else if(activityName.equals("MainScreen")) {
+                Intent newIntent = new Intent(this, MainScreen.class);
+                newIntent.putExtra("SELECTED_MEAL_ID", recipeID);
+                startActivity(newIntent);
+            }
 
         }
         return super.onOptionsItemSelected(item);

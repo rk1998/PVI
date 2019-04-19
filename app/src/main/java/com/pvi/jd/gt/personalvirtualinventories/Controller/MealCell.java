@@ -45,6 +45,8 @@ public class MealCell extends BaseAdapter {
 
     private final List<Recipe> recipeList;
     private HashMap<Recipe, Boolean> selectionMap;
+    private String activityInUse;
+    private String selectedID;
 
 
     /**
@@ -75,10 +77,28 @@ public class MealCell extends BaseAdapter {
         mealNames = new String[0];
         mealIngredients = new String[0];
         this.selectionMap = new HashMap<>();
+        this.selectedID = "";
+        this.activityInUse = "";
 //        for(int i = 0; i < recipeList.size(); i++) {
 //            this.selectionMap.put(recipeList.get(i), false);
 //        }
 
+    }
+
+    /**
+     * Sets string indicating which activity is using this adapter
+     * @param activity
+     */
+    public void setActivityInUse(String activity) {
+        this.activityInUse = activity;
+    }
+
+    /**
+     * Sets selectedID, which is an ID that was selected from RecipeScreen
+     * @param selectedID
+     */
+    public void setSelectedID(String selectedID) {
+        this.selectedID = selectedID;
     }
 
     @Override
@@ -122,20 +142,16 @@ public class MealCell extends BaseAdapter {
                     .error(R.drawable.ic_launcher_foreground).into(img);
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
-//        if(imgUrl.isEmpty()) {
-//            img.setImageResource(R.drawable.spagett);
-//        } else {
-//            ImageLoader imageLoader = ApiRequestQueue.getInstance(
-//                    this.mContext.getApplicationContext()).getImageLoader();
-//            imageLoader.get(imgUrl, ImageLoader.getImageListener(img,
-//                    R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground));
-//            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            img.setImageUrl(imgUrl, imageLoader);
-//        }
+
         if(!selectionMap.containsKey(recipe)) {
             addButton.setImageResource(R.drawable.addbtn);
         } else {
             addButton.setImageResource(R.drawable.checkbtn);
+        }
+
+        if(recipe.getApiID().equals(selectedID)) {
+            addButton.setImageResource(R.drawable.checkbtn);
+            selectionMap.put(recipe, new Boolean(true));
         }
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +178,7 @@ public class MealCell extends BaseAdapter {
                 Intent newIntent = new Intent(mContext,
                         RecipeScreen.class);
                 Bundle recipeBundle = new Bundle();
+                recipeBundle.putString("ACTIVITY", activityInUse);
                 recipeBundle.putString("RECIPE_ID", recipe.getApiID());
                 recipeBundle.putString("IMG_SOURCE", recipe.getImgURL());
                 recipeBundle.putString("RECIPE_NAME", recipe.getRecipeTitle());

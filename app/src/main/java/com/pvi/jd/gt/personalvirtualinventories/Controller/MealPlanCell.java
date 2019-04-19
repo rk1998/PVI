@@ -48,7 +48,7 @@ public class MealPlanCell extends BaseAdapter {
     private final MealPlanViewModel mpVM;
     private boolean editMode = false;
     private Menu menu;
-    //private List<MutableLiveData<Recipe>> planMeals;
+    private String selectedID;
 
     /**
      *
@@ -62,6 +62,11 @@ public class MealPlanCell extends BaseAdapter {
         mealNames = new String[0];
         mealIngredients = new String[0];
         countSelected = numCompleted;
+        selectedID = "";
+    }
+
+    public void setSelectedID(String selectedID) {
+        this.selectedID = selectedID;
     }
 
     @Override
@@ -104,6 +109,47 @@ public class MealPlanCell extends BaseAdapter {
             checkbox.setChecked(false);
             img.setColorFilter(null);
         }
+
+        if(meal.getApiID().equals(selectedID)) {
+            checkbox.setChecked(true);
+            img.setColorFilter(Color.argb(175,50,50,50));
+            countSelected++;
+            mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(),
+                    true, mContext);
+//            Meal selectedMeal = planMeals.get(position);
+//            planMeals.remove(position);
+//            planMeals.add(selectedMeal);
+//            notifyDataSetChanged();
+            if (countSelected == planMeals.size()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setCancelable(true);
+                builder.setTitle("Would you like to create a new meal plan?");
+                builder.setMessage("This will delete your current meal plan.");
+                builder.setPositiveButton("Confirm",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent newIntent = new Intent(mContext, MealSelection.class);
+                                mContext.startActivity(newIntent);
+                            }
+                        });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        countSelected--;
+                        img.setColorFilter(null);
+                        checkbox.setChecked(false);
+                        mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(),
+                                false, mContext);
+                    }
+                });
+
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        }
+
         Log.d("NUM SELECTED: ", ""+countSelected);
         checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,22 +251,14 @@ public class MealPlanCell extends BaseAdapter {
                     .error(R.drawable.ic_launcher_foreground).into(img);
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
-//        if(img_resource.isEmpty()) {
-//            img.setDefaultImageResId(R.drawable.chickensalad);
-//        } else {
-//            ImageLoader imageLoader = ApiRequestQueue.getInstance(
-//                    this.mContext.getApplicationContext()).getImageLoader();
-//            imageLoader.get(img_resource, ImageLoader.getImageListener(img,
-//                    R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground));
-//            //imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            img.setImageUrl(img_resource, imageLoader);
-//        }
+
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent newIntent = new Intent(mContext,
                         RecipeScreen.class);
                 Bundle recipeBundle = new Bundle();
+                recipeBundle.putString("ACTIVITY", "MainScreen");
                 recipeBundle.putString("RECIPE_ID", currMeal.getRecipe().getApiID());
                 recipeBundle.putString("IMG_SOURCE", currMeal.getRecipe().getImgURL());
                 recipeBundle.putString("RECIPE_NAME", currMeal.getRecipe().getRecipeTitle());

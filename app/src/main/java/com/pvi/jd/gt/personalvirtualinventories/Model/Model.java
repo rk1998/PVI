@@ -20,6 +20,7 @@ public class Model {
     private MutableLiveData<User> currentUser;
     private MutableLiveData<MealPlan> currentMealPlan;
     private Map<String, Recipe> storedRecipes;
+    private ArrayList<String> storedSearchedRecipes;
     private MutableLiveData<ArrayList<IngredientQuantity>> currentGroceryList;
     private MutableLiveData<ArrayList<IngredientQuantity>> currentInventory;
     private User tempUser;
@@ -29,6 +30,7 @@ public class Model {
         currentMealPlan = new MutableLiveData<>();
         storedRecipes = new HashMap<>();
         tempUser = new User();
+        storedSearchedRecipes = new ArrayList<>();
         currentGroceryList = new MutableLiveData<>();
         currentInventory = new MutableLiveData<>();
         currentInventory.setValue(new ArrayList<>());
@@ -37,6 +39,14 @@ public class Model {
 
     public MutableLiveData<User> getCurrentUser() {
         return currentUser;
+    }
+
+    /**
+     * Return stored recipe ids from recipe searching
+     * @return
+     */
+    public ArrayList<String> getStoredSearchedRecipes() {
+        return storedSearchedRecipes;
     }
 
     /**

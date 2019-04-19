@@ -24,6 +24,7 @@ import com.pvi.jd.gt.personalvirtualinventories.Model.Recipe;
 import com.pvi.jd.gt.personalvirtualinventories.R;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.MealSelectionViewModel;
 import com.pvi.jd.gt.personalvirtualinventories.ViewModels.RecipeSelectionViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class QuestionMealSelection extends AppCompatActivity {
     private LiveData<List<Recipe>> recipeDataList;
     private View mProgressView;
     private Button doneButton;
+    private String selectedID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,11 @@ public class QuestionMealSelection extends AppCompatActivity {
         setContentView(R.layout.activity_question_meal_selection);
         GridView mealSelectionGrid = (GridView) findViewById(R.id.question_meal_grid_view);
         mProgressView = findViewById(R.id.recipe_search_progress);
-
+        if(this.getIntent().hasExtra("SELECTED_MEAL_ID")) {
+            selectedID = this.getIntent().getStringExtra("SELECTED_MEAL_ID");
+        } else {
+            selectedID = "";
+        }
         viewModel = ViewModelProviders.of(this).get(RecipeSelectionViewModel.class);
         viewModel.init(this);
         recipeDataList = viewModel.getSearchedRecipes();
@@ -53,6 +59,8 @@ public class QuestionMealSelection extends AppCompatActivity {
             public void onChanged(@Nullable List<Recipe> recipes) {
                 showProgress(false);
                 adapter = new MealCell(QuestionMealSelection.this, recipes);
+                adapter.setActivityInUse("QuestionMealSelection");
+                adapter.setSelectedID(selectedID);
                 mealSelectionGrid.setAdapter(adapter);
 //                for(int i = 0; i < recipes.size(); i++) {
 //                    adapter.addNewRecipe(recipes.get(i));

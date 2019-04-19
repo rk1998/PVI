@@ -53,7 +53,7 @@ public class MainScreen extends AppCompatActivity
     private MealPlanCell adapter;
     private View mealPlanProgress;
     private Menu menu;
-
+    private String selectedID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +69,11 @@ public class MainScreen extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        if(this.getIntent().hasExtra("SELECTED_MEAL_ID")) {
+            selectedID = this.getIntent().getStringExtra("SELECTED_MEAL_ID");
+        } else {
+            selectedID = "";
+        }
         viewModel = ViewModelProviders.of(this).get(MealPlanViewModel.class);
         viewModel.init(this);
         MutableLiveData<MealPlan> mealPlanMutableLiveData = viewModel.getMealPlan();
@@ -189,6 +193,7 @@ public class MainScreen extends AppCompatActivity
                         int numCompleted = mealPlan.numCompleted();
                         adapter = new MealPlanCell(MainScreen.this, mealPlan, viewModel,
                                 numCompleted);
+                        adapter.setSelectedID(selectedID);
                         mealPlanList.setAdapter(adapter);
                         layout.addView(mealPlanList);
                         showProgress(false);

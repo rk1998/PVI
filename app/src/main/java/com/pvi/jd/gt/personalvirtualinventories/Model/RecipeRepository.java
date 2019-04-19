@@ -434,6 +434,12 @@ public class RecipeRepository {
      * @return LiveData object containing list of recipe Ids.
      */
     public MutableLiveData<List<String>> searchRecipes(User newUser, final Context currentContext) {
+
+        if(!model.getStoredSearchedRecipes().isEmpty()) {
+            final MutableLiveData<List<String>> dataList = new MutableLiveData<>();
+            dataList.setValue(model.getStoredSearchedRecipes());
+            return dataList;
+        }
         final MutableLiveData<List<String>> dataList = new MutableLiveData<>();
         dataList.setValue(new LinkedList<>());
         List<String> favoriteMeals = newUser.getFavoriteMealNames();
@@ -551,6 +557,7 @@ public class RecipeRepository {
                     } catch(JSONException e) {
                         recipeIds.add("Cabbage-And-Tofu-Soup-Recipezaar");
                     }
+                    model.getStoredSearchedRecipes().addAll(recipeIds);
                     dataList.getValue().addAll(recipeIds);
                     dataList.setValue(dataList.getValue());
 
@@ -615,6 +622,7 @@ public class RecipeRepository {
                 } catch(JSONException e) {
                     recipeIds.add("Simple-Skillet-Green-Beans-2352743");
                 }
+                model.getStoredSearchedRecipes().addAll(recipeIds);
                 dataList.getValue().addAll(recipeIds);
                 dataList.setValue(dataList.getValue());
 

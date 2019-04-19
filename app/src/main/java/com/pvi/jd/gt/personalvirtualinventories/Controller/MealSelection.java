@@ -44,6 +44,7 @@ public class MealSelection extends AppCompatActivity {
     private MealCell adapter;
     private LiveData<List<Recipe>> recipeDataList;
     private View mProgressView;
+    private String selectedID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,12 @@ public class MealSelection extends AppCompatActivity {
                 finish();
             }
         });
+
+        if(this.getIntent().hasExtra("SELECTED_MEAL_ID")) {
+            selectedID = this.getIntent().getStringExtra("SELECTED_MEAL_ID");
+        } else {
+            selectedID = "";
+        }
         //createDummyRecipes();
         GridView mealSelectionGrid = (GridView) findViewById(R.id.meal_grid_view);
         mProgressView = findViewById(R.id.meal_loading_bar);
@@ -72,6 +79,8 @@ public class MealSelection extends AppCompatActivity {
             public void onChanged(@Nullable List<Recipe> recipes) {
                 showProgress(false);
                 adapter = new MealCell(MealSelection.this, recipes);
+                adapter.setActivityInUse("MealSelection");
+                adapter.setSelectedID(selectedID);
                 mealSelectionGrid.setAdapter(adapter);
             }
         });
