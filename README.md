@@ -33,7 +33,7 @@ Georgia Tech Junior Design Repo for Personal Virtual Inventories project.
 - If you have developer options enabled on your device, you can plug it into your computer and Android Studio will install it on your phone.
 Otherwise you can create an emulator in Android Studio to run the app on.  Look here for further instructions: https://docs.expo.io/versions/latest/workflow/android-studio-emulator/
 - If using the pre-built app, simply download it onto your device.
-## RUNNING APPLICATION
+## RUNNING THE APPLICATION
 - If building from source, the app will automatically run after installation onto the emulator/device. In the future, simply find PVI in your app drawer and select it to open it.
 - If using the pre-built app, find PVI in your app drawer and select it to open it.
 ## TROUBLESHOOTING
