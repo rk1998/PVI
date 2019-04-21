@@ -116,10 +116,11 @@ public class MealPlanCell extends BaseAdapter {
             countSelected++;
             mpVM.changeMealCompletionStatus(planMeals.get(position).getRecipe(),
                     true, mContext);
-//            Meal selectedMeal = planMeals.get(position);
-//            planMeals.remove(position);
-//            planMeals.add(selectedMeal);
-//            notifyDataSetChanged();
+            Meal selectedMeal = planMeals.get(position);
+            planMeals.remove(position);
+            planMeals.add(selectedMeal);
+            selectedID = "";
+            notifyDataSetChanged();
             if (countSelected == planMeals.size()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setCancelable(true);
@@ -205,6 +206,7 @@ public class MealPlanCell extends BaseAdapter {
                     planMeals.remove(position);
                     planMeals.add(planMeals.size() - countSelected, selectedMeal);
                     notifyDataSetChanged();
+
                 }
             }
         });
